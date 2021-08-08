@@ -1,0 +1,80 @@
+@import '../../scss/_config.scss';
+
+header {
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 1rem;
+  z-index: 1;
+  width: 100%;
+  opacity: 0.9;
+  margin-bottom: 1rem;
+  border-bottom: solid 1px rgb(226, 226, 226);
+}
+
+.menu-logo-container {
+  display: flex;
+  align-items: center;
+
+  .menu-btn {
+    margin-right: 0.7rem;
+  }
+}
+
+.menu-btn {
+  cursor: pointer;
+
+  .btn-line {
+    background: $secondary-color;
+    height: 3px;
+    margin: 0 0 5px 0;
+    width: 28px;
+    border-radius: 20%;
+  }
+
+  .btn-line-middle {
+    width: 25px;
+  }
+
+  .btn-line-bottom {
+    margin: 0;
+  }
+}
+
+.logo {
+  font-size: 1.2rem;
+}
+
+.logo-link {
+  color: #000000;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  align-items: center;
+
+  .nav-link-item {
+    padding: 0.45rem;
+    margin: 0 0.25rem;
+  }
+}
+
+.login-link {
+  &:hover {
+    @include easeOut();
+    color: $primary-color;
+  }
+}
+
+.signup-btn {
+  padding: 0.5rem 1.5rem;
+
+  a {
+    color: set-text-color($primary-color);
+  }
+}

@@ -1,0 +1,14 @@
+@import '../../scss/config';
+
+.name-field-container {
+  display: flex;
+  justify-content: space-between;
+
+  > :first-child {
+    margin-right: 1rem;
+  }
+}
+
+.primary-login-link {
+  color: $primary-color;
+}

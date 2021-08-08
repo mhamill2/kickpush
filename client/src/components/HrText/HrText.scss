@@ -1,0 +1,15 @@
+@import '../../scss/config';
+
+.hr-text {
+  width: 13rem;
+  text-align: center;
+  border-bottom: 1px solid $secondary-color;
+  line-height: 0.1em;
+  margin: 10px 0 10px;
+  color: $secondary-color;
+
+  span {
+    background: #fff;
+    padding: 0 10px;
+  }
+}
