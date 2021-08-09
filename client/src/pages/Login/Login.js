@@ -26,6 +26,10 @@ const Login = () => {
         </span>{' '}
         <div className="social-btn-text">Login with Facebook</div>
       </button>
+      <div className="sign-up-container">
+        <HrText text="Don't have an account?" />
+        <button className="btn btn-secondary form-btn-sm">Sign Up</button>
+      </div>
     </Fragment>
   );
   return <FormModal title={'Login'} formContent={formContent} />;

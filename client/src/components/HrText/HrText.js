@@ -1,9 +1,9 @@
 import './HrText.scss';
 
-const HrText = () => {
+const HrText = ({ text = 'or', width }) => {
   return (
     <p className="hr-text">
-      <span>or</span>
+      <span>{text}</span>
     </p>
   );
 };
