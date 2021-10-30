@@ -1,10 +1,10 @@
 import './FormModal.scss';
 
-const FormModal = ({ title, formContent }) => {
+const FormModal = ({ title, formContent, onSubmit }) => {
   return (
     <div className="modal">
       <h1 className="modal-header">{title}</h1>
-      <form className="modal-form" action="">
+      <form className="modal-form" action="" onSubmit={onSubmit}>
         {formContent}
       </form>
     </div>
