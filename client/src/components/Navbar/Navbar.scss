@@ -16,35 +16,6 @@ header {
   border-bottom: solid 1px rgb(226, 226, 226);
 }
 
-.menu-logo-container {
-  display: flex;
-  align-items: center;
-
-  .menu-btn {
-    margin-right: 0.7rem;
-  }
-}
-
-.menu-btn {
-  cursor: pointer;
-
-  .btn-line {
-    background: $secondary-color;
-    height: 3px;
-    margin: 0 0 5px 0;
-    width: 28px;
-    border-radius: 20%;
-  }
-
-  .btn-line-middle {
-    width: 25px;
-  }
-
-  .btn-line-bottom {
-    margin: 0;
-  }
-}
-
 .logo {
   font-size: 1.2rem;
 }
@@ -77,4 +48,62 @@ header {
   a {
     color: set-text-color($primary-color);
   }
+}
+
+// Menu Button
+.menu-logo-container {
+  display: flex;
+  align-items: center;
+
+  .menu-btn {
+    margin-right: 0.7rem;
+  }
+}
+
+.menu-btn {
+  cursor: pointer;
+  z-index: 1000;
+
+  .btn-line {
+    background: $secondary-color;
+    height: 3px;
+    margin: 0 0 5px 0;
+    width: 28px;
+    border-radius: 20%;
+  }
+
+  .btn-line-bottom {
+    margin: 0;
+  }
+}
+
+// Menu Overlay
+.menu {
+  overflow-y: scroll;
+  list-style: none;
+  position: fixed;
+  height: 100vh;
+  overflow: hidden;
+  width: 0%;
+  z-index: 99;
+  background: #ffffff;
+  margin-top: -1rem; // Needs to match the margin-bottom for the nav
+
+  &.showMenu {
+    width: 100%;
+  }
+}
+
+.menu-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding: 0 1rem 0 1rem;
+  list-style: none;
+}
+
+.menu-item {
+  border-bottom: 1px solid $secondary-color;
+  padding: 1rem 0 1rem 0;
 }

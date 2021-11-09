@@ -1,8 +1,20 @@
+import { useEffect } from 'react';
 import './Landing.scss';
 import landingImage from './images/skateboarding-instructor.jpg';
 import HrText from '../../components/HrText/HrText';
+import { useSelector } from 'react-redux';
 
-const Landing = () => {
+const Landing = (props) => {
+  const authenticated = useSelector((state) => state.auth.authenticated);
+
+  useEffect(() => {
+    if (authenticated) {
+      props.history.push('/dashboard');
+    }
+
+    // eslint-disable-next-line
+  }, [authenticated, props.history]);
+
   return (
     <main>
       <section className="landing-section">

@@ -14,6 +14,12 @@ import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
 
+import setAuthToken from './utils/setAuthToken';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
+
 const App = () => {
   return (
     <Provider store={store}>
