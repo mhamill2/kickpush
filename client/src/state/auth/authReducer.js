@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS, USER_LOADED } from './types';
 
 const initialState = {
   user: null,
@@ -19,6 +19,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         authenticated: false
+      };
+    case USER_LOADED:
+      return {
+        ...state,
+        authenticated: true
       };
     default:
       return state;

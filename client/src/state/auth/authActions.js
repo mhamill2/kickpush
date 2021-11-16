@@ -1,6 +1,8 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS } from './types';
 import store from '../store';
 import axios from 'axios';
+
+import setAuthToken from '../../utils/setAuthToken';
 
 const defaultPostConfig = {
   headers: {
@@ -19,4 +21,15 @@ const register = async (userData) => {
 
 const logout = () => store.dispatch({ type: LOGOUT });
 
-export { register, logout };
+const loadUser = async (token) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.get('/loadUser');
+    store.dispatch({ type: USER_LOADED, payload: res.data });
+  } catch (err) {
+    store.dispatch({ type: AUTH_ERROR });
+  }
+};
+
+export { register, logout, loadUser };

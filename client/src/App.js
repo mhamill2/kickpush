@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 
 import store from './state/store';
 
@@ -16,8 +16,10 @@ import Register from './pages/Auth/Register/Register';
 
 import setAuthToken from './utils/setAuthToken';
 
+import { loadUser } from './state/auth/authActions';
+
 if (localStorage.token) {
-  setAuthToken(localStorage.token);
+  loadUser(localStorage.token);
 }
 
 const App = () => {
