@@ -1,0 +1,56 @@
+@import '../../../scss/config';
+
+.name-field-container {
+  display: flex;
+  justify-content: space-between;
+
+  > :first-child {
+    margin-right: 1rem;
+  }
+}
+
+.primary-login-link {
+  color: $primary-color;
+}
+
+.form-toggle-group {
+  text-align: center;
+}
+
+.toggle-group-header {
+  font-weight: 620;
+  color: #000000;
+}
+
+.toggle-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #beccbe;
+  border-radius: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.toggle-group-item {
+  padding: 0.5rem 1rem;
+  width: 50%;
+  cursor: pointer;
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+.toggle-group-item {
+  input[type='radio'] {
+    opacity: 0;
+    height: 0;
+  }
+}
+
+.toggle-group-item-right {
+  border-left: solid 1px #beccbe;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.toggle-group-item-selected {
+  background-color: $primary-color;
+  color: set-text-color($primary-color);
+}
