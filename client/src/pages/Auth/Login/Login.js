@@ -1,21 +1,43 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFacebookF } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { useSelector } from 'react-redux';
 
 import FormModal from '../../../components/FormModal/FormModal';
 import HrText from '../../../components/HrText/HrText';
 import './Login.scss';
+import { login } from '../../../state/auth/authActions';
 
-const Login = () => {
+const Login = (props) => {
+  const authenticated = useSelector((state) => state.auth.authenticated);
+
+  useEffect(() => {
+    if (authenticated) {
+      props.history.push('/dashboard');
+    }
+
+    // eslint-disable-next-line
+  }, [authenticated, props.history]);
+
+  const [user, setUser] = useState({
+    email: '',
+    password: ''
+  });
+
+  const { email, password } = user;
+
+  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+
   const onSubmit = (e) => {
     e.preventDefault();
+    login(user);
   };
 
   const formContent = (
     <Fragment>
-      <input type="email" name="email" placeholder="Email" />
-      <input type="password" name="password" placeholder="Password" />
+      <input type="email" name="email" placeholder="Email" onChange={onChange} />
+      <input type="password" name="password" placeholder="Password" onChange={onChange} />
       <button className="btn btn-primary form-btn">Login</button>
       <HrText />
       <button className="form-btn google-btn">

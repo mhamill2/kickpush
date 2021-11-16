@@ -19,6 +19,15 @@ const register = async (userData) => {
   }
 };
 
+const login = async (userData) => {
+  try {
+    const res = await axios.post('/login', userData, defaultPostConfig);
+    store.dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+  } catch (err) {
+    store.dispatch({ type: LOGIN_FAIL, payload: err.response.data.msg });
+  }
+};
+
 const logout = () => store.dispatch({ type: LOGOUT });
 
 const loadUser = async (token) => {
@@ -32,4 +41,4 @@ const loadUser = async (token) => {
   }
 };
 
-export { register, logout, loadUser };
+export { register, login, logout, loadUser };
