@@ -12,7 +12,7 @@ const authReducer = (state = initialState, action) => {
       localStorage.setItem('token', action.payload.token);
       return {
         ...state,
-        ...action.payload,
+        user: action.payload.user,
         authenticated: true
       };
     case LOGOUT:
@@ -24,6 +24,7 @@ const authReducer = (state = initialState, action) => {
     case USER_LOADED:
       return {
         ...state,
+        user: action.payload,
         authenticated: true
       };
     default:

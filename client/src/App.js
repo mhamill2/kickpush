@@ -15,11 +15,12 @@ import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
 
 import { loadUser } from './state/auth/authActions';
+import BottomNav from './components/BottomNav/BottomNav';
 
 if (localStorage.token) {
   loadUser(localStorage.token);
 }
-
+<script src="https://kit.fontawesome.com/e08c05e4ce.js" crossorigin="anonymous"></script>;
 const App = () => {
   return (
     <Provider store={store}>
@@ -32,6 +33,7 @@ const App = () => {
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
           </Switch>
+          <BottomNav />
         </Fragment>
       </Router>
     </Provider>
