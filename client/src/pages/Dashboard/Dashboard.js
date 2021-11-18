@@ -1,7 +1,10 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Dashboard = () => {
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  dispatch({ type: 'NAV_HOME' });
 
   return <div>Hello {user.firstName}!</div>;
 };

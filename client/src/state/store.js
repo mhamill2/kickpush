@@ -4,9 +4,11 @@ import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 
 import authReducer from './auth/authReducer';
+import navReducer from './nav/navReducer';
 
 const rootReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  nav: navReducer
 });
 
 const initialState = {};
