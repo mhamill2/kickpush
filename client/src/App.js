@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 
 import store from './state/store';
 
-import './scss/index.scss';
-
 import Navbar from './components/Navbar/Navbar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
@@ -20,7 +18,7 @@ import BottomNav from './components/BottomNav/BottomNav';
 if (localStorage.token) {
   loadUser(localStorage.token);
 }
-<script src="https://kit.fontawesome.com/e08c05e4ce.js" crossorigin="anonymous"></script>;
+
 const App = () => {
   return (
     <Provider store={store}>

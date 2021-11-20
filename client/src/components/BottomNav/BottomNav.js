@@ -2,28 +2,27 @@ import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUsers, faCommentAlt, faUserCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
-import './BottomNav.scss';
-
 const BottomNav = () => {
   const activePage = useSelector((state) => state.nav.activePage);
-  console.log(activePage);
+  const itemContainerStyle = 'h-full flex justify-center items-center w-12';
+  const itemContainerActiveStyle = 'shadow-activeIcon';
 
   return (
-    <div className="bottom-nav">
-      <div className={`icon-container ${activePage === 'profile' ? 'icon-container-active' : ''}`}>
-        <FontAwesomeIcon icon={faUserCircle} size="2x" className={activePage === 'profile' ? 'icon-active' : ''}></FontAwesomeIcon>
+    <div className="overflow-hidden fixed bottom-0 w-full border-t border-gray-100 flex justify-evenly items-center flex-grow h-12">
+      <div className={`${itemContainerStyle} ${activePage === 'profile' ? itemContainerActiveStyle : ''}`}>
+        <FontAwesomeIcon icon={faUserCircle} className={activePage === 'profile' ? 'text-primary' : ''}></FontAwesomeIcon>
       </div>
-      <div className={`icon-container ${activePage === 'payments' ? 'icon-container-active' : ''}`}>
-        <FontAwesomeIcon icon={faCreditCard} size="2x" className={activePage === 'payments' ? 'icon-active' : ''}></FontAwesomeIcon>
+      <div className={`${itemContainerStyle} ${activePage === 'payments' ? itemContainerActiveStyle : ''}`}>
+        <FontAwesomeIcon icon={faCreditCard} className={activePage === 'payments' ? 'text-primary' : ''}></FontAwesomeIcon>
       </div>
-      <div className={`icon-container ${activePage === 'home' ? 'icon-container-active' : ''}`}>
-        <FontAwesomeIcon icon={faHome} size="2x" className={activePage === 'home' ? 'icon-active' : ''}></FontAwesomeIcon>
+      <div className={`${itemContainerStyle} ${activePage === 'home' ? 'shdaow-lg' : ''}`}>
+        <FontAwesomeIcon icon={faHome} className={activePage === 'home' ? 'text-primary' : ''}></FontAwesomeIcon>
       </div>
-      <div className={`icon-container ${activePage === 'people' ? 'icon-container-active' : ''}`}>
-        <FontAwesomeIcon icon={faUsers} size="2x" className={activePage === 'people' ? 'icon-active' : ''}></FontAwesomeIcon>
+      <div className={`${itemContainerStyle} ${activePage === 'people' ? itemContainerActiveStyle : ''}`}>
+        <FontAwesomeIcon icon={faUsers} className={activePage === 'people' ? 'text-primary' : ''}></FontAwesomeIcon>
       </div>
-      <div className={`icon-container ${activePage === 'messages' ? 'icon-container-active' : ''}`}>
-        <FontAwesomeIcon icon={faCommentAlt} size="2x" className={activePage === 'messages' ? 'icon-active' : ''}></FontAwesomeIcon>
+      <div className={`${itemContainerStyle} ${activePage === 'messages' ? itemContainerActiveStyle : ''}`}>
+        <FontAwesomeIcon icon={faCommentAlt} className={activePage === 'messages' ? 'text-primary' : ''}></FontAwesomeIcon>
       </div>
     </div>
   );
