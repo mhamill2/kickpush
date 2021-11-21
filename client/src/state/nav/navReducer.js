@@ -12,6 +12,11 @@ const navReducer = (state = initialState, action) => {
         ...state,
         activePage: 'home'
       };
+    case NAV_PROFILE:
+      return {
+        ...state,
+        activePage: 'myProfile'
+      };
     default:
       return state;
   }

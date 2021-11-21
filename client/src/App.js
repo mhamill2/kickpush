@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
+import UserProfile from './pages/UserProfile/UserProfile';
 
 import { loadUser } from './state/auth/authActions';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -30,6 +31,7 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/instructors/:userId" component={UserProfile} />
           </Switch>
           <BottomNav />
         </Fragment>

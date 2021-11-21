@@ -7,6 +7,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch({ type: 'NAV_HOME' });
+    // eslint-disable-next-line
   }, []);
 
   return <div>Hello {user.firstName}!</div>;
