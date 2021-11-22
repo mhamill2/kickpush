@@ -36,8 +36,8 @@ const Login = (props) => {
 
   const formContent = (
     <Fragment>
-      <input type="email" name="email" placeholder="Email" onChange={onChange} />
-      <input type="password" name="password" placeholder="Password" onChange={onChange} />
+      <input type="email" name="email" placeholder="Email" className={inputTextStyle} onChange={onChange} />
+      <input type="password" name="password" placeholder="Password" className={inputTextStyle} onChange={onChange} />
       <button className="btn btn-primary form-btn">Login</button>
       <HrText />
       <button className="form-btn google-btn">
@@ -62,5 +62,7 @@ const Login = (props) => {
   );
   return <FormModal title={'Login'} formContent={formContent} onSubmit={onSubmit} />;
 };
+
+const inputTextStyle = 'focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg';
 
 export default Login;

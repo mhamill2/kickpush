@@ -57,12 +57,12 @@ const Register = (props) => {
   const formContent = (
     <Fragment>
       <div className="name-field-container">
-        <input type="text" name="firstName" placeholder="First Name" value={firstName} onChange={onChange} />
-        <input type="text" name="lastName" placeholder="Last Name" value={lastName} onChange={onChange} />
+        <input type="text" name="firstName" placeholder="First Name" value={firstName} className={inputTextStyle} onChange={onChange} />
+        <input type="text" name="lastName" placeholder="Last Name" value={lastName} className={inputTextStyle} onChange={onChange} />
       </div>
-      <input type="email" name="email" placeholder="Email" value={email} onChange={onChange} />
-      <input type="password" name="password" placeholder="Create Password" value={password} onChange={onChange} />
-      <input type="password" name="passwordConfirmation" placeholder="Confirm Password" value={passwordConfirmation} onChange={onChange} />
+      <input type="email" name="email" placeholder="Email" value={email} className={inputTextStyle} onChange={onChange} />
+      <input type="password" name="password" placeholder="Create Password" value={password} className={inputTextStyle} onChange={onChange} />
+      <input type="password" name="passwordConfirmation" placeholder="Confirm Password" value={passwordConfirmation} className={inputTextStyle} onChange={onChange} />
       <div className="form-toggle-group">
         <span className="toggle-group-header">I want to:</span>
         <div className="toggle-group">
@@ -105,5 +105,8 @@ const Register = (props) => {
     </div>
   );
 };
+
+const inputTextStyle = 'focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg';
+const formBtnStyle = 'h-9 w-full';
 
 export default Register;
