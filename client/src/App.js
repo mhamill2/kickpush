@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
+import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/UserProfile/UserProfile';
 
 import { loadUser } from './state/auth/authActions';
@@ -24,6 +25,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
+        <ScrollToTop />
         <Fragment>
           <Navbar />
           <Switch>
