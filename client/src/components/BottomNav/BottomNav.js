@@ -9,6 +9,10 @@ const BottomNav = () => {
   const itemContainerStyle = 'h-full flex justify-center items-center w-12';
   const itemContainerActiveStyle = 'shadow-activeIcon';
 
+  if (!user) {
+    return <></>;
+  }
+
   return (
     <div className="z-50 bg-white fixed bottom-0 w-full border-t border-gray-100 flex justify-evenly items-center flex-grow h-12">
       <Link to={`/instructors/${user ? user._id : ''}`} className={`${itemContainerStyle} ${activePage === 'myProfile' ? itemContainerActiveStyle : ''}`}>

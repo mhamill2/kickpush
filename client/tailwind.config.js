@@ -6,7 +6,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.red['600']
+        primary: colors.red['600'],
+        primaryDark: colors.red['700'],
+        secondary: colors.gray['300']
       },
       boxShadow: {
         activeIcon: 'inset 0 2px ' + colors.red['600']
