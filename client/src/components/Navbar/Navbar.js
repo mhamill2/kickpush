@@ -13,6 +13,7 @@ const Navbar = () => {
   };
 
   const onLogout = () => {
+    toggleMenu();
     logout();
   };
 
@@ -28,7 +29,7 @@ const Navbar = () => {
 
   const authMenu = (
     <Fragment>
-      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-50 bg-white -mt-4 ${menuOpen ? ' w-full' : ''}`}>
+      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-50 bg-white ${menuOpen ? ' w-full' : ''}`}>
         <ul className="flex flex-col items-stretch w-full px-4 list-none">
           <li className="border-b border-secondary py-4" onClick={onLogout}>
             Logout
@@ -59,7 +60,7 @@ const Navbar = () => {
 
   return (
     <header>
-      <nav className="flex justify-between items-center py-1 px-4 z-40 w-full opacity-90 border-b border-secondary">
+      <nav className="flex justify-between items-center py-1 px-4 z-40 w-full opacity-90 border-b border-secondary min-h-16">
         <div className="flex items-center">
           <h1 className="text-2xl">
             <Link to="/">LetsGoSkate</Link>
