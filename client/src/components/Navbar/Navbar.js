@@ -48,7 +48,7 @@ const Navbar = () => {
         </li>
         <li className="p-2 lg:mx-1">
           <Link to="/register">
-            <button type="button" className="inline-flex items-center px-6 lg:px-8 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-primary hover:bg-primaryDark">
+            <button type="button" className="inline-flex items-center px-5 lg:px-8 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-primary hover:bg-primaryDark">
               Sign Up
             </button>
           </Link>
