@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
+import EditProfileModal from '../../components/EditProfileModal/EditProfileModal';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faSnapchatGhost, faTiktok, faInstagramSquare, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,7 @@ const UserProfile = () => {
 
   return (
     <main className="pt-3">
+      <EditProfileModal></EditProfileModal>
       <section id="heading" className="flex justify-around items-center border-b-4 pb-5">
         <span className="inline-block h-24 w-24 rounded-full overflow-hidden bg-gray-100">
           <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
@@ -31,12 +34,18 @@ const UserProfile = () => {
       </section>
 
       <section id="background" className="border-b-4 p-5">
-        <h1 className="text-2xl pb-3">Background</h1>
+        <h1 className={sectionHeadingStyle}>Background</h1>
+        <button className={editIconButtonStyle}>
+          <FontAwesomeIcon icon={faPencilAlt} size="md" className="text-gray-600"></FontAwesomeIcon>
+        </button>
         <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Error, velit, praesentium quibusdam quis voluptates officiis, natus debitis aliquam omnis eos ducimus quisquam nemo ipsam alias blanditiis quae obcaecati quo at.</div>
       </section>
 
       <section id="rates" className="border-b-4 p-5">
-        <h1 className="text-2xl pb-3">Rates</h1>
+        <h1 className={sectionHeadingStyle}>Rates</h1>
+        <button className={editIconButtonStyle}>
+          <FontAwesomeIcon icon={faPencilAlt} size="md" className="text-gray-600"></FontAwesomeIcon>
+        </button>
         <div className="flex justify-start flex-wrap">
           <div className="mr-4">
             <h2 className="text-lg font-semibold">Standard Rates</h2>
@@ -52,7 +61,10 @@ const UserProfile = () => {
       </section>
 
       <section id="lesson-info" className="border-b-4 p-5">
-        <h1 className="text-2xl pb-3">Lesson Information</h1>
+        <h1 className={sectionHeadingStyle}>Lesson Information</h1>
+        <button className={editIconButtonStyle}>
+          <FontAwesomeIcon icon={faPencilAlt} size="md" className="text-gray-600"></FontAwesomeIcon>
+        </button>
         <div>
           <h2 className="text-lg font-semibold mb-3">Location</h2>
           <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 justify-center mb-8">
@@ -95,7 +107,10 @@ const UserProfile = () => {
       </section>
 
       <section id="social-links" className="p-5 mb-20">
-        <h1 className="text-2xl mb-3">Social Media</h1>
+        <h1 className={sectionHeadingStyle}>Social Media</h1>
+        <button className={editIconButtonStyle}>
+          <FontAwesomeIcon icon={faPencilAlt} size="md" className="text-gray-600"></FontAwesomeIcon>
+        </button>
         <div className="flex justify-evenly flex-wrap">
           <a href="#">
             <FontAwesomeIcon icon={faFacebookSquare} size="2x"></FontAwesomeIcon>
@@ -120,5 +135,8 @@ const UserProfile = () => {
     </main>
   );
 };
+
+const sectionHeadingStyle = 'text-2xl mb-5 inline-block mr-3';
+const editIconButtonStyle = 'rounded-full py-1 px-2 border-gray-400 bg-white focus:bg-gray-400';
 
 export default UserProfile;
