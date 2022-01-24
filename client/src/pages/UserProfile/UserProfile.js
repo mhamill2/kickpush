@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import EditProfileModal from '../../components/EditProfileModal/EditProfileModal';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faSnapchatGhost, faTiktok, faInstagramSquare, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +16,6 @@ const UserProfile = () => {
 
   return (
     <main className="pt-3">
-      <EditProfileModal></EditProfileModal>
       <section id="heading" className="flex justify-around items-center border-b-4 pb-5">
         <span className="inline-block h-24 w-24 rounded-full overflow-hidden bg-gray-100">
           <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">

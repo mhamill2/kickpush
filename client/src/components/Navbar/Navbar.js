@@ -60,10 +60,10 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white">
-      <nav className="flex justify-between items-center py-1 px-4 z-40 w-full opacity-90 border-b border-secondary h-16">
+      <nav className="flex justify-between items-center py-1 px-4 z-40 w-full opacity-90 h-16">
         <div className="flex items-center">
           <h1 className="text-2xl">
-            <Link to="/">LetsGoSkate</Link>
+            <Link to="/">KickPush</Link>
           </h1>
         </div>
         {authenticated ? authNav : guestNav}

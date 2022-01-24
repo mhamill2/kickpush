@@ -1,8 +1,11 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Dashboard = () => {
-  const user = useSelector((state) => state.auth.user);
+import InstructorDashboard from './Instructor/Dashboard';
+import StudentDashboard from './Student/Dashboard';
+
+const Dashboard = ({ user }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -10,7 +13,15 @@ const Dashboard = () => {
     // eslint-disable-next-line
   }, []);
 
-  return <div>Hello {user.firstName}!</div>;
+  return <main className="bg-gray-50 h-screen">{user.accountType === 'instructor' ? <InstructorDashboard /> : <StudentDashboard />}</main>;
 };
 
-export default Dashboard;
+Dashboard.propTypes = {
+  user: PropTypes.object.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps)(Dashboard);
