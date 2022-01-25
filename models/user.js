@@ -3,6 +3,12 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const validateUrl = (value) => {
+  if (!validator.isURL(value)) {
+    throw new Error('URL is invalid');
+  }
+};
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -50,6 +56,82 @@ const userSchema = new mongoose.Schema(
     ],
     avatar: {
       type: Buffer
+    },
+    instructorProfile: {
+      default: {},
+      bio: {
+        type: String,
+        validate(value) {
+          if (value.length > 300) {
+            throw new Error('Bio can only be 300 characters');
+          }
+        }
+      },
+      rates: {
+        privateLesson: { type: Number },
+        groupLesson: { type: Number },
+        otherRates: [
+          {
+            title: {
+              type: String,
+              required: true
+            },
+            rate: {
+              type: Number,
+              required: true
+            }
+          }
+        ]
+      },
+      lessonLocations: {
+        skatepark: { type: Boolean },
+        instructorsHome: { type: Boolean },
+        studentsHome: { type: Boolean },
+        virtual: { type: Boolean }
+      },
+      agesTaught: {
+        children: { type: Boolean },
+        teens: { type: Boolean },
+        adults: { type: Boolean }
+      },
+      socialMediaLinks: {
+        facebook: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        },
+        instagram: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        },
+        tiktok: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        },
+        snapchat: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        },
+        linkedin: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        },
+        twitter: {
+          type: String,
+          validate(value) {
+            validateUrl(value);
+          }
+        }
+      }
     }
   },
   {

@@ -13,7 +13,7 @@ const Dashboard = ({ user }) => {
     // eslint-disable-next-line
   }, []);
 
-  return <main className="bg-gray-50 h-screen">{user.accountType === 'instructor' ? <InstructorDashboard /> : <StudentDashboard />}</main>;
+  return <main className="bg-gray-100 min-h-screen w-full">{user.accountType === 'instructor' ? <InstructorDashboard /> : <StudentDashboard />}</main>;
 };
 
 Dashboard.propTypes = {

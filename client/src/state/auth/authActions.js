@@ -28,7 +28,15 @@ const login = async (userData) => {
   }
 };
 
-const logout = () => store.dispatch({ type: LOGOUT });
+const logout = async (userData) => {
+  try {
+    const res = await axios.post('/logout', userData, defaultPostConfig);
+  } catch (err) {
+    console.log(err.response.data.msg);
+  } finally {
+    store.dispatch({ type: LOGOUT });
+  }
+};
 
 const loadUser = async (token) => {
   setAuthToken(localStorage.token);
