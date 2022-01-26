@@ -15,6 +15,7 @@ const register = async (userData) => {
     const res = await axios.post('/register', userData, defaultPostConfig);
     store.dispatch({ type: REGISTER_SUCCESS, payload: res.data });
   } catch (err) {
+    console.log(err);
     store.dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg });
   }
 };
@@ -24,15 +25,18 @@ const login = async (userData) => {
     const res = await axios.post('/login', userData, defaultPostConfig);
     store.dispatch({ type: LOGIN_SUCCESS, payload: res.data });
   } catch (err) {
+    console.log(err);
     store.dispatch({ type: LOGIN_FAIL, payload: err.response.data.msg });
   }
 };
 
 const logout = async (userData) => {
+  setAuthToken(localStorage.token);
+
   try {
     const res = await axios.post('/logout', userData, defaultPostConfig);
   } catch (err) {
-    console.log(err.response.data.msg);
+    console.log(err);
   } finally {
     store.dispatch({ type: LOGOUT });
   }

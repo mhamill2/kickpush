@@ -73,12 +73,10 @@ const userSchema = new mongoose.Schema(
         otherRates: [
           {
             title: {
-              type: String,
-              required: true
+              type: String
             },
             rate: {
-              type: Number,
-              required: true
+              type: Number
             }
           }
         ]

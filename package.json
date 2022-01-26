@@ -8,7 +8,7 @@
     "dev": "env-cmd -f ./config/dev.env nodemon src/server.js -e js,env",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
-    "database": "C:/Software/mongodb/bin/mongod.exe --dbpath=C:/Software/mongodb-data",
+    "database": "C:/Software/mongodb/bin/mongod.exe --dbpath=C:/Software/mongodb-data > NUL",
     "dev-all": "concurrently \"npm run database\" \"npm run dev\" \"npm run client\""
   },
   "keywords": [],
