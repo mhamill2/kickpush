@@ -1,7 +1,10 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+const INSTRUCTOR_ACCOUNT_TYPE = 'instructor';
+const STUDENT_ACCOUNT_TYPE = 'student';
 
 const validateUrl = (value) => {
   if (!validator.isURL(value)) {
@@ -9,7 +12,7 @@ const validateUrl = (value) => {
   }
 };
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     firstName: {
       type: String,
@@ -44,7 +47,8 @@ const userSchema = new mongoose.Schema(
     },
     accountType: {
       type: String,
-      required: true
+      required: true,
+      enum: [INSTRUCTOR_ACCOUNT_TYPE, STUDENT_ACCOUNT_TYPE]
     },
     tokens: [
       {
@@ -58,7 +62,7 @@ const userSchema = new mongoose.Schema(
       type: Buffer
     },
     instructorProfile: {
-      default: {},
+      type: Object,
       bio: {
         type: String,
         validate(value) {
@@ -68,18 +72,21 @@ const userSchema = new mongoose.Schema(
         }
       },
       rates: {
-        privateLesson: { type: Number },
-        groupLesson: { type: Number },
-        otherRates: [
-          {
-            title: {
-              type: String
-            },
-            rate: {
-              type: Number
+        private: { type: Number },
+        group: { type: Number },
+        other: {
+          type: [
+            {
+              title: {
+                type: String
+              },
+              rate: {
+                type: Number
+              }
             }
-          }
-        ]
+          ],
+          default: undefined
+        }
       },
       lessonLocations: {
         skatepark: { type: Boolean },
@@ -96,39 +103,42 @@ const userSchema = new mongoose.Schema(
         facebook: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         },
         instagram: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         },
         tiktok: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         },
         snapchat: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         },
         linkedin: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         },
         twitter: {
           type: String,
           validate(value) {
-            validateUrl(value);
+            value === '' || validateUrl(value);
           }
         }
+      },
+      validate(value) {
+        this.accountType === INSTRUCTOR_ACCOUNT_TYPE;
       }
     }
   },
@@ -158,6 +168,40 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
+userSchema.methods.generateDefaultInstructorProfile = function () {
+  const user = this;
+  const instructorProfile = {
+    bio: '',
+    rates: {
+      private: 0,
+      group: 0,
+      other: []
+    },
+    lessonLocations: {
+      skatepark: false,
+      instructorsHome: false,
+      studentsHome: false,
+      virtual: false
+    },
+    agesTaught: {
+      children: false,
+      teens: false,
+      adults: false
+    },
+    socialMediaLinks: {
+      facebook: '',
+      tiktok: '',
+      snapchat: '',
+      linkedin: '',
+      instagram: '',
+      twitter: ''
+    }
+  };
+
+  user.instructorProfile = instructorProfile;
+  return user;
+};
+
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email: email });
 
@@ -185,6 +229,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
-module.exports = User;
+module.exports = { User, INSTRUCTOR_ACCOUNT_TYPE, STUDENT_ACCOUNT_TYPE };

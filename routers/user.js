@@ -1,11 +1,16 @@
 const express = require('express');
-const User = require('../models/user');
+const UserModel = require('../models/user');
+const { User } = UserModel;
 const auth = require('../middleware/auth/auth');
 
 const router = new express.Router();
 
 router.post('/register', async (req, res) => {
   const user = new User(req.body);
+
+  if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
+    user.generateDefaultInstructorProfile();
+  }
 
   try {
     await user.save();

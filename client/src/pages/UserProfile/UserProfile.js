@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faSnapchatGhost, faTiktok, faInstagramSquare, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,9 @@ const UserProfile = () => {
     dispatch({ type: 'NAV_PROFILE' });
     // eslint-disable-next-line
   }, []);
+
+  const { bio, rates } = user.instructorProfile;
+  const { private: privateRate, group: groupRate, other: otherRates } = rates;
 
   return (
     <main className="pt-3">
@@ -30,28 +34,43 @@ const UserProfile = () => {
       </section>
 
       <section id="background" className="border-b-4 p-5">
-        <h1 className={sectionHeadingStyle}>Background</h1>
-        <div>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Error, velit, praesentium quibusdam quis voluptates officiis, natus debitis aliquam omnis eos ducimus quisquam nemo ipsam alias blanditiis quae obcaecati quo at.</div>
+        <div className="flex justify-between">
+          <h1 className={sectionHeadingStyle}>Background</h1>
+          <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer"></FontAwesomeIcon>
+        </div>
+        <div>{bio ? bio : 'Add a background to tell students about yourself'}</div>
       </section>
 
       <section id="rates" className="border-b-4 p-5">
-        <h1 className={sectionHeadingStyle}>Rates</h1>
+        <div className="flex justify-between">
+          <h1 className={sectionHeadingStyle}>Rates</h1>
+          <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer"></FontAwesomeIcon>
+        </div>
         <div className="flex justify-start flex-wrap">
-          <div className="mr-4">
-            <h2 className="text-lg font-semibold">Standard Rates</h2>
-            <p className="text-md">Private Lessons: $60/hr</p>
-            <p>Group Lessons: $40/hr</p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">Special Rates</h2>
-            <p className="text-md">First Lesson: $30/hr</p>
-            <p className="text-md">Online Lessons: $20/hr</p>
-          </div>
+          {!privateRate && !groupRate && otherRates.length <= 0 && <div>Update your rates so students know how much you charge</div>}
+          {(privateRate || groupRate) && (
+            <div className="mr-4">
+              <h2 className="text-lg font-semibold">Standard Rates</h2>
+              {privateRate && <p className="mt-1">Private Lessons: $60/hr</p>}
+              {groupRate && <p className="mt-1">Group Lessons: $40/hr</p>}
+            </div>
+          )}
+          {otherRates.length > 0 && (
+            <div className="mt-3">
+              <h2 className="text-lg font-semibold">Special Rates</h2>
+              {otherRates.forEach((value) => {
+                <p className="mt-1">{`${value.title}: $${value.rate}/hr`}</p>;
+              })}
+            </div>
+          )}
         </div>
       </section>
 
       <section id="lesson-info" className="border-b-4 p-5">
-        <h1 className={sectionHeadingStyle}>Lesson Information</h1>
+        <div className="flex justify-between">
+          <h1 className={sectionHeadingStyle}>Lesson Info</h1>
+          <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer"></FontAwesomeIcon>
+        </div>
         <div>
           <h2 className="text-lg font-semibold mb-3">Location</h2>
           <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 justify-center mb-8">
@@ -94,7 +113,10 @@ const UserProfile = () => {
       </section>
 
       <section id="social-links" className="p-5 mb-20">
-        <h1 className={sectionHeadingStyle}>Social Media</h1>
+        <div className="flex justify-between">
+          <h1 className={sectionHeadingStyle}>Social Media</h1>
+          <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer"></FontAwesomeIcon>
+        </div>
         <div className="flex justify-evenly flex-wrap">
           <a href="#">
             <FontAwesomeIcon icon={faFacebookSquare} size="2x"></FontAwesomeIcon>
