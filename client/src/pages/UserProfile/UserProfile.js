@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faSnapchatGhost, faTiktok, faInstagramSquare, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faHouseChimneyUser, faLaptop } from '@fortawesome/free-solid-svg-icons';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -14,8 +14,18 @@ const UserProfile = () => {
     // eslint-disable-next-line
   }, []);
 
-  const { bio, rates } = user.instructorProfile;
+  const { bio, rates, lessonLocations, agesTaught, skillLevelsTaught, socialMediaLinks } = user.instructorProfile;
+
   const { private: privateRate, group: groupRate, other: otherRates } = rates;
+  const { skatepark, instructorsHome, studentsHome, virtual } = lessonLocations;
+  const { children, teens, adults } = agesTaught;
+  const { beginner, intermediate, advanced } = skillLevelsTaught;
+  const { facebook, instagram, tiktok, snapchat, linkedin, twitter } = socialMediaLinks;
+
+  const areLessonLocationsSet = skatepark || instructorsHome || studentsHome || virtual;
+  const areAgesSet = children || teens || adults;
+  const areSkillLevelsSet = beginner || intermediate || advanced;
+  const areSocialMediaLinksSet = facebook || instagram || tiktok || snapchat || linkedin || twitter;
 
   return (
     <main className="pt-3">
@@ -48,7 +58,7 @@ const UserProfile = () => {
         </div>
         <div className="flex justify-start flex-wrap">
           {!privateRate && !groupRate && otherRates.length <= 0 && <div>Update your rates so students know how much you charge</div>}
-          {(privateRate || groupRate) && (
+          {(privateRate != 0 || groupRate != 0) && (
             <div className="mr-4">
               <h2 className="text-lg font-semibold">Standard Rates</h2>
               {privateRate && <p className="mt-1">Private Lessons: $60/hr</p>}
@@ -73,42 +83,58 @@ const UserProfile = () => {
         </div>
         <div>
           <h2 className="text-lg font-semibold mb-3">Location</h2>
-          <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 justify-center mb-8">
-            <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg pb-2">
-              <img className="h-16 w-16" src="/images/quarterpipe.svg" alt="skatepark" />
-              <p className="text-sm">Powell Skatepark</p>
+          {areLessonLocationsSet ? (
+            <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 justify-center mb-8">
+              {skatepark && (
+                <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg p-2">
+                  <img className="h-16 w-16" src="/images/quarterpipe.svg" alt="skatepark" />
+                  <p className="text-sm">Skatepark</p>
+                </div>
+              )}
+              {instructorsHome && (
+                <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg p-2">
+                  <FontAwesomeIcon icon={faHouseChimneyUser} className="h-14 w-14"></FontAwesomeIcon>
+                  <p className="text-sm">Instructors Home</p>
+                </div>
+              )}
+              {studentsHome && (
+                <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg p-2">
+                  <FontAwesomeIcon icon={faHouseChimneyUser} className="h-14 w-14"></FontAwesomeIcon>
+                  <p className="text-sm">Students Home</p>
+                </div>
+              )}
+              {virtual && (
+                <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg p-2">
+                  <FontAwesomeIcon icon={faLaptop} className="h-14 w-14"></FontAwesomeIcon>
+                  <p className="text-sm">Virtual</p>
+                </div>
+              )}
             </div>
-            <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg pb-2">
-              <img className="h-16 w-16" src="/images/quarterpipe.svg" alt="skatepark" />
-              <p className="text-sm">Worthington Skatepark</p>
-            </div>
-            <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg pb-2">
-              <img className="h-16 w-16" src="/images/quarterpipe.svg" alt="skatepark" />
-              <p className="text-sm">Westerville Skatepark</p>
-            </div>
-            <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg pb-2">
-              <img className="h-16 w-16" src="/images/house.svg" alt="house" />
-              <p className="text-sm">Instructors Home</p>
-            </div>
-            <div className="flex justify-center items-center flex-col border border-gray-100 bg-gray-100 rounded-lg pb-2">
-              <img className="h-16 w-16" src="/images/house.svg" alt="house" />
-              <p className="text-sm">Students Home</p>
-            </div>
-          </div>
+          ) : (
+            <div>Update where you want your lessons to take place</div>
+          )}
 
           <h2 className="text-lg font-semibold mt-3 mb-3">Ages</h2>
-          <div className="flex justify-evenly mb-8 flex-wrap">
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Children</div>
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Teens</div>
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Adults</div>
-          </div>
+          {areAgesSet ? (
+            <div className="flex justify-evenly mb-8 flex-wrap">
+              {children && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Children</div>}
+              {teens && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Teens</div>}
+              {adults && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-7">Adults</div>}
+            </div>
+          ) : (
+            <div>Specify what ages you are able to teach</div>
+          )}
 
           <h2 className="text-lg font-semibold mt-3 mb-3">Skill Level</h2>
-          <div className="flex justify-evenly flex-wrap">
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Beginner</div>
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Intermediate</div>
-            <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Advanced</div>
-          </div>
+          {areSkillLevelsSet ? (
+            <div className="flex justify-evenly flex-wrap">
+              {beginner && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Beginner</div>}
+              {intermediate && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Intermediate</div>}
+              {advanced && <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-4">Advanced</div>}
+            </div>
+          ) : (
+            <div>Specify what skill levels you can teach</div>
+          )}
         </div>
       </section>
 
@@ -117,26 +143,42 @@ const UserProfile = () => {
           <h1 className={sectionHeadingStyle}>Social Media</h1>
           <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer"></FontAwesomeIcon>
         </div>
-        <div className="flex justify-evenly flex-wrap">
-          <a href="#">
-            <FontAwesomeIcon icon={faFacebookSquare} size="2x"></FontAwesomeIcon>
-          </a>
-          <a href="#">
-            <FontAwesomeIcon icon={faTiktok} size="2x"></FontAwesomeIcon>
-          </a>
-          <a href="#">
-            <FontAwesomeIcon icon={faInstagramSquare} size="2x"></FontAwesomeIcon>
-          </a>
-          <a href="#">
-            <FontAwesomeIcon icon={faSnapchatGhost} size="2x"></FontAwesomeIcon>
-          </a>
-          <a href="#">
-            <FontAwesomeIcon icon={faLinkedin} size="2x"></FontAwesomeIcon>
-          </a>
-          <a href="#">
-            <FontAwesomeIcon icon={faTwitter} size="2x"></FontAwesomeIcon>
-          </a>
-        </div>
+        {areSocialMediaLinksSet ? (
+          <div className="flex justify-evenly flex-wrap">
+            {facebook && (
+              <a href="#">
+                <FontAwesomeIcon icon={faFacebookSquare} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+            {tiktok && (
+              <a href="#">
+                <FontAwesomeIcon icon={faTiktok} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+            {instagram && (
+              <a href="#">
+                <FontAwesomeIcon icon={faInstagramSquare} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+            {snapchat && (
+              <a href="#">
+                <FontAwesomeIcon icon={faSnapchatGhost} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+            {linkedin && (
+              <a href="#">
+                <FontAwesomeIcon icon={faLinkedin} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+            {twitter && (
+              <a href="#">
+                <FontAwesomeIcon icon={faTwitter} size="2x"></FontAwesomeIcon>
+              </a>
+            )}
+          </div>
+        ) : (
+          <div>Add social media links</div>
+        )}
       </section>
     </main>
   );

@@ -89,15 +89,20 @@ const userSchema = new Schema(
         }
       },
       lessonLocations: {
-        skatepark: { type: Boolean },
-        instructorsHome: { type: Boolean },
-        studentsHome: { type: Boolean },
-        virtual: { type: Boolean }
+        skatepark: Boolean,
+        instructorsHome: Boolean,
+        studentsHome: Boolean,
+        virtual: Boolean
       },
       agesTaught: {
-        children: { type: Boolean },
-        teens: { type: Boolean },
-        adults: { type: Boolean }
+        children: Boolean,
+        teens: Boolean,
+        adults: Boolean
+      },
+      skillLevelsTaught: {
+        beginner: Boolean,
+        intermediate: Boolean,
+        advanced: Boolean
       },
       socialMediaLinks: {
         facebook: {
@@ -137,7 +142,7 @@ const userSchema = new Schema(
           }
         }
       },
-      validate(value) {
+      validate() {
         this.accountType === INSTRUCTOR_ACCOUNT_TYPE;
       }
     }
@@ -165,6 +170,7 @@ userSchema.methods.generateAuthToken = async function () {
 
   user.tokens = user.tokens.concat({ token });
   await user.save();
+
   return token;
 };
 
@@ -187,6 +193,11 @@ userSchema.methods.generateDefaultInstructorProfile = function () {
       children: false,
       teens: false,
       adults: false
+    },
+    skillLevelsTaught: {
+      beginner: false,
+      intermediate: false,
+      advanced: false
     },
     socialMediaLinks: {
       facebook: '',
