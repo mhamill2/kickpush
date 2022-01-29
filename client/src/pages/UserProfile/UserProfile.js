@@ -58,7 +58,7 @@ const UserProfile = () => {
         </div>
         <div className="flex justify-start flex-wrap">
           {!privateRate && !groupRate && otherRates.length <= 0 && <div>Update your rates so students know how much you charge</div>}
-          {(privateRate != 0 || groupRate != 0) && (
+          {(privateRate !== 0 || groupRate !== 0) && (
             <div className="mr-4">
               <h2 className="text-lg font-semibold">Standard Rates</h2>
               {privateRate && <p className="mt-1">Private Lessons: $60/hr</p>}
@@ -146,32 +146,32 @@ const UserProfile = () => {
         {areSocialMediaLinksSet ? (
           <div className="flex justify-evenly flex-wrap">
             {facebook && (
-              <a href="#">
+              <a href={facebook}>
                 <FontAwesomeIcon icon={faFacebookSquare} size="2x"></FontAwesomeIcon>
               </a>
             )}
             {tiktok && (
-              <a href="#">
+              <a href={tiktok}>
                 <FontAwesomeIcon icon={faTiktok} size="2x"></FontAwesomeIcon>
               </a>
             )}
             {instagram && (
-              <a href="#">
+              <a href={instagram}>
                 <FontAwesomeIcon icon={faInstagramSquare} size="2x"></FontAwesomeIcon>
               </a>
             )}
             {snapchat && (
-              <a href="#">
+              <a href={snapchat}>
                 <FontAwesomeIcon icon={faSnapchatGhost} size="2x"></FontAwesomeIcon>
               </a>
             )}
             {linkedin && (
-              <a href="#">
+              <a href={linkedin}>
                 <FontAwesomeIcon icon={faLinkedin} size="2x"></FontAwesomeIcon>
               </a>
             )}
             {twitter && (
-              <a href="#">
+              <a href={twitter}>
                 <FontAwesomeIcon icon={faTwitter} size="2x"></FontAwesomeIcon>
               </a>
             )}

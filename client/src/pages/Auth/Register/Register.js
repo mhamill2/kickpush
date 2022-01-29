@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FaFacebookF } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector } from 'react-redux';
@@ -27,7 +27,7 @@ const Register = (props) => {
     email: '',
     password: '',
     passwordConfirmation: '',
-    accountType: 'student'
+    accountType: useLocation().accountType || 'student'
   });
 
   const { firstName, lastName, email, password, passwordConfirmation, accountType } = user;
@@ -66,13 +66,13 @@ const Register = (props) => {
       <div className="form-toggle-group">
         <span className="toggle-group-header">I want to:</span>
         <div className="toggle-group">
-          <label className="toggle-group-item" htmlFor="instructor-account">
-            Become an Instructor
-            <input id="instructor-account" type="radio" name="accountType" checked={accountType === 'instructor'} onChange={onChange} value="instructor" />
-          </label>
-          <label className="toggle-group-item toggle-group-item-right toggle-group-item-selected" htmlFor="student-account">
+          <label className={`toggle-group-item ${accountType === 'student' ? ' toggle-group-item-selected' : ''}`} htmlFor="student-account">
             Find an Instructor
             <input id="student-account" type="radio" name="accountType" checked={accountType === 'student'} onChange={onChange} value="student" />
+          </label>
+          <label className={`toggle-group-item toggle-group-item-right${accountType === 'instructor' ? ' toggle-group-item-selected' : ''}`} htmlFor="instructor-account">
+            Become an Instructor
+            <input id="instructor-account" type="radio" name="accountType" checked={accountType === 'instructor'} onChange={onChange} value="instructor" />
           </label>
         </div>
       </div>
@@ -107,6 +107,5 @@ const Register = (props) => {
 };
 
 const inputTextStyle = 'focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg';
-const formBtnStyle = 'h-9 w-full';
 
 export default Register;

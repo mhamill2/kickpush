@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from './types';
 import store from '../store';
 import axios from 'axios';
 
@@ -34,7 +34,7 @@ const logout = async (userData) => {
   setAuthToken(localStorage.token);
 
   try {
-    const res = await axios.post('/logout', userData, defaultPostConfig);
+    await axios.post('/logout', userData, defaultPostConfig);
   } catch (err) {
     console.log(err);
   } finally {

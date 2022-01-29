@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, CLEAR_ERRORS, USER_LOADED } from './types';
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, USER_LOADED } from './types';
 
 const initialState = {
   user: null,

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import landingImage from './images/skateboarding-instructor-flipped.jpg';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
+import landingImage from './images/skateboarding-instructor-flipped.jpg';
 
 const Landing = (props) => {
   const authenticated = useSelector((state) => state.auth.authenticated);
@@ -29,14 +31,14 @@ const Landing = (props) => {
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, saepe accusamus, consectetur tempora at dolorum sapiente sunt, perspiciatis qui libero error. Numquam sapiente accusamus sed? Illo recusandae ullam doloribus iste.</p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                 <div className="rounded-md shadow">
-                  <a href="#" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primaryDark md:py-4 md:text-lg md:px-10">
+                  <Link to={{ pathname: '/register', accountType: 'student' }} className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primaryDark md:py-4 md:text-lg md:px-10">
                     Find an Instructor
-                  </a>
+                  </Link>
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <a href="#" className="w-full flex items-center justify-center px-8 py-3 border border-primary text-base font-medium rounded-md text-primary bg-white hover:bg-gray-100 md:py-4 md:text-lg md:px-10">
+                  <Link to={{ pathname: '/register', accountType: 'instructor' }} className="w-full flex items-center justify-center px-8 py-3 border border-primary text-base font-medium rounded-md text-primary bg-white hover:bg-gray-100 md:py-4 md:text-lg md:px-10">
                     Become an Instructor
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
