@@ -29,7 +29,7 @@ const Navbar = () => {
 
   const authMenu = (
     <Fragment>
-      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-50 bg-white ${menuOpen ? ' w-full' : ''}`}>
+      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-30 bg-white ${menuOpen ? ' w-full' : ''}`}>
         <ul className="flex flex-col items-stretch w-full px-4 list-none">
           <li className="border-b border-secondary py-4" onClick={onLogout}>
             Logout

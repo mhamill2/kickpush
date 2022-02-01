@@ -14,7 +14,7 @@ const BottomNav = () => {
   }
 
   return (
-    <div className="z-50 bg-white fixed bottom-0 w-full border-t border-gray-100 flex justify-evenly items-center flex-grow h-12">
+    <div className="z-30 bg-white fixed bottom-0 w-full border-t border-gray-100 flex justify-evenly items-center flex-grow h-12">
       <Link to={`/instructors/${user ? user._id : ''}`} className={`${itemContainerStyle} ${activePage === 'myProfile' ? itemContainerActiveStyle : ''}`}>
         <FontAwesomeIcon icon={faUserCircle} className={activePage === 'myProfile' ? 'text-primary' : ''}></FontAwesomeIcon>
       </Link>
