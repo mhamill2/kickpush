@@ -2,10 +2,10 @@ import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { logout } from '../../state/auth/authActions';
+import { logout } from '../../state/user/userActions';
 
 const Navbar = () => {
-  const authenticated = useSelector((state) => state.auth.authenticated);
+  const authenticated = useSelector((state) => state.user.authenticated);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {

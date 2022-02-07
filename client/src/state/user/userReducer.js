@@ -1,11 +1,11 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, USER_LOADED } from './types';
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, USER_LOADED, PROFILE_UPDATE_SUCCESS } from './types';
 
 const initialState = {
   user: null,
   authenticated: false
 };
 
-const authReducer = (state = initialState, action) => {
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
@@ -14,6 +14,12 @@ const authReducer = (state = initialState, action) => {
         ...state,
         user: action.payload.user,
         authenticated: true
+      };
+    case PROFILE_UPDATE_SUCCESS:
+      console.log(action.payload);
+      return {
+        ...state,
+        user: action.payload
       };
     case LOGOUT:
       localStorage.removeItem('token');
@@ -33,4 +39,4 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export default authReducer;
+export default userReducer;

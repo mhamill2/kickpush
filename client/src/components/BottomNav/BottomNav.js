@@ -5,7 +5,7 @@ import { faHome, faUsers, faCommentAlt, faUserCircle, faCreditCard } from '@fort
 
 const BottomNav = () => {
   const activePage = useSelector((state) => state.nav.activePage);
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.user.user);
   const itemContainerStyle = 'h-full flex justify-center items-center w-12';
   const itemContainerActiveStyle = 'shadow-activeIcon';
 

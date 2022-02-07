@@ -6,12 +6,6 @@ const jwt = require('jsonwebtoken');
 const INSTRUCTOR_ACCOUNT_TYPE = 'instructor';
 const STUDENT_ACCOUNT_TYPE = 'student';
 
-const validateUrl = (value) => {
-  if (!validator.isURL(value)) {
-    throw new Error('URL is invalid');
-  }
-};
-
 const userSchema = new Schema(
   {
     firstName: {
@@ -108,37 +102,49 @@ const userSchema = new Schema(
         facebook: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         },
         instagram: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         },
         tiktok: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         },
         snapchat: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         },
         linkedin: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         },
         twitter: {
           type: String,
           validate(value) {
-            value === '' || validateUrl(value);
+            if (!validator.isURL(value)) {
+              throw new Error('URL is invalid');
+            }
           }
         }
       },

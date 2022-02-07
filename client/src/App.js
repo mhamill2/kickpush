@@ -14,7 +14,7 @@ import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/UserProfile/UserProfile';
 
-import { loadUser } from './state/auth/authActions';
+import { loadUser } from './state/user/userActions';
 import BottomNav from './components/BottomNav/BottomNav';
 
 if (localStorage.token) {

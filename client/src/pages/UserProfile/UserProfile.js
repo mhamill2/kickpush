@@ -7,9 +7,9 @@ import { faPenToSquare, faHouseChimneyUser, faLaptop } from '@fortawesome/free-s
 
 import EditProfileModal from './EditProfileModal';
 
-const UserProfile = () => {
+const UserProfile = ({ userProfile }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch({ type: 'NAV_PROFILE' });
@@ -73,11 +73,21 @@ const UserProfile = () => {
           </div>
           <div className="flex justify-start flex-wrap">
             {!privateRate && !groupRate && otherRates.length <= 0 && <div>Update your rates so students know how much you charge</div>}
-            {(privateRate !== 0 || groupRate !== 0) && (
+            {(privateRate != 0 || groupRate != 0) && (
               <div className="mr-4">
                 <h2 className="text-lg font-semibold">Standard Rates</h2>
-                {privateRate && <p className="mt-1">Private Lessons: $60/hr</p>}
-                {groupRate && <p className="mt-1">Group Lessons: $40/hr</p>}
+                {privateRate && (
+                  <p className="mt-1">
+                    Private Lessons: {'$'}
+                    {privateRate}/hr
+                  </p>
+                )}
+                {groupRate && (
+                  <p className="mt-1">
+                    Group Lessons: {'$'}
+                    {groupRate}/hr
+                  </p>
+                )}
               </div>
             )}
             {otherRates.length > 0 && (

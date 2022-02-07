@@ -1,7 +1,7 @@
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from './types';
-import store from '../store';
 import axios from 'axios';
 
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL } from './types';
+import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 
 const defaultPostConfig = {
@@ -53,4 +53,16 @@ const loadUser = async (token) => {
   }
 };
 
-export { register, login, logout, loadUser };
+const updateInstructorProfile = async (user) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/updateProfile', user, defaultPostConfig);
+    store.dispatch({ type: PROFILE_UPDATE_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err);
+    store.dispatch({ type: PROFILE_UPDATE_FAIL, payload: err.response.data.msg });
+  }
+};
+
+export { register, login, logout, loadUser, updateInstructorProfile };

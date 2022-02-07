@@ -48,4 +48,15 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
+router.post('/updateProfile', auth, async (req, res) => {
+  try {
+    req.user.instructorProfile = req.body.instructorProfile;
+    await req.user.save();
+    res.json(req.user);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send();
+  }
+});
+
 module.exports = router;

@@ -3,11 +3,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { combineReducers } from 'redux';
 
-import authReducer from './auth/authReducer';
+import userReducer from './user/userReducer';
 import navReducer from './nav/navReducer';
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  user: userReducer,
   nav: navReducer
 });
 

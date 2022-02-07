@@ -8,10 +8,10 @@ import FormModal from '../../../components/FormModal/FormModal';
 import HrText from '../../../components/HrText/HrText';
 import './Register.scss';
 
-import { register } from '../../../state/auth/authActions';
+import { register } from '../../../state/user/userActions';
 
 const Register = (props) => {
-  const authenticated = useSelector((state) => state.auth.authenticated);
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   useEffect(() => {
     if (authenticated) {

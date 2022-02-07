@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import FormModal from '../../../components/FormModal/FormModal';
 import HrText from '../../../components/HrText/HrText';
 import './Login.scss';
-import { login } from '../../../state/auth/authActions';
+import { login } from '../../../state/user/userActions';
 
 const Login = (props) => {
-  const authenticated = useSelector((state) => state.auth.authenticated);
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   useEffect(() => {
     if (authenticated) {

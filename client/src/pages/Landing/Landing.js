@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import landingImage from './images/skateboarding-instructor-flipped.jpg';
 
 const Landing = (props) => {
-  const authenticated = useSelector((state) => state.auth.authenticated);
+  const authenticated = useSelector((state) => state.user.authenticated);
 
   useEffect(() => {
     if (authenticated) {
