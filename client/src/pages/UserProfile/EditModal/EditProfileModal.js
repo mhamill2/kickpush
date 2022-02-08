@@ -8,7 +8,7 @@ import EditBio from './EditBio';
 import EditRates from './EditRates';
 import EditLessonInfo from './EditLessonInfo';
 import EditSocialMediaLinks from './EditSocialMediaLinks';
-import { updateInstructorProfile } from '../../state/user/userActions';
+import { updateInstructorProfile } from '../../../state/user/userActions';
 
 const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   const originalProfile = { ...user.instructorProfile };
