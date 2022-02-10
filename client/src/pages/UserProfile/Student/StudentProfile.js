@@ -1,11 +1,7 @@
 import { connect } from 'react-redux';
 
 const StudentProfile = ({ user, closeEditModal, openEditModal }) => {
-  return (
-    <>
-      <div>Hello</div>
-    </>
-  );
+  return <></>;
 };
 
 const mapStateToProps = (state) => ({
