@@ -5,9 +5,12 @@ import InstructorProfile from './Instructor/InstructorProfile';
 import StudentProfile from './Student/StudentProfile';
 import EditProfileModal from './EditModal/EditProfileModal';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+
 const UserProfile = ({ user }) => {
   const dispatch = useDispatch();
-  const { accountType } = user;
+  const { accountType, location } = user;
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [title, setTitle] = useState(null);
@@ -39,7 +42,10 @@ const UserProfile = ({ user }) => {
             <h1 className="text-2xl">
               {user.firstName} {user.lastName}
             </h1>
-            <div className="text-sm">West Melbourne, FL</div>
+            <div className="text-sm">
+              {location.city ? `${location.city}, ${location.state}` : 'Add your location'}
+              <FontAwesomeIcon icon={faPenToSquare} className="cursor-pointer ml-3" onClick={() => openEditModal('Location')}></FontAwesomeIcon>
+            </div>
           </div>
         </section>
 

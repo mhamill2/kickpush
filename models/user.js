@@ -44,6 +44,18 @@ const userSchema = new Schema(
       required: true,
       enum: [INSTRUCTOR_ACCOUNT_TYPE, STUDENT_ACCOUNT_TYPE]
     },
+    location: {
+      type: {
+        city: String,
+        state: String,
+        zipCode: Number
+      },
+      default: {
+        city: '',
+        state: '',
+        zipCode: null
+      }
+    },
     tokens: [
       {
         token: {

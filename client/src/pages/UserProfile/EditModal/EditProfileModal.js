@@ -8,11 +8,13 @@ import EditBio from './EditBio';
 import EditRates from './EditRates';
 import EditLessonInfo from './EditLessonInfo';
 import EditSocialMediaLinks from './EditSocialMediaLinks';
+import EditLocation from './EditLocation';
 import { updateInstructorProfile } from '../../../state/user/userActions';
 
 const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   const originalProfile = { ...user.instructorProfile };
 
+  const onLocationChange = (e) => (user.location[e.target.name] = e.target.value);
   const onBioChange = (e) => (user.instructorProfile.bio = e.target.value);
   const onRatesChange = (e) => (user.instructorProfile.rates[e.target.name] = e.target.value);
   const onSocialMediaLinkChange = (e) => (user.instructorProfile.socialMediaLinks[e.target.name] = e.target.value);
@@ -43,6 +45,7 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
       {title === 'Rates' && <EditRates onChange={onRatesChange} />}
       {title === 'Lesson Info' && <EditLessonInfo onChange={onLessonInfoChange} />}
       {title === 'Social Media' && <EditSocialMediaLinks onChange={onSocialMediaLinkChange} />}
+      {title === 'Location' && <EditLocation onChange={onLocationChange} />}
 
       <div className="border-t border-gray-300 flex justify-around py-8 fixed bottom-0 w-full">
         <button className="w-2/5" onClick={revertChangesAndCloseModal}>

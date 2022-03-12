@@ -51,6 +51,7 @@ router.post('/logout', auth, async (req, res) => {
 router.post('/updateProfile', auth, async (req, res) => {
   try {
     req.user.instructorProfile = req.body.instructorProfile;
+    req.user.location = req.body.location;
     await req.user.save();
     res.json(req.user);
   } catch (err) {
