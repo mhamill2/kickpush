@@ -2,6 +2,7 @@ const express = require('express');
 const UserModel = require('../models/user');
 const { User } = UserModel;
 const auth = require('../middleware/auth/auth');
+const geocoder = require('../utils/geocoder');
 
 const router = new express.Router();
 
@@ -18,7 +19,7 @@ router.post('/register', async (req, res) => {
     res.status(201).send({ user, token });
   } catch (err) {
     console.log(err);
-    res.status(400).send(err);
+    res.status(500).send(err);
   }
 });
 
@@ -29,7 +30,7 @@ router.post('/login', async (req, res) => {
     res.send({ user, token });
   } catch (err) {
     console.log(err);
-    res.status(400).send();
+    res.status(500).send();
   }
 });
 
@@ -51,12 +52,39 @@ router.post('/logout', auth, async (req, res) => {
 router.post('/updateProfile', auth, async (req, res) => {
   try {
     req.user.instructorProfile = req.body.instructorProfile;
-    req.user.location = req.body.location;
-    await req.user.save();
+    await req.user.updateOne({ instructorProfile: req.body.instructorProfile });
     res.json(req.user);
   } catch (err) {
     console.log(err);
-    res.status(400).send();
+    res.status(500).send();
+  }
+});
+
+router.post('/updateLocation', auth, async (req, res) => {
+  let geoLocation;
+
+  try {
+    if (req.body.coordinates) {
+      geoLocation = await geocoder.getGeoLocationFromCoordinates(req.body.coordinates.latitude, req.body.coordinates.longitude);
+    } else if (req.body.address) {
+      geoLocation = await geocoder.getGeoLocationFromAddress(req.body.address.city, req.body.address.state, req.body.address.zipCode);
+    } else {
+      console.log('No location provided');
+      res.status(400).send();
+    }
+
+    req.user.location = {
+      city: geoLocation.city,
+      state: geoLocation.administrativeLevels.level1short,
+      zipCode: geoLocation.zipcode || (await geocoder.getZipCodeFromCoordinates(geoLocation.latitude, geoLocation.longitude)),
+      coordinates: { lat: geoLocation.latitude, lon: geoLocation.longitude }
+    };
+
+    await req.user.updateOne({ location: req.user.location });
+    res.json(req.user);
+  } catch (err) {
+    console.log('Failed to update the users location: ', err);
+    res.status(500).send();
   }
 });
 

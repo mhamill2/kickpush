@@ -48,7 +48,8 @@ const userSchema = new Schema(
       type: {
         city: String,
         state: String,
-        zipCode: Number
+        zipCode: Number,
+        coordinates: { lat: Number, lon: Number }
       },
       default: {
         city: '',

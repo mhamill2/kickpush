@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = ({ user }) => {
+  const { city, state } = user.location;
+
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(e.target);
@@ -20,7 +22,7 @@ const Dashboard = ({ user }) => {
         <h1 className="text-2xl font-bold">Hello {user.firstName}!</h1>
         <div className="text-center">{user.hasNextLesson ? `Your next lesson is scheduled with ${user.nextStudent} at ${user.nextLessonTime} on ${user.nextLessonDate}` : 'You have no upcoming lessons scheduled.\nFind an instructor near you!'}</div>
         <form className="mt-3" onSubmit={onSubmit}>
-          <input type="text" name="location" placeholder="Enter your location" className="h-8 border border-black border-r-0 p-2 rounded-l-md" />
+          <input type="text" name="location" placeholder="Enter your location" className="h-8 border border-black border-r-0 p-2 rounded-l-md" value={city ? `${city}${state ? `, ${state}` : ''}` : ''} />
           <button type="submit" className="rounded-r-md rounded-l-none h-8 px-2 border-l-0 bg-gray-100">
             <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
           </button>

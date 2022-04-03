@@ -9,7 +9,8 @@
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
     "database": "C:/Software/mongodb/bin/mongod.exe --dbpath=C:/Software/mongodb-data > NUL",
-    "dev-all": "concurrently \"npm run database\" \"npm run dev-server\" \"npm run client\""
+    "dev-all": "concurrently \"npm run database\" \"npm run dev-server\" \"npm run client\"",
+    "createTestData": "env-cmd -f ./config/dev.env node test/createTestInstructors.js"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +21,11 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.7",
+    "node-geocoder": "^4.0.0",
     "validator": "^13.6.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.1.1",
     "concurrently": "^6.4.0",
     "env-cmd": "^10.1.0",
     "nodemon": "^2.0.12"

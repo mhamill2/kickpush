@@ -19,7 +19,7 @@ const EditLocation = ({ onChange, user }) => {
         </div>
       </div>
       <h2 className={labelStyle}>Zip Code</h2>
-      <input type="number" name="zipCode" className="border border-gray-300 rounded p-1 w-1/3" onChange={onChange} defaultValue={zipCode} inputmode="numeric" pattern="^(?(^00000(|-0000))|(\d{5}(|-\d{4})))$" />
+      <input type="number" name="zipCode" className="border border-gray-300 rounded p-1 w-1/3" onChange={onChange} defaultValue={zipCode} inputMode="numeric" pattern="^(?(^00000(|-0000))|(\d{5}(|-\d{4})))$" />
     </div>
   );
 };

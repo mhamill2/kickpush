@@ -9,7 +9,7 @@ import EditRates from './EditRates';
 import EditLessonInfo from './EditLessonInfo';
 import EditSocialMediaLinks from './EditSocialMediaLinks';
 import EditLocation from './EditLocation';
-import { updateInstructorProfile } from '../../../state/user/userActions';
+import { updateInstructorProfile, updateUserLocation } from '../../../state/user/userActions';
 
 const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   const originalProfile = { ...user.instructorProfile };
@@ -23,9 +23,15 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
     user.instructorProfile[targetParentObject][e.target.name] = e.target.checked;
   };
 
-  const saveUserEdits = (e) => {
+  const saveUserProfileUpdates = (e) => {
     e.preventDefault();
     updateInstructorProfile(user);
+    closeModal();
+  };
+
+  const saveUserLocationUpdates = (e) => {
+    e.preventDefault();
+    updateUserLocation(user, user.location);
     closeModal();
   };
 
@@ -51,7 +57,7 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
         <button className="w-2/5" onClick={revertChangesAndCloseModal}>
           Cancel
         </button>
-        <button className="w-2/5" onClick={saveUserEdits}>
+        <button className="w-2/5" onClick={title === 'Location' ? saveUserLocationUpdates : saveUserProfileUpdates}>
           Submit
         </button>
       </div>

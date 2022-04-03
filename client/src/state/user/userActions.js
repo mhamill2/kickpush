@@ -65,4 +65,16 @@ const updateInstructorProfile = async (user) => {
   }
 };
 
-export { register, login, logout, loadUser, updateInstructorProfile };
+const updateUserLocation = async (user, address) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/updateLocation', { user, address }, defaultPostConfig);
+    store.dispatch({ type: PROFILE_UPDATE_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err);
+    store.dispatch({ type: PROFILE_UPDATE_FAIL, payload: err.response.data.msg });
+  }
+};
+
+export { register, login, logout, loadUser, updateInstructorProfile, updateUserLocation };
