@@ -8,6 +8,7 @@ import Navbar from './components/Navbar/Navbar';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 import Dashboard from './pages/Dashboard/Dashboard';
+import InstructorSearchResults from './pages/InstructorSearchResults/InstructorSearchResults';
 import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
@@ -33,6 +34,7 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/search" component={InstructorSearchResults} />
             <PrivateRoute exact path="/instructors/:userId" component={UserProfile} />
           </Switch>
           <BottomNav />

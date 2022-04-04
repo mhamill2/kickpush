@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +9,7 @@ const Dashboard = ({ user }) => {
   const { city, state } = user.location;
   const address = city && state ? `${city}, ${state}` : '';
   const [search, setSearch] = useState(address);
+  const history = useHistory();
 
   const onChange = (e) => {
     setSearch(e.target.value);
@@ -15,7 +17,10 @@ const Dashboard = ({ user }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
+    history.push({
+      pathname: '/search',
+      search: `?location=${search}`
+    });
   };
 
   return (
