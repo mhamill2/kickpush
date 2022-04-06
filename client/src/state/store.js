@@ -5,10 +5,12 @@ import { combineReducers } from 'redux';
 
 import userReducer from './user/userReducer';
 import navReducer from './nav/navReducer';
+import searchReducer from './search/searchReducer';
 
 const rootReducer = combineReducers({
   user: userReducer,
-  nav: navReducer
+  nav: navReducer,
+  search: searchReducer
 });
 
 const initialState = {};

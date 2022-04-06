@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL, GET_USERS_SUCCESS, GET_USERS_ERROR } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL } from './types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 
@@ -74,16 +74,6 @@ const updateUserLocation = async (user, address) => {
   } catch (err) {
     console.log(err);
     store.dispatch({ type: PROFILE_UPDATE_FAIL, payload: err.response.data.msg });
-  }
-};
-
-const getUsers = async (searchParms) => {
-  try {
-    const res = await axios.post('/getUsers', searchParms, defaultPostConfig);
-    store.dispatch({ type: 'GET_USERS_SUCCESS', payload: res.data });
-  } catch (err) {
-    console.log(err);
-    store.dispatch({ type: 'GET_USERS_FAIL', payload: err.response.data.msg });
   }
 };
 

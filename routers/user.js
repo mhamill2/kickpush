@@ -88,4 +88,14 @@ router.post('/updateLocation', auth, async (req, res) => {
   }
 });
 
+router.get('/getInstructors', async (req, res) => {
+  try {
+    const instructors = await User.find({ accountType: UserModel.INSTRUCTOR_ACCOUNT_TYPE });
+    res.json(instructors);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+});
+
 module.exports = router;

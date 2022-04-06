@@ -2,7 +2,8 @@ import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, USER_LOADED, PROFILE_UPDATE_SU
 
 const initialState = {
   user: null,
-  authenticated: false
+  authenticated: false,
+  instructors: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -16,7 +17,6 @@ const userReducer = (state = initialState, action) => {
         authenticated: true
       };
     case PROFILE_UPDATE_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         user: action.payload
