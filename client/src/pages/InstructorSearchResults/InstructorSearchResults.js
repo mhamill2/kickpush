@@ -14,7 +14,6 @@ const InstructorSearchResults = () => {
   const [instructors, setInstructors] = useState([]);
 
   useEffect(() => {
-    console.log('here');
     fetchInstructors();
     // eslint-disable-next-line
   }, []);
@@ -35,7 +34,7 @@ const InstructorSearchResults = () => {
       search: `?location=${search}`
     });
     instructors.length = 0;
-    fetchInstructors();
+    fetchInstructors(search);
   };
 
   return (

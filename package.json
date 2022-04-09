@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev-server": "env-cmd -f ./config/dev.env nodemon src/server.js -e js,env",
+    "start": "node server.js",
+    "dev-server": "env-cmd -f ./config/dev.env nodemon server.js -e js,env",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
     "database": "C:/Software/mongodb/bin/mongod.exe --dbpath=C:/Software/mongodb-data > NUL",

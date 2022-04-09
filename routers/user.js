@@ -77,7 +77,7 @@ router.post('/updateLocation', auth, async (req, res) => {
       city: geoLocation.city,
       state: geoLocation.administrativeLevels.level1short,
       zipCode: geoLocation.zipcode || (await geocoder.getZipCodeFromCoordinates(geoLocation.latitude, geoLocation.longitude)),
-      coordinates: { lat: geoLocation.latitude, lon: geoLocation.longitude }
+      coordinates: [geoLocation.longitude, geoLocation.latitude]
     };
 
     await req.user.updateOne({ location: req.user.location });
@@ -89,8 +89,22 @@ router.post('/updateLocation', auth, async (req, res) => {
 });
 
 router.get('/getInstructors', async (req, res) => {
+  const location = req.query.location;
+  const coordinates = await geocoder.getGeoLocationFromStringLocation(location);
+
   try {
-    const instructors = await User.find({ accountType: UserModel.INSTRUCTOR_ACCOUNT_TYPE });
+    const instructors = await User.find({
+      accountType: UserModel.INSTRUCTOR_ACCOUNT_TYPE,
+      'location.coordinates': {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [coordinates.longitude, coordinates.latitude]
+          },
+          $maxDistance: 80468 // 50 miles in meters
+        }
+      }
+    });
     res.json(instructors);
   } catch (err) {
     console.log(err);

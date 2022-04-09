@@ -16,6 +16,15 @@ const getGeoLocationFromAddress = async (city, state, zipcode) => {
   }
 };
 
+const getGeoLocationFromStringLocation = async (location) => {
+  try {
+    const geoLocation = await geocoder.geocode(location);
+    return geoLocation[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const getGeoLocationFromCoordinates = async (latitude, longitude) => {
   try {
     const geoLocation = await geocoder.reverse({ lat: latitude, lon: longitude });
@@ -36,6 +45,7 @@ const getZipCodeFromCoordinates = async (latitude, longitude) => {
 
 module.exports = {
   getGeoLocationFromAddress,
+  getGeoLocationFromStringLocation,
   getGeoLocationFromCoordinates,
   getZipCodeFromCoordinates
 };

@@ -49,7 +49,7 @@ const userSchema = new Schema(
         city: String,
         state: String,
         zipCode: Number,
-        coordinates: { lat: Number, lon: Number }
+        coordinates: [Number, Number]
       },
       default: {
         city: '',
@@ -258,6 +258,8 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+userSchema.index({ 'location.coordinates': '2dsphere' });
 
 const User = model('User', userSchema);
 

@@ -18,7 +18,7 @@ for (let i = 0; i < 100; i++) {
       city: faker.address.city(),
       state: faker.address.state(),
       zipCode: faker.address.zipCode(),
-      coordinates: { lat: faker.address.latitude(47.0, 29.0), long: faker.address.longitude(-80.0, -120.0) }
+      coordinates: [parseFloat(faker.address.longitude(-80.0, -120.0)), parseFloat(faker.address.latitude(47.0, 29.0))]
     },
     instructorProfile: {
       bio: faker.lorem.paragraph(),
