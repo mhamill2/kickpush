@@ -16,7 +16,6 @@ const PublicProfile = ({ match }) => {
 
   const fetchUser = async (userId) => {
     const user = await getUser(userId);
-    console.log(user);
     setUser(user);
     setLoading(false);
   };
