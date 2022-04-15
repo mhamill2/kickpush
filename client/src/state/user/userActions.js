@@ -53,6 +53,15 @@ const loadUser = async (token) => {
   }
 };
 
+const getUser = async (userId) => {
+  try {
+    const res = await axios.get(`/getUser/${userId}`);
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const updateInstructorProfile = async (user) => {
   setAuthToken(localStorage.token);
 
@@ -77,4 +86,4 @@ const updateUserLocation = async (user, address) => {
   }
 };
 
-export { register, login, logout, loadUser, updateInstructorProfile, updateUserLocation };
+export { register, login, logout, loadUser, updateInstructorProfile, updateUserLocation, getUser };

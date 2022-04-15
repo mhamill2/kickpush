@@ -12,6 +12,7 @@ const InstructorSearchResults = () => {
   const history = useHistory();
   const [search, setSearch] = useState(location);
   const [instructors, setInstructors] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchInstructors();
@@ -21,6 +22,7 @@ const InstructorSearchResults = () => {
   const fetchInstructors = async () => {
     const instructors = await getInstructors(search);
     setInstructors(instructors);
+    setLoading(false);
   };
 
   const onChange = (e) => {
@@ -46,9 +48,19 @@ const InstructorSearchResults = () => {
         </button>
       </form>
 
-      {instructors.map((instructor, index) => (
-        <InstructorSearchItem key={instructor._id} instructor={instructor} secondaryColor={index % 2 === 0} />
-      ))}
+      {loading && !instructors.length ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="spinner-border text-gray-500" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <>
+          {instructors.map((instructor, index) => (
+            <InstructorSearchItem key={instructor._id} instructor={instructor} secondaryColor={index % 2 === 0} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

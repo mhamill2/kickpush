@@ -13,7 +13,8 @@ import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
 import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
-import UserProfile from './pages/UserProfile/UserProfile';
+import UserProfile from './pages/PrivateUserProfile/UserProfile';
+import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 
 import { loadUser } from './state/user/userActions';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -35,7 +36,8 @@ const App = () => {
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/search" component={InstructorSearchResults} />
-            <PrivateRoute exact path="/instructors/:userId" component={UserProfile} />
+            <PrivateRoute exact path="/profile" component={UserProfile} />
+            <PrivateRoute exact path="/instructors/:userId" component={PublicProfile} />
           </Switch>
           <BottomNav />
         </Fragment>

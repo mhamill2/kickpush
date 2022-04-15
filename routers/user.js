@@ -88,6 +88,21 @@ router.post('/updateLocation', auth, async (req, res) => {
   }
 });
 
+router.get('/getUser/:userId', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return res.status(404).send();
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+});
+
 router.get('/getInstructors', async (req, res) => {
   const location = req.query.location;
   const coordinates = await geocoder.getGeoLocationFromStringLocation(location);
