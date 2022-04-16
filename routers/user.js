@@ -6,6 +6,10 @@ const geocoder = require('../utils/geocoder');
 
 const router = new express.Router();
 
+/**
+ * @route   POST /register
+ * @desc    Register a new user
+ */
 router.post('/register', async (req, res) => {
   const user = new User(req.body);
 
@@ -18,26 +22,38 @@ router.post('/register', async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (err) {
-    console.log(err);
+    console.log('Failed to register user: ', err);
     res.status(500).send(err);
   }
 });
 
+/**
+ * @route   POST /login
+ * @desc    Login an existing user
+ */
 router.post('/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (err) {
-    console.log(err);
+    console.log('Failed to login in user: ', err);
     res.status(500).send();
   }
 });
 
+/**
+ * @route   GET /loadUser
+ * @desc    Load the current user
+ */
 router.get('/loadUser', auth, async (req, res) => {
   res.json(req.user);
 });
 
+/**
+ * @route   POST /logout
+ * @desc    Logout the current user
+ */
 router.post('/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => token.token !== req.token);
@@ -49,17 +65,25 @@ router.post('/logout', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /updateProfile
+ * @desc    Update the user's profile
+ */
 router.post('/updateProfile', auth, async (req, res) => {
   try {
     req.user.instructorProfile = req.body.instructorProfile;
     await req.user.updateOne({ instructorProfile: req.body.instructorProfile });
     res.json(req.user);
   } catch (err) {
-    console.log(err);
+    console.log('Failed to update user profile: ' + err);
     res.status(500).send();
   }
 });
 
+/**
+ * @route   POST /updateLocation
+ * @desc    Update the user's location
+ */
 router.post('/updateLocation', auth, async (req, res) => {
   let geoLocation;
 
@@ -69,8 +93,7 @@ router.post('/updateLocation', auth, async (req, res) => {
     } else if (req.body.address) {
       geoLocation = await geocoder.getGeoLocationFromAddress(req.body.address.city, req.body.address.state, req.body.address.zipCode);
     } else {
-      console.log('No location provided');
-      res.status(400).send();
+      res.status(400).send('No location provided');
     }
 
     req.user.location = {
@@ -88,21 +111,29 @@ router.post('/updateLocation', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /getUser/:userId
+ * @desc    Get a user by their unique id
+ */
 router.get('/getUser/:userId', async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
 
     if (!user) {
-      return res.status(404).send();
+      return res.status(404).send('User not found');
     }
 
     res.json(user);
   } catch (err) {
-    console.log(err);
+    console.log('Failed to get user: ', err);
     res.status(500).send();
   }
 });
 
+/**
+ * @route   GET /getInstructors
+ * @desc    Get all instructors within a certain distance of the users location
+ */
 router.get('/getInstructors', async (req, res) => {
   const location = req.query.location;
   const coordinates = await geocoder.getGeoLocationFromStringLocation(location);
