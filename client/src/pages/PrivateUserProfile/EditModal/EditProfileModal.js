@@ -54,10 +54,10 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
       {title === 'Location' && <EditLocation onChange={onLocationChange} />}
 
       <div className="border-t border-gray-300 flex justify-around py-8 fixed bottom-0 w-full">
-        <button className="w-2/5" onClick={revertChangesAndCloseModal}>
+        <button className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={revertChangesAndCloseModal}>
           Cancel
         </button>
-        <button className="w-2/5" onClick={title === 'Location' ? saveUserLocationUpdates : saveUserProfileUpdates}>
+        <button className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={title === 'Location' ? saveUserLocationUpdates : saveUserProfileUpdates}>
           Submit
         </button>
       </div>

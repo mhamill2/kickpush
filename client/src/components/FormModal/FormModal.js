@@ -1,5 +1,3 @@
-import './FormModal.scss';
-
 const FormModal = ({ title, formContent, onSubmit }) => {
   return (
     <div className="flex flex-col justify-center items-center my-8 mx-auto bg-white w-80 p-4 border-2 rounded-tl-md rounded-br-md rounded-tr-3xl rounded-bl-3xl shadow">

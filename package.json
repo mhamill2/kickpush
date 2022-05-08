@@ -29,5 +29,10 @@
     "concurrently": "^6.4.0",
     "env-cmd": "^10.1.0",
     "nodemon": "^2.0.12"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client/*"
+    ]
   }
 }

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { getInstructors } from '../../state/search/searchActions';
 
-import InstructorSearchItem from '../../components/InstructorSearchItem/InstructorSearchItem';
+import InstructorSearchItem from './InstructorSearchItem';
 
 const InstructorSearchResults = () => {
   const params = new URLSearchParams(useLocation().search);
@@ -43,7 +43,7 @@ const InstructorSearchResults = () => {
     <div className="flex flex-col justify-center m-auto">
       <form className="my-5 ml-4" onSubmit={onSubmit}>
         <input type="text" name="location" placeholder="Enter your location" className="h-8 border border-black border-r-0 p-2 rounded-l-md" value={search} onChange={onChange} />
-        <button type="submit" className="rounded-r-md rounded-l-none h-8 px-2 border-l-0 bg-gray-100">
+        <button type="submit" className="border border-black cursor-pointer rounded-r-md rounded-l-none h-8 px-2 border-l-0 bg-gray-100">
           <FontAwesomeIcon icon={faSearch}></FontAwesomeIcon>
         </button>
       </form>

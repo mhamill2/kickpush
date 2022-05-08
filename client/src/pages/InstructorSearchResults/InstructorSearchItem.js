@@ -31,7 +31,7 @@ const InstructorSearchItem = ({ instructor, secondaryColor }) => {
 
       <div>
         <Link to={`/instructors/${instructor._id}`}>
-          <button className="w-full px-4 rounded-full bg-white">View Profile</button>
+          <button className="border border-black cursor-pointer w-full px-4 rounded-full bg-white">View Profile</button>
         </Link>
       </div>
     </div>
