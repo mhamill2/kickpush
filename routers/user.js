@@ -15,6 +15,8 @@ router.post('/register', async (req, res) => {
 
   if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
     user.generateDefaultInstructorProfile();
+  } else {
+    user.generateDefaultStudentProfile();
   }
 
   try {
@@ -66,13 +68,35 @@ router.post('/logout', auth, async (req, res) => {
 });
 
 /**
- * @route   POST /updateProfile
- * @desc    Update the user's profile
+ * @route   POST /updateInstructorProfile
+ * @desc    Update the instructors profile
  */
-router.post('/updateProfile', auth, async (req, res) => {
+router.post('/updateInstructorProfile', auth, async (req, res) => {
   try {
     req.user.instructorProfile = req.body.instructorProfile;
     await req.user.updateOne({ instructorProfile: req.body.instructorProfile });
+    res.json(req.user);
+  } catch (err) {
+    console.log('Failed to update user profile: ' + err);
+    res.status(500).send();
+  }
+});
+
+/**
+ * @route   POST /updateStudentProfile
+ * @desc    Update the students profile
+ */
+router.post('/updateStudentProfile', auth, async (req, res) => {
+  const studentProfile = req.body.studentProfile;
+
+  if (!studentProfile.familyMembers) {
+    studentProfile.familyMembers = [];
+  }
+
+  req.user.studentProfile = req.body.studentProfile;
+
+  try {
+    await req.user.updateOne({ studentProfile: req.body.studentProfile }, { runValidators: true });
     res.json(req.user);
   } catch (err) {
     console.log('Failed to update user profile: ' + err);

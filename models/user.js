@@ -164,6 +164,29 @@ const userSchema = new Schema(
       validate() {
         this.accountType === INSTRUCTOR_ACCOUNT_TYPE;
       }
+    },
+    studentProfile: {
+      familyMembers: {
+        type: [
+          {
+            name: {
+              type: String,
+              required: true
+            },
+            age: {
+              type: Number,
+              required: true,
+              validate() {
+                if (this.age < 1 || this.age > 100) {
+                  throw new Error('Age must be between 1 and 100');
+                }
+              }
+            },
+            _id: false
+          }
+        ],
+        required: true
+      }
     }
   },
   {
@@ -194,7 +217,6 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 userSchema.methods.generateDefaultInstructorProfile = function () {
-  const user = this;
   const instructorProfile = {
     bio: '',
     rates: {
@@ -228,8 +250,16 @@ userSchema.methods.generateDefaultInstructorProfile = function () {
     }
   };
 
-  user.instructorProfile = instructorProfile;
-  return user;
+  this.instructorProfile = instructorProfile;
+};
+
+userSchema.methods.generateDefaultStudentProfile = function () {
+  const user = this;
+  const studentProfile = {
+    familyMembers: []
+  };
+
+  this.studentProfile = studentProfile;
 };
 
 userSchema.statics.findByCredentials = async (email, password) => {

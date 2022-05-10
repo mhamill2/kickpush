@@ -66,7 +66,19 @@ const updateInstructorProfile = async (user) => {
   setAuthToken(localStorage.token);
 
   try {
-    const res = await axios.post('/updateProfile', user, defaultPostConfig);
+    const res = await axios.post('/updateInstructorProfile', user, defaultPostConfig);
+    store.dispatch({ type: PROFILE_UPDATE_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err);
+    store.dispatch({ type: PROFILE_UPDATE_FAIL, payload: err.response.data.msg });
+  }
+};
+
+const updateStudentProfile = async (user) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/updateStudentProfile', user, defaultPostConfig);
     store.dispatch({ type: PROFILE_UPDATE_SUCCESS, payload: res.data });
   } catch (err) {
     console.log(err);
@@ -86,4 +98,4 @@ const updateUserLocation = async (user, address) => {
   }
 };
 
-export { register, login, logout, loadUser, updateInstructorProfile, updateUserLocation, getUser };
+export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser };
