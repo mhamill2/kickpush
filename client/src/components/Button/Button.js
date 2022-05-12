@@ -1,5 +1,5 @@
 const Button = (props) => {
-  const { content, isPrimary, isSecondary, size, extraClasses } = props;
+  const { content, isPrimary, isSecondary, size, extraClasses, onClick } = props;
 
   let className = 'rounded-3xl cursor-pointer';
 
@@ -19,7 +19,11 @@ const Button = (props) => {
 
   className += ` ${extraClasses}`;
 
-  return <button className={className}>{content}</button>;
+  return (
+    <button className={className} onClick={onClick ? onClick : null}>
+      {content}
+    </button>
+  );
 };
 
 export default Button;

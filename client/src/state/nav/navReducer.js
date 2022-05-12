@@ -1,7 +1,8 @@
-import { NAV_HOME, NAV_PROFILE } from './types';
+import { NAV_HOME, NAV_PROFILE, HIDE_BOTTOM_NAV } from './types';
 
 const initialState = {
-  activePage: null
+  activePage: null,
+  showBottomNav: false
 };
 
 const navReducer = (state = initialState, action) => {
@@ -9,12 +10,19 @@ const navReducer = (state = initialState, action) => {
     case NAV_HOME:
       return {
         ...state,
-        activePage: 'home'
+        activePage: 'home',
+        showBottomNav: true
       };
     case NAV_PROFILE:
       return {
         ...state,
-        activePage: 'myProfile'
+        activePage: 'myProfile',
+        showBottomNav: true
+      };
+    case HIDE_BOTTOM_NAV:
+      return {
+        ...state,
+        showBottomNav: false
       };
     default:
       return state;

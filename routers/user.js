@@ -74,7 +74,7 @@ router.post('/logout', auth, async (req, res) => {
 router.post('/updateInstructorProfile', auth, async (req, res) => {
   try {
     req.user.instructorProfile = req.body.instructorProfile;
-    await req.user.updateOne({ instructorProfile: req.body.instructorProfile });
+    await req.user.updateOne({ instructorProfile: req.body.instructorProfile }, { runValidators: true });
     res.json(req.user);
   } catch (err) {
     console.log('Failed to update user profile: ' + err);

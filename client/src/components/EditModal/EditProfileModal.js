@@ -10,7 +10,7 @@ import EditLessonInfo from './EditLessonInfo';
 import EditSocialMediaLinks from './EditSocialMediaLinks';
 import EditLocation from './EditLocation';
 import EditFamilyMembers from './EditFamilyMembers';
-import { updateInstructorProfile, updateUserLocation, updateStudentProfile } from '../../../state/user/userActions';
+import { updateInstructorProfile, updateUserLocation, updateStudentProfile } from '../../state/user/userActions';
 
 const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   let originalProfile = {};

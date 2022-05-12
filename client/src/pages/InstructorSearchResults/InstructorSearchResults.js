@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, connect } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -6,15 +7,17 @@ import { getInstructors } from '../../state/search/searchActions';
 
 import InstructorSearchItem from './InstructorSearchItem';
 
-const InstructorSearchResults = () => {
+const InstructorSearchResults = ({ nav }) => {
   const params = new URLSearchParams(useLocation().search);
   const location = params.get('location');
   const history = useHistory();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState(location);
   const [instructors, setInstructors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    dispatch({ type: 'NAV_HOME' });
     fetchInstructors();
     // eslint-disable-next-line
   }, []);
@@ -65,4 +68,8 @@ const InstructorSearchResults = () => {
   );
 };
 
-export default InstructorSearchResults;
+const mapStateToProps = (state) => ({
+  nav: state.nav
+});
+
+export default connect(mapStateToProps)(InstructorSearchResults);

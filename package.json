@@ -5,12 +5,12 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev-server": "env-cmd -f ./config/dev.env nodemon server.js -e js,env",
-    "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
+    "client": "npm start --prefix client",
+    "server": "env-cmd -f ./config/dev.env nodemon server.js -e js,env",
     "database": "C:/Software/mongodb/bin/mongod.exe --dbpath=C:/Software/mongodb-data > NUL",
-    "dev-all": "concurrently \"npm run database\" \"npm run dev-server\" \"npm run client\"",
-    "createTestData": "env-cmd -f ./config/dev.env node test/createTestInstructors.js"
+    "dev": "concurrently \"npm run database\" \"npm run server\" \"npm run client\"",
+    "createTestInstructors": "env-cmd -f ./config/dev.env node test/createTestInstructors.js"
   },
   "keywords": [],
   "author": "",

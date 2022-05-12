@@ -56,7 +56,7 @@ const InstructorProfile = ({ user, closeEditModal, openEditModal }) => {
             <div className="mt-3">
               <h2 className="text-lg font-semibold">Special Rates</h2>
               {otherRates.map((rate, index) => (
-                <p className="mt-1">
+                <p key={index} className="mt-1">
                   {rate.title}: {'$'}
                   {rate.rate}/hr
                 </p>

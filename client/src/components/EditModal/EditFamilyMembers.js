@@ -21,7 +21,6 @@ const EditFamilyMembers = ({ onChange, user }) => {
   const deleteFamilyMember = (e) => {
     const index = e.target.closest('[data-index]').getAttribute('data-index');
     user.studentProfile.familyMembers.splice(index, 1);
-    console.log(user.studentProfile.familyMembers);
     updateFamilyMembers((familyMembers) => [...user.studentProfile.familyMembers]);
   };
 

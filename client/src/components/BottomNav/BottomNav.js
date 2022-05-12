@@ -1,16 +1,15 @@
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUsers, faCommentAlt, faUserCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
-const BottomNav = () => {
-  const activePage = useSelector((state) => state.nav.activePage);
-  const user = useSelector((state) => state.user.user);
+const BottomNav = ({ user, nav }) => {
+  const { activePage, showBottomNav } = nav;
   const itemContainerStyle = 'h-full flex justify-center items-center w-12';
   const itemContainerActiveStyle = 'shadow-activeIcon';
 
-  if (!user) {
-    return <></>;
+  if (!user || !showBottomNav) {
+    return null;
   }
 
   return (
@@ -34,4 +33,9 @@ const BottomNav = () => {
   );
 };
 
-export default BottomNav;
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+  nav: state.nav
+});
+
+export default connect(mapStateToProps)(BottomNav);
