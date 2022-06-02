@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Transition } from '@headlessui/react';
 
@@ -7,8 +7,13 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import Button from '../../components/Button/Button';
 import SelectableItem from '../SelectableItem/SelectableItem';
+import Spinner from '../../components/Spinner/Spinner';
+
+import { sendInitialLessonRequest } from '../../state/lessons/lessonActions';
 
 const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
+  const [loading, setLoading] = useState(false);
+  const [requestSent, setRequestSent] = useState(false);
   const { familyMembers } = user.studentProfile;
   showModal ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
 
@@ -19,24 +24,37 @@ const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
     // eslint-disable-next-line
   }, []);
 
-  const confirmRequest = (e) => {
+  const confirmRequest = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    const introduction = document.getElementById('introduction-value').value;
-    const familyMembers = [...document.querySelectorAll('#family-members .bg-primary')].map((familyMember) => {
-      return familyMember.getAttribute('data-value');
-    });
-    const lessonTypes = [...document.querySelectorAll('#lesson-types .bg-primary')].map((lessonType) => {
-      return lessonType.getAttribute('data-value');
-    });
-    const lessonLocations = [...document.querySelectorAll('#lesson-locations .bg-primary')].map((lessonLocations) => {
-      return lessonLocations.getAttribute('data-value');
-    });
-    const lessonDays = [...document.querySelectorAll('#lesson-days .bg-primary')].map((lessonDays) => {
-      return lessonDays.getAttribute('data-value');
-    });
+    const lessonRequest = {
+      student: user._id,
+      instructor: instructor._id,
+      introduction: document.getElementById('introduction-value').value,
+      familyMembers: [...document.querySelectorAll('#family-members .bg-primary')].map((familyMember) => {
+        let value = familyMember.getAttribute('data-value').split('___');
+        return {
+          name: value[0],
+          age: value[1]
+        };
+      }),
+      lessonTypes: [...document.querySelectorAll('#lesson-types .bg-primary')].map((lessonType) => {
+        return lessonType.getAttribute('data-value');
+      }),
+      lessonLocations: [...document.querySelectorAll('#lesson-locations .bg-primary')].map((lessonLocations) => {
+        return lessonLocations.getAttribute('data-value');
+      }),
+      lessonDays: [...document.querySelectorAll('#lesson-days .bg-primary')].map((lessonDays) => {
+        return lessonDays.getAttribute('data-value');
+      })
+    };
 
-    // TODO: send request to server
+    console.log(lessonRequest);
+
+    const res = await sendInitialLessonRequest(lessonRequest);
+    setRequestSent(true);
+    setLoading(false);
   };
 
   return (
@@ -58,7 +76,7 @@ const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
             <h2 className="my-4">Which family member(s)?</h2>
             <div className="flex justify-start flex-wrap gap-4">
               {familyMembers.map((familyMember, index) => (
-                <SelectableItem key={index} value={familyMember.name} content={familyMember.name} selected={false} />
+                <SelectableItem key={index} value={`${familyMember.name}___${familyMember.age}`} content={familyMember.name} selected={false} />
               ))}
               <SelectableItem value="user" content="Myself" selected={false} />
             </div>
@@ -95,9 +113,7 @@ const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
         </form>
       </main>
 
-      <footer className="border-t border-gray-300 flex justify-around p-8 fixed bottom-0 w-full bg-white">
-        <Button isPrimary={true} content="Submit" size="large" onClick={confirmRequest} />
-      </footer>
+      <footer className="border-t border-gray-300 flex justify-around p-8 fixed bottom-0 w-full bg-white">{loading ? <Spinner /> : <Button isPrimary={true} content="Submit" size="large" onClick={confirmRequest} />}</footer>
     </Transition>
   );
 };

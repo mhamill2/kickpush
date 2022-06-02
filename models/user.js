@@ -176,6 +176,7 @@ const userSchema = new Schema(
             age: {
               type: Number,
               required: true,
+              trim: true,
               validate() {
                 if (this.age < 1 || this.age > 100) {
                   throw new Error('Age must be between 1 and 100');
