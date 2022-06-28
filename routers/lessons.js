@@ -1,29 +1,29 @@
 const express = require('express');
 const auth = require('../middleware/auth/auth');
-const InitialLessonRequest = require('../models/initialLessonRequest');
-const { INITIAL_LESSON_REQUEST_STATUS } = require('../constants/lesson_constants');
+const ConnectionRequest = require('../models/connectionRequest');
+const { CONNECTION_REQUEST_STATUS } = require('../constants/lesson_constants');
 
 const router = new express.Router();
 
-router.post('/sendInitialLessonRequest', auth, async (req, res) => {
+router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
-  const initialLessonRequest = new InitialLessonRequest(req.body);
-  initialLessonRequest.student = user._id;
+  const connectionRequest = new ConnectionRequest(req.body);
+  connectionRequest.student = user._id;
 
   try {
-    const existingInitialLessonRequest = await InitialLessonRequest.findOne({
-      student: initialLessonRequest.student,
-      instructor: initialLessonRequest.instructor
+    const existingConnectionRequest = await ConnectionRequest.findOne({
+      student: connectionRequest.student,
+      instructor: connectionRequest.instructor
     });
 
-    if (existingInitialLessonRequest) {
+    if (existingConnectionRequest) {
       return res.status(400).send({
         error: 'There is already a pending lesson request to this instructor'
       });
     }
 
-    await initialLessonRequest.save();
-    res.status(201).send(initialLessonRequest);
+    await connectionRequest.save();
+    res.status(201).send(connectionRequest);
   } catch (err) {
     console.log('Failed to create initial lesson request: ', err);
     res.status(500).send(err);

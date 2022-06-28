@@ -5,13 +5,13 @@ import { Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-import Button from '../../components/Button/Button';
+import Button from '../Button/Button';
 import SelectableItem from '../SelectableItem/SelectableItem';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../Spinner/Spinner';
 
-import { sendInitialLessonRequest } from '../../state/lessons/lessonActions';
+import { sendConnectionRequest } from '../../state/lessons/lessonActions';
 
-const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
+const ConnectionRequest = ({ showModal, closeModal, instructor, user }) => {
   const [loading, setLoading] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const { familyMembers } = user.studentProfile;
@@ -28,7 +28,7 @@ const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
     e.preventDefault();
     setLoading(true);
 
-    const lessonRequest = {
+    const connectionRequest = {
       student: user._id,
       instructor: instructor._id,
       introduction: document.getElementById('introduction-value').value,
@@ -50,9 +50,7 @@ const InitialLessonRequest = ({ showModal, closeModal, instructor, user }) => {
       })
     };
 
-    console.log(lessonRequest);
-
-    const res = await sendInitialLessonRequest(lessonRequest);
+    const res = await sendConnectionRequest(connectionRequest);
     setRequestSent(true);
     setLoading(false);
   };
@@ -122,4 +120,4 @@ const mapStateToProps = (state) => ({
   user: state.user.user
 });
 
-export default connect(mapStateToProps)(InitialLessonRequest);
+export default connect(mapStateToProps)(ConnectionRequest);

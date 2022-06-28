@@ -3,11 +3,11 @@ const { Schema, model } = require('mongoose');
 const validator = require('validator');
 const constants = require('../constants/lesson_constants');
 
-const initialLessonRequestSchema = new Schema({
+const connectionRequestSchema = new Schema({
   status: {
     type: String,
-    enum: [constants.LESSON_REQUEST_STATUS.PENDING, constants.LESSON_REQUEST_STATUS.ACCEPTED, constants.LESSON_REQUEST_STATUS.REJECTED],
-    default: constants.LESSON_REQUEST_STATUS.PENDING,
+    enum: [constants.CONNECTION_REQUEST_STATUS.PENDING, constants.CONNECTION_REQUEST_STATUS.ACCEPTED, constants.CONNECTION_REQUEST_STATUS.REJECTED],
+    default: constants.CONNECTION_REQUEST_STATUS.PENDING,
     required: true
   },
   student: {
@@ -69,5 +69,5 @@ const initialLessonRequestSchema = new Schema({
   }
 });
 
-const InitialLessonRequest = model('InitialLessonRequest', initialLessonRequestSchema);
-module.exports = InitialLessonRequest;
+const ConnectionRequest = model('ConnectionRequest', connectionRequestSchema);
+module.exports = ConnectionRequest;

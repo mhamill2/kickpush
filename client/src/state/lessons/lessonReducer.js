@@ -1,15 +1,15 @@
-import { INITIAL_LESSON_REQUEST_SUCCESS } from './types';
+import { CONNECTION_REQUEST_SUCCESS } from './types';
 
 const initialState = {
-  lessonRequests: []
+  connectionRequests: []
 };
 
 const lessonReducer = (state = initialState, action) => {
   switch (action.type) {
-    case INITIAL_LESSON_REQUEST_SUCCESS:
+    case CONNECTION_REQUEST_SUCCESS:
       return {
         ...state,
-        lessonRequests: [...state.lessonRequests, action.payload]
+        connectionRequests: [...state.connectionRequests, action.payload]
       };
     default:
       return state;
