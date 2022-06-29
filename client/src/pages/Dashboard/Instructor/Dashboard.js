@@ -1,9 +1,30 @@
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import Spinner from '../../../components/Spinner/Spinner';
+import ProfilePicture from '../../../components/ProfilePicture/ProfilePicture';
+
+import { getPendingConnectionRequests } from '../../../state/lessons/lessonActions';
 
 const statsItem = 'bg-white flex flex-col items-center justify-center border-0 rounded-md flex-shrink-0 py-8 px-6';
 
 const Dashboard = ({ user }) => {
+  useEffect(() => {
+    fetchConnectionRequests();
+    // eslint-disable-next-line
+  }, []);
+
+  const [connectionRequests, setConnectionRequests] = useState([]);
+  const [loadingConnectionRequests, setLoadingConnectionRequests] = useState(true);
+
+  const fetchConnectionRequests = async () => {
+    const connectionRequests = await getPendingConnectionRequests();
+    console.log(connectionRequests);
+    setConnectionRequests(connectionRequests);
+    setLoadingConnectionRequests(false);
+  };
+
   return (
     <div className="flex flex-col justify-center items-center w-11/12 m-auto">
       <section className="bg-white flex flex-col items-center justify-center p-5 w-full my-5 border-0 rounded-md">
@@ -35,7 +56,21 @@ const Dashboard = ({ user }) => {
         <div className="border-b border-gray-100 bg-white p-5 w-full">
           <h1 className="text-xl font-bold">Pending Lesson Requests</h1>
         </div>
-        <div className="bg-white w-full py-12 text-center">{!user.pendingRequests ? 'No pending lesson requests' : 'all requests go here'}</div>
+        <div className={`bg-white w-full p-6 flex flex-col gap-4 ${loadingConnectionRequests || connectionRequests.length === 0 ? 'justify-center' : 'justify-start'}`}>
+          {loadingConnectionRequests ? (
+            <Spinner />
+          ) : connectionRequests.length === 0 ? (
+            'No pending lesson requests'
+          ) : (
+            <>
+              {connectionRequests.map((request) => (
+                <div className="flex items-center cursor-pointer gap-2" key={request._id}>
+                  <ProfilePicture size={10} /> {request.studentFirstName} {request.studentLastName}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </section>
     </div>
   );

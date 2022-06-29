@@ -15,6 +15,14 @@ const connectionRequestSchema = new Schema({
     ref: 'User',
     required: true
   },
+  studentFirstName: {
+    type: String,
+    required: true
+  },
+  studentLastName: {
+    type: String,
+    required: true
+  },
   instructor: {
     type: Schema.Types.ObjectId,
     ref: 'User',

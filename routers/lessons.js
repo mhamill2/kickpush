@@ -5,10 +5,21 @@ const { CONNECTION_REQUEST_STATUS } = require('../constants/lesson_constants');
 
 const router = new express.Router();
 
+router.get('/getPendingConnectionRequests', auth, async (req, res) => {
+  const connectionRequests = await ConnectionRequest.find({
+    status: CONNECTION_REQUEST_STATUS.PENDING,
+    instructor: req.user.id
+  });
+
+  res.send(connectionRequests);
+});
+
 router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const connectionRequest = new ConnectionRequest(req.body);
   connectionRequest.student = user._id;
+  connectionRequest.studentFirstName = user.firstName;
+  connectionRequest.studentLastName = user.lastName;
 
   try {
     const existingConnectionRequest = await ConnectionRequest.findOne({

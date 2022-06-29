@@ -21,4 +21,16 @@ const sendConnectionRequest = async (connectionRequest) => {
   }
 };
 
-export { sendConnectionRequest };
+const getPendingConnectionRequests = async (getConnectionRequests) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.get('/getPendingConnectionRequests');
+    store.dispatch({ type: CONNECTION_REQUEST_SUCCESS, payload: res.data });
+    return res.data;
+  } catch (err) {
+    return err.response;
+  }
+};
+
+export { sendConnectionRequest, getPendingConnectionRequests };
