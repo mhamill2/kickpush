@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Button from '../../components/Button/Button';
-import ConnectionRequest from '../ConnectionRequest/ConnectionRequest';
+import ConnectionRequestForm from '../ConnectionRequest/ConnectionRequestForm';
 
 const ConnectionRequestFooter = ({ instructor }) => {
   const [showModal, setShowModal] = useState(false);
@@ -19,7 +19,7 @@ const ConnectionRequestFooter = ({ instructor }) => {
       <footer className="w-full flex justify-center items-center p-5 fixed bottom-0 bg-white">
         <Button isPrimary={true} content="Request a Lesson" size="large" onClick={openConnectionRequestForm} />
       </footer>
-      <ConnectionRequest showModal={showModal} closeModal={closeModal} instructor={instructor} />
+      <ConnectionRequestForm showModal={showModal} closeModal={closeModal} instructor={instructor} />
     </>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import InstructorProfile from './Instructor/InstructorProfile';
-import LessonRequestFooter from '../../components/LessonRequestFooter/LessonRequestFooter';
+import ConnectionRequestFooter from '../../components/ConnectionRequestFooter/ConnectionRequestFooter';
 import StudentProfile from './Student/StudentProfile';
 import { getUser } from '../../state/user/userActions';
 
@@ -48,7 +48,7 @@ const PublicProfile = ({ match }) => {
 
         {user.accountType === 'instructor' ? <InstructorProfile profile={user.instructorProfile} /> : <StudentProfile profile={user.studentProfile} />}
       </main>
-      <LessonRequestFooter instructor={user} />
+      <ConnectionRequestFooter instructor={user} />
     </>
   );
 };

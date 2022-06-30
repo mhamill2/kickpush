@@ -11,7 +11,13 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
     instructor: req.user.id
   });
 
-  res.send(connectionRequests);
+  const connectionRequestsObj = new Map(
+    connectionRequests.map((connectionRequest) => {
+      return [connectionRequest._id, connectionRequest];
+    })
+  );
+
+  res.send(Object.fromEntries(connectionRequestsObj));
 });
 
 router.post('/sendConnectionRequest', auth, async (req, res) => {
