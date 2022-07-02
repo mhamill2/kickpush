@@ -16,18 +16,27 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
   }, []);
 
   return (
-    <Transition show={showModal} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col p-4">
-      <header className="border-gray-300 flex flex-col justify-between items-center gap-8">
+    <Transition show={showModal} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col">
+      <header className="border-gray-300 flex flex-col justify-between items-center gap-8 p-4">
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600 self-end" onClick={closeModal}></FontAwesomeIcon>
         <ProfilePicture size={28} />
         <h1 className="text-xl font-semibold">{connectionRequest.studentFirstName} would like to connect!</h1>
       </header>
 
-      <div className="bg-gray-50 p-4 rounded-lg mt-8 w-4/5">
-        <p>{connectionRequest.introduction}</p>
-      </div>
+      <main className="p-4 overflow-auto">
+        <div className="bg-gray-50 p-4 rounded-lg mt-8">
+          <p>{connectionRequest.headerMessage}</p>
+        </div>
 
-      <main className="overflow-auto"></main>
+        <div className="bg-gray-50 p-4 rounded-lg mt-8 w-4/5">
+          <p>{connectionRequest.introduction}</p>
+        </div>
+      </main>
+
+      <footer className="border-t border-gray-300 flex justify-around py-8 fixed bottom-0 w-full bg-white">
+        <button className="border border-black cursor-pointer rounded-3xl w-2/5">Refuse</button>
+        <button className="border border-black cursor-pointer rounded-3xl w-2/5">Accept</button>
+      </footer>
     </Transition>
   );
 };

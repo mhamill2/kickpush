@@ -1,7 +1,9 @@
 const { type } = require('express/lib/response');
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
+
 const constants = require('../constants/lesson_constants');
+const { createHeaderMessage } = require('../utils/messageUtils');
 
 const connectionRequestSchema = new Schema({
   status: {
@@ -31,6 +33,10 @@ const connectionRequestSchema = new Schema({
   introduction: {
     type: String,
     required: true,
+    trim: true
+  },
+  headerMessage: {
+    type: String,
     trim: true
   },
   familyMembers: {
@@ -74,6 +80,15 @@ const connectionRequestSchema = new Schema({
         required: true
       }
     ]
+  }
+});
+
+// Create the detailed header message with the connection request is first saved
+connectionRequestSchema.pre('save', async function (next) {
+  const connectionRequest = this;
+
+  if (connectionRequest.isNew) {
+    connectionRequest.headerMessage = createHeaderMessage(connectionRequest);
   }
 });
 

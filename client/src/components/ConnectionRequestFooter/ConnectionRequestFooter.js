@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Button from '../../components/Button/Button';
+import Button from '../Button/Button';
 import ConnectionRequestForm from '../ConnectionRequest/ConnectionRequestForm';
 
 const ConnectionRequestFooter = ({ instructor }) => {
