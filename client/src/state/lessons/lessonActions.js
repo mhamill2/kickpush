@@ -1,4 +1,4 @@
-import { CONNECTION_REQUEST_SUCCESS } from './types';
+import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED } from './types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
@@ -33,4 +33,24 @@ const getPendingConnectionRequests = async (getConnectionRequests) => {
   }
 };
 
-export { sendConnectionRequest, getPendingConnectionRequests };
+const sendConnectionRequestResponse = async (connectionRequestId, responseMessage, accepted) => {
+  setAuthToken(localStorage.token);
+  let res = null;
+
+  try {
+    if (accepted) {
+      res = await axios.post('/acceptConnectionRequest', { connectionRequestId, responseMessage });
+      console.log(res.data);
+      store.dispatch({ type: CONNECTION_REQUEST_ACCEPTED, payload: res.data.connectionRequestId });
+    } else {
+      res = await axios.post('/declineConnectionRequest', { connectionRequestId, responseMessage });
+      store.dispatch({ type: CONNECTION_REQUEST_DECLINED, payload: res.data.connectionRequestId });
+    }
+
+    return res.data;
+  } catch (err) {
+    return err.response;
+  }
+};
+
+export { sendConnectionRequest, getPendingConnectionRequests, sendConnectionRequestResponse };

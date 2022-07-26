@@ -68,6 +68,12 @@ const userSchema = new Schema(
     avatar: {
       type: Buffer
     },
+    connections: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
     instructorProfile: {
       type: Object,
       bio: {
@@ -111,6 +117,12 @@ const userSchema = new Schema(
         intermediate: Boolean,
         advanced: Boolean
       },
+      connections: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ],
       socialMediaLinks: {
         facebook: {
           type: String,
@@ -195,18 +207,28 @@ const userSchema = new Schema(
   }
 );
 
-// The toJSON method gets called whenever the object is stringified, which happens when we send the data back to the user in the Express routes
+/**
+ * The toJSON function is called whenever the object is serialized, which occurs
+ * when the data is sent back to the client. This function is used to remove
+ * the password and tokens from the object before it's sent to the client.
+ *
+ * @returns {Object} - Returns the object without the password and tokens
+ */
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObject = user.toObject();
 
-  // Remove private data that the client doesn't need
   delete userObject.password;
   delete userObject.tokens;
 
   return userObject;
 };
 
+/**
+ * Generates a JWT token for the user.
+ *
+ * @returns {String} - Returns a JWT token
+ */
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
@@ -217,6 +239,9 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
+/**
+ * Generates a default/blank instructor profile for the user.
+ */
 userSchema.methods.generateDefaultInstructorProfile = function () {
   const instructorProfile = {
     bio: '',
@@ -254,6 +279,9 @@ userSchema.methods.generateDefaultInstructorProfile = function () {
   this.instructorProfile = instructorProfile;
 };
 
+/**
+ * Generates a default/blank student profile for the user.
+ */
 userSchema.methods.generateDefaultStudentProfile = function () {
   const user = this;
   const studentProfile = {
@@ -263,6 +291,14 @@ userSchema.methods.generateDefaultStudentProfile = function () {
   this.studentProfile = studentProfile;
 };
 
+/**
+ * Finds a user by their email and password.
+ *
+ * @param {String} email
+ * @param {String} password
+ *
+ * @returns {User} - Returns the user object if found
+ */
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email: email });
 
@@ -279,7 +315,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-// Hash the plain text password before saving
+/**
+ * Hash the plain text password before saving
+ */
 userSchema.pre('save', async function (next) {
   const user = this;
 
@@ -290,6 +328,9 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+/**
+ * Creates an index on users locations
+ */
 userSchema.index({ 'location.coordinates': '2dsphere' });
 
 const User = model('User', userSchema);

@@ -39,6 +39,10 @@ const connectionRequestSchema = new Schema({
     type: String,
     trim: true
   },
+  responseMessage: {
+    type: String,
+    trim: true
+  },
   familyMembers: {
     type: [
       {

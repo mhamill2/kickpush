@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+import { sendConnectionRequestResponse } from '../../state/lessons/lessonActions';
+
 import ProfilePicture from '../ProfilePicture/ProfilePicture';
+import ConnectionRequestResponseModal from './ConnectionRequestResponseModal';
 
 const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
   showModal ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
@@ -14,6 +17,29 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
     };
     // eslint-disable-next-line
   }, []);
+
+  const [showResponseModal, setshowResponseModal] = useState(false);
+  const [acceptRequest, setAcceptRequest] = useState(false);
+
+  const openResponseModal = (e) => {
+    const accepted = e.target.getAttribute('data-accept');
+    console.log(accepted === 'true');
+    setAcceptRequest(accepted);
+    setshowResponseModal(true);
+  };
+
+  const closeResponseModal = () => {
+    console.log('close');
+    setshowResponseModal(false);
+    setAcceptRequest(false);
+  };
+
+  const sendResponse = async (e) => {
+    e.preventDefault();
+    const responseMessage = e.target.elements['responseMessage'].value;
+
+    sendConnectionRequestResponse(connectionRequest._id, responseMessage, acceptRequest);
+  };
 
   return (
     <Transition show={showModal} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col">
@@ -34,9 +60,15 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
       </main>
 
       <footer className="border-t border-gray-300 flex justify-around py-8 fixed bottom-0 w-full bg-white">
-        <button className="border border-black cursor-pointer rounded-3xl w-2/5">Refuse</button>
-        <button className="border border-black cursor-pointer rounded-3xl w-2/5">Accept</button>
+        <button data-accept="false" className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={openResponseModal}>
+          Refuse
+        </button>
+        <button data-accept="true" className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={openResponseModal}>
+          Accept
+        </button>
       </footer>
+
+      <ConnectionRequestResponseModal showModal={showResponseModal} closeModal={closeResponseModal} connectionRequest={connectionRequest} accepted={acceptRequest} sendResponse={sendResponse} />
     </Transition>
   );
 };
