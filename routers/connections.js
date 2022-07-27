@@ -77,6 +77,7 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
   }
 });
 
+// TODO: update with updates from acceptConnectionRequest
 router.post('/declineConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const responseMessage = req.body.responseMessage;
