@@ -1,11 +1,16 @@
 const express = require('express');
 const auth = require('../middleware/auth/auth');
 const ConnectionRequest = require('../models/connectionRequest');
+const Message = require('../models/message');
 const { User } = require('../models/user');
 const { CONNECTION_REQUEST_STATUS } = require('../constants/lesson_constants');
 
 const router = new express.Router();
 
+/**
+ * @route   GET /getPendingConnectionRequests
+ * @desc    Retrieves all pending connection requests for the current instructor
+ */
 router.get('/getPendingConnectionRequests', auth, async (req, res) => {
   const connectionRequests = await ConnectionRequest.find({
     status: CONNECTION_REQUEST_STATUS.PENDING,
@@ -21,6 +26,10 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
   res.send(Object.fromEntries(connectionRequestsObj));
 });
 
+/**
+ * @route   POST /sendConnectionRequest
+ * @desc    Sends a connection request to an instructor
+ */
 router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const connectionRequest = new ConnectionRequest(req.body);
@@ -46,12 +55,16 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /acceptConnectionRequest
+ * @desc    Accepts a connection request from a student
+ */
 router.post('/acceptConnectionRequest', auth, async (req, res) => {
   const user = req.user;
-  const responseMessage = req.body.responseMessage;
+  const response = req.body.responseMessage;
+
   try {
-    // findOneAndUpdate and return the updated document
-    const connectionRequest = await ConnectionRequest.findOneAndUpdate({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.ACCEPTED, responseMessage }, { new: true }, (err, doc) => {
+    const connectionRequest = await ConnectionRequest.findOneAndUpdate({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.ACCEPTED, response }, { new: true }, (err, doc) => {
       if (err) {
         console.log('Failed to update connection request: ', err);
         res.status(500).send(err);
@@ -70,6 +83,28 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
     await student.save();
     await user.save();
 
+    const headerMessage = new Message({
+      sender: student._id,
+      receiver: user._id,
+      body: { text: connectionRequest.headerMessage }
+    });
+
+    const introMessage = new Message({
+      sender: student._id,
+      receiver: user._id,
+      body: { text: connectionRequest.introduction }
+    });
+
+    const responseMessage = new Message({
+      sender: user._id,
+      receiver: student._id,
+      body: { text: connectionRequest.responseMessage || `${user.firstName} has accepted your request!` }
+    });
+
+    await headerMessage.save();
+    await introMessage.save();
+    await responseMessage.save();
+
     res.status(200).send(req.body.connectionRequestId);
   } catch (err) {
     console.log('Failed to accept connection request: ', err);
@@ -78,6 +113,10 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
 });
 
 // TODO: update with updates from acceptConnectionRequest
+/**
+ * @route   POST /declineConnectionRequest
+ * @desc    Rejects a connection request from a student
+ */
 router.post('/declineConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const responseMessage = req.body.responseMessage;
