@@ -1,4 +1,4 @@
-import { NAV_HOME, NAV_PROFILE, HIDE_BOTTOM_NAV } from './types';
+import { NAV_HOME, NAV_PROFILE, HIDE_BOTTOM_NAV, NAV_MESSAGING } from './types';
 
 const initialState = {
   activePage: null,
@@ -17,6 +17,12 @@ const navReducer = (state = initialState, action) => {
       return {
         ...state,
         activePage: 'myProfile',
+        showBottomNav: true
+      };
+    case NAV_MESSAGING:
+      return {
+        ...state,
+        activePage: 'messages',
         showBottomNav: true
       };
     case HIDE_BOTTOM_NAV:

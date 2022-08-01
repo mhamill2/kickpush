@@ -71,7 +71,8 @@ const userSchema = new Schema(
     connections: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        unique: true
       }
     ],
     instructorProfile: {

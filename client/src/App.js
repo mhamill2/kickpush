@@ -11,10 +11,11 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import InstructorSearchResults from './pages/InstructorSearchResults/InstructorSearchResults';
 import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
+import Messaging from './pages/Messaging/Messaging';
+import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
-import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 
 import { loadUser } from './state/user/userActions';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -38,6 +39,8 @@ const App = () => {
             <PrivateRoute exact path="/search" component={InstructorSearchResults} />
             <PrivateRoute exact path="/profile" component={UserProfile} />
             <PrivateRoute exact path="/instructors/:userId" component={PublicProfile} />
+            <PrivateRoute exact path="/messages" component={Messaging} />
+            <PrivateRoute exact path="/messages" component={Messaging} />
           </Switch>
           <BottomNav />
         </Fragment>

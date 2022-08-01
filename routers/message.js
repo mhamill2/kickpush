@@ -44,3 +44,44 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
+
+router.get('/getMessages', auth, async (req, res) => {
+  try {
+    // const messages = await Message.find({
+    //   $or: [{ sender: req.user._id }, { receiver: req.user._id }]
+    // });
+
+    // get the latest message from each conversation where the user is a participant
+    const messages = await Message.aggregate([
+      {
+        $match: {
+          $or: [{ sender: req.user._id }, { receiver: req.user._id }]
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $cond: [{ $eq: ['$sender', req.user._id] }, '$receiver', '$sender']
+          },
+          message: { $last: '$$ROOT' }
+        }
+      }
+    ]);
+
+    // populate the sender and receiver fields
+    const populatedMessages = await Message.populate(messages, {
+      path: 'message.sender message.receiver',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    console.log(populatedMessages);
+
+    res.status(200).json(messages);
+  } catch (err) {
+    console.log('Failed to get messages: ', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+module.exports = router;

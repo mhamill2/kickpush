@@ -37,6 +37,9 @@ router.post('/login', async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
+
+    await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+
     res.send({ user, token });
   } catch (err) {
     console.log('Failed to login in user: ', err);
@@ -49,6 +52,7 @@ router.post('/login', async (req, res) => {
  * @desc    Load the current user
  */
 router.get('/loadUser', auth, async (req, res) => {
+  await req.user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
   res.json(req.user);
 });
 
@@ -72,10 +76,14 @@ router.post('/logout', auth, async (req, res) => {
  * @desc    Update the instructors profile
  */
 router.post('/updateInstructorProfile', auth, async (req, res) => {
+  const user = req.user;
+  user.instructorProfile = req.body.instructorProfile;
+
   try {
-    req.user.instructorProfile = req.body.instructorProfile;
-    await req.user.updateOne({ instructorProfile: req.body.instructorProfile }, { runValidators: true });
-    res.json(req.user);
+    await user.updateOne({ instructorProfile: req.body.instructorProfile }, { runValidators: true });
+    await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+
+    res.json(user);
   } catch (err) {
     console.log('Failed to update user profile: ' + err);
     res.status(500).send();
