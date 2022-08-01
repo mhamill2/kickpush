@@ -2,23 +2,22 @@ import { Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import store from './state/store';
-
-import Navbar from './components/Navbar/Navbar';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-
+import BottomNav from './components/BottomNav/BottomNav';
 import Dashboard from './pages/Dashboard/Dashboard';
 import InstructorSearchResults from './pages/InstructorSearchResults/InstructorSearchResults';
 import Landing from './pages/Landing/Landing';
 import Login from './pages/Auth/Login/Login';
-import Messaging from './pages/Messaging/Messaging';
+import Messenger from './pages/Messenger/Messenger';
+import MessengerConversation from './pages/Messenger/MessengerConversation';
+import Navbar from './components/Navbar/Navbar';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
 
+import store from './state/store';
 import { loadUser } from './state/user/userActions';
-import BottomNav from './components/BottomNav/BottomNav';
 
 if (localStorage.token) {
   loadUser(localStorage.token);
@@ -39,8 +38,8 @@ const App = () => {
             <PrivateRoute exact path="/search" component={InstructorSearchResults} />
             <PrivateRoute exact path="/profile" component={UserProfile} />
             <PrivateRoute exact path="/instructors/:userId" component={PublicProfile} />
-            <PrivateRoute exact path="/messages" component={Messaging} />
-            <PrivateRoute exact path="/messages" component={Messaging} />
+            <PrivateRoute exact path="/messages" component={Messenger} />
+            <PrivateRoute exact path="/messages/:userId" component={MessengerConversation} />
           </Switch>
           <BottomNav />
         </Fragment>

@@ -47,11 +47,6 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
 
 router.get('/getMessages', auth, async (req, res) => {
   try {
-    // const messages = await Message.find({
-    //   $or: [{ sender: req.user._id }, { receiver: req.user._id }]
-    // });
-
-    // get the latest message from each conversation where the user is a participant
     const messages = await Message.aggregate([
       {
         $match: {
@@ -75,11 +70,31 @@ router.get('/getMessages', auth, async (req, res) => {
       model: 'User'
     });
 
-    console.log(populatedMessages);
-
     res.status(200).json(messages);
   } catch (err) {
     console.log('Failed to get messages: ', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+router.get('/getConversation/:userId', auth, async (req, res) => {
+  try {
+    let messages = await Message.find({
+      $or: [
+        { sender: req.user._id, receiver: req.params.userId },
+        { sender: req.params.userId, receiver: req.user._id }
+      ]
+    });
+
+    messages = await Message.populate(messages, {
+      path: 'sender receiver',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    res.status(200).json(messages);
+  } catch (err) {
+    console.log('Failed to get conversation: ', err);
     res.status(500).json({ error: 'Something went wrong' });
   }
 });

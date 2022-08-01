@@ -9,7 +9,7 @@ import Spinner from '../../components/Spinner/Spinner';
 
 import { getMessages } from '../../state/message/messageActions';
 
-const Messages = ({ user, messages }) => {
+const Messenger = ({ user, messages }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -55,4 +55,4 @@ const mapStateToProps = (state) => ({
   messages: state.message.messages
 });
 
-export default connect(mapStateToProps)(Messages);
+export default connect(mapStateToProps)(Messenger);
