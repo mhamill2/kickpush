@@ -33,12 +33,26 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
     const message = new Message({
       sender: user._id,
       receiver: receiver._id,
-      text,
-      attachments
+      body: {
+        text,
+        attachments
+      }
     });
 
-    await message.save();
-    res.status(201).json({ data: message });
+    await message.save((err, newMessage) => {
+      if (err) {
+        console.log('Error: Failed to save message: ', err);
+        return res.status(500).json({ error: 'Failed to send message' });
+      }
+
+      message._id = newMessage._id;
+    });
+
+    // populate sender and receiver with firstName, lastName, and avatar
+    await message.populate('sender', 'firstName lastName avatar').execPopulate();
+    await message.populate('receiver', 'firstName lastName avatar').execPopulate();
+
+    res.status(201).json(message);
   } catch (err) {
     console.log('Faild to send message: ', err);
     res.status(500).json({ error: 'Something went wrong' });
