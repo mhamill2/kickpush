@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import store from '../store';
-import { GET_MESSAGES_SUCCESS, SEND_MESSAGE_SUCCESS } from './types';
+import { GET_MESSAGES_SUCCESS } from './types';
 import setAuthToken from '../../utils/setAuthToken';
 
 const defaultPostConfig = {

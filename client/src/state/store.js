@@ -9,13 +9,23 @@ import navReducer from './nav/navReducer';
 import searchReducer from './search/searchReducer';
 import userReducer from './user/userReducer';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   lessons: lessonsReducer,
   message: messageReducer,
   nav: navReducer,
   search: searchReducer,
   user: userReducer
 });
+
+// Clear the app state on logout
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT') {
+    localStorage.removeItem('token');
+    return appReducer(undefined, action);
+  }
+
+  return appReducer(state, action);
+};
 
 const initialState = {};
 const middleware = [thunk];
