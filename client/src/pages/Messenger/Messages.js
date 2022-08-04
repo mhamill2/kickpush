@@ -14,9 +14,20 @@ const Messages = ({ user, messages, loading, receiverId }) => {
     setText(e.target.value);
   };
 
+  const onEnterPressed = async (e) => {
+    if (e.key.toLowerCase() === 'enter' && e.shiftKey === false && text.trim().length > 0) {
+      e.preventDefault();
+      const message = { text: text.trim(), receiverId };
+      const messageObj = await sendMessage(message);
+
+      messages.push(messageObj);
+      setText('');
+    }
+  };
+
   const sendNewMessage = async (e) => {
     if (text.length > 0) {
-      const message = { text, receiverId };
+      const message = { text: text.trim(), receiverId };
       const messageObj = await sendMessage(message);
 
       messages.push(messageObj);
@@ -43,8 +54,8 @@ const Messages = ({ user, messages, loading, receiverId }) => {
       </main>
       <div className="bottom-0 fixed left-0 w-full text-sm text-gray-900 flex justify-end px-2">
         <div className="w-full mb-4 rounded-3xl bg-gray-50 flex items-center px-4">
-          <textarea id="text" name="text" rows="1" className="block p-3 w-full rounded-3xl bg-gray-50 border border-gray-50 focus:outline-none" placeholder="Your message..." onChange={onMessageChange} value={text} />
-          <FontAwesomeIcon icon={faPaperPlane} className="text-gray-900 ml-2" onClick={sendNewMessage} />
+          <textarea id="text" name="text" rows="1" className="block p-3 w-full rounded-3xl bg-gray-50 border border-gray-50 focus:outline-none resize-none" placeholder="Your message..." onChange={onMessageChange} onKeyPress={onEnterPressed} value={text} />
+          <FontAwesomeIcon icon={faPaperPlane} className="text-gray-900 ml-2 cursor-pointer" onClick={sendNewMessage} />
         </div>
       </div>
     </>
