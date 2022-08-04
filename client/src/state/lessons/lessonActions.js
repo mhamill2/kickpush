@@ -1,4 +1,5 @@
 import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED } from './types';
+import { UPDATE_USER_CONNECTIONS } from '../user/types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 import axios from 'axios';
@@ -33,18 +34,19 @@ const getPendingConnectionRequests = async (getConnectionRequests) => {
   }
 };
 
-const sendConnectionRequestResponse = async (connectionRequestId, responseMessage, accepted) => {
+const sendConnectionRequestResponse = async (connectionRequest, responseMessage, accepted) => {
   setAuthToken(localStorage.token);
+  const connectionRequestId = connectionRequest._id;
   let res = null;
 
   try {
     if (accepted) {
       res = await axios.post('/acceptConnectionRequest', { connectionRequestId, responseMessage });
-      console.log(res.data);
-      store.dispatch({ type: CONNECTION_REQUEST_ACCEPTED, payload: res.data.connectionRequestId });
+      store.dispatch({ type: CONNECTION_REQUEST_ACCEPTED, payload: connectionRequestId });
+      store.dispatch({ type: UPDATE_USER_CONNECTIONS, payload: res.data });
     } else {
       res = await axios.post('/declineConnectionRequest', { connectionRequestId, responseMessage });
-      store.dispatch({ type: CONNECTION_REQUEST_DECLINED, payload: res.data.connectionRequestId });
+      store.dispatch({ type: CONNECTION_REQUEST_DECLINED, payload: connectionRequestId });
     }
 
     return res.data;

@@ -1,4 +1,4 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, LOGOUT, USER_LOADED, PROFILE_UPDATE_SUCCESS } from './types';
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, USER_LOADED, PROFILE_UPDATE_SUCCESS, UPDATE_USER_CONNECTIONS } from './types';
 
 const initialState = {
   user: null,
@@ -20,6 +20,14 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload
+      };
+    case UPDATE_USER_CONNECTIONS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          connections: [...state.user.connections, action.payload]
+        }
       };
     case USER_LOADED:
       return {

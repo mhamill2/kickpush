@@ -4,6 +4,7 @@ const ConnectionRequest = require('../models/connectionRequest');
 const Message = require('../models/message');
 const { User } = require('../models/user');
 const { CONNECTION_REQUEST_STATUS } = require('../constants/lesson_constants');
+const messageUtils = require('../utils/messageUtils');
 
 const router = new express.Router();
 
@@ -23,6 +24,11 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
     })
   );
 
+  await ConnectionRequest.populate(connectionRequests, {
+    path: 'student',
+    select: 'firstName lastName avatar'
+  });
+
   res.send(Object.fromEntries(connectionRequestsObj));
 });
 
@@ -34,8 +40,6 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const connectionRequest = new ConnectionRequest(req.body);
   connectionRequest.student = user._id;
-  connectionRequest.studentFirstName = user.firstName;
-  connectionRequest.studentLastName = user.lastName;
 
   try {
     const existingConnectionRequest = await ConnectionRequest.findOne({
@@ -44,10 +48,13 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
     });
 
     if (existingConnectionRequest) {
+      console.log(`User ${user._id} attempted to send a connection request to instructor ${connectionRequest.instructor} but a connection request already exists`);
       return res.status(400).send({ error: 'There is already a pending lesson request to this instructor' });
     }
 
+    connectionRequest.headerMessage = messageUtils.createHeaderMessage(connectionRequest, user.firstName);
     await connectionRequest.save();
+
     res.status(201).send(connectionRequest);
   } catch (err) {
     console.log('Failed to create initial lesson request: ', err);
@@ -74,6 +81,7 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
 
     // TODO: test this failure case
     if (!connectionRequest) {
+      console.log(`User ${user._id} attempted to accept a connection request but the connection request was not found. Connection request id: ${req.body.connectionRequestId}`);
       return res.status(400).send({ error: 'Connection request not found.' });
     }
 
@@ -105,7 +113,9 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
     await introMessage.save();
     await responseMessage.save();
 
-    res.status(200).send(req.body.connectionRequestId);
+    const { _id, firstName, lastName, avatar } = student;
+
+    res.status(200).send({ _id, firstName, lastName, avatar });
   } catch (err) {
     console.log('Failed to accept connection request: ', err);
     res.status(500).send(err);

@@ -38,7 +38,7 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
     e.preventDefault();
     const responseMessage = e.target.elements['responseMessage'].value;
 
-    sendConnectionRequestResponse(connectionRequest._id, responseMessage, acceptRequest);
+    sendConnectionRequestResponse(connectionRequest, responseMessage, acceptRequest);
   };
 
   return (
@@ -46,7 +46,7 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
       <header className="border-gray-300 flex flex-col justify-between items-center gap-8 p-4">
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600 self-end" onClick={closeModal}></FontAwesomeIcon>
         <ProfilePicture size={28} />
-        <h1 className="text-xl font-semibold">{connectionRequest.studentFirstName} would like to connect!</h1>
+        <h1 className="text-xl font-semibold">{connectionRequest.student && connectionRequest.student.firstName} would like to connect!</h1>
       </header>
 
       <main className="p-4 overflow-auto">

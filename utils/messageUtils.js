@@ -1,7 +1,7 @@
 const { LESSON_LOCATION_DISPLAY_NAMES } = require('../constants/lesson_constants');
 
-const createHeaderMessage = (connectionRequest) => {
-  const { studentFirstName, familyMembers, lessonTypes, lessonLocations, lessonDays } = connectionRequest;
+const createHeaderMessage = (connectionRequest, firstName) => {
+  const { familyMembers, lessonTypes, lessonLocations, lessonDays } = connectionRequest;
 
   const lessonTypeDisplayNames = lessonTypes.join(', ');
   const lessonLocationDisplayNames = lessonLocations.map((lessonLocation) => LESSON_LOCATION_DISPLAY_NAMES[lessonLocation]).join(', ');
@@ -9,11 +9,11 @@ const createHeaderMessage = (connectionRequest) => {
   const familyMembersDisplayNames = familyMembers.map((familyMember) => `${familyMember.name} (age ${familyMember.age})`).join(', ');
 
   const lessonTypeMsg = replaceLastCommaWithConjunction(lessonTypeDisplayNames, 'or');
-  const lessonLocationMsg = replaceLastCommaWithConjunction(lessonLocationDisplayNames, 'and');
+  const lessonLocationMsg = replaceLastCommaWithConjunction(lessonLocationDisplayNames, 'or');
   const lessonDaysMsg = replaceLastCommaWithConjunction(lessonDaysDisplayNames, 'or');
   const familyMembersMsg = replaceLastCommaWithConjunction(familyMembersDisplayNames, 'and');
 
-  return `${studentFirstName} is interested in a ${lessonTypeMsg} lesson for ${familyMembersMsg}.\n\nThey would like to take lessons at the ${lessonLocationMsg}. They are available on ${lessonDaysMsg}.`;
+  return `${firstName} is interested in a ${lessonTypeMsg} lesson for ${familyMembersMsg}.\n\nThey would like to take lessons at the ${lessonLocationMsg}. They are available on ${lessonDaysMsg}.`;
 };
 
 const replaceLastCommaWithConjunction = (str, conjunction) => {
