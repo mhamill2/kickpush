@@ -44,7 +44,7 @@ const MessengerConversation = ({ match, user }) => {
 
   return (
     <>
-      <header className="p-4 flex">
+      <header className="p-4 flex sticky top-16 bg-white">
         <h1 className="text-xl font-bold flex-1 flex justify-center">
           <span className="mr-auto" onClick={page === 'messages' ? goBack : openMessages}>
             {page === 'lessons' ? '< Messages' : '<'}
@@ -60,7 +60,7 @@ const MessengerConversation = ({ match, user }) => {
           <span className="ml-auto">Lessons {'>'}</span>
         </h1>
       </header>
-      {page === 'messages' && <Messages messages={messages} loading={loading} receiverId={match.params.userId} />}
+      {page === 'messages' && <Messages messages={messages} setMessages={setMessages} loading={loading} receiverId={match.params.userId} />}
       {page === 'lessons' && <Lessons />}
     </>
   );

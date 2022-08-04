@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import Spinner from '../../components/Spinner/Spinner';
@@ -7,8 +7,14 @@ import { sendMessage } from '../../state/message/messageActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-const Messages = ({ user, messages, loading, receiverId }) => {
+const Messages = ({ user, messages, setMessages, loading, receiverId }) => {
   const [text, setText] = useState('');
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    console.log('hjere');
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, messagesEndRef]);
 
   const onMessageChange = (e) => {
     setText(e.target.value);
@@ -17,10 +23,11 @@ const Messages = ({ user, messages, loading, receiverId }) => {
   const onEnterPressed = async (e) => {
     if (e.key.toLowerCase() === 'enter' && e.shiftKey === false && text.trim().length > 0) {
       e.preventDefault();
+
       const message = { text: text.trim(), receiverId };
       const messageObj = await sendMessage(message);
 
-      messages.push(messageObj);
+      setMessages([...messages, messageObj]);
       setText('');
     }
   };
@@ -37,7 +44,7 @@ const Messages = ({ user, messages, loading, receiverId }) => {
 
   return (
     <>
-      <main className="flex flex-col gap-4 px-4">
+      <main id="messages-container" className="flex flex-col gap-4 px-4 mb-20">
         {loading ? (
           <div className="flex justify-center">
             <Spinner />
@@ -49,15 +56,17 @@ const Messages = ({ user, messages, loading, receiverId }) => {
                 <p>{message.body.text}</p>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </>
         )}
-      </main>
-      <div className="bottom-0 fixed left-0 w-full text-sm text-gray-900 flex justify-end px-2">
-        <div className="w-full mb-4 rounded-3xl bg-gray-50 flex items-center px-4">
-          <textarea id="text" name="text" rows="1" className="block p-3 w-full rounded-3xl bg-gray-50 border border-gray-50 focus:outline-none resize-none" placeholder="Your message..." onChange={onMessageChange} onKeyPress={onEnterPressed} value={text} />
-          <FontAwesomeIcon icon={faPaperPlane} className="text-gray-900 ml-2 cursor-pointer" onClick={sendNewMessage} />
+        <div className="bottom-0 left-0 w-full text-sm text-gray-900 flex justify-end px-2 bg-white fixed">
+          <div className="w-full mb-4 rounded-3xl bg-gray-50 flex items-center px-4">
+            <textarea id="text" name="text" rows="1" className="block p-3 w-full rounded-3xl bg-gray-50 border border-gray-50 focus:outline-none resize-none" placeholder="Your message..." onChange={onMessageChange} onKeyPress={onEnterPressed} value={text} />
+            <FontAwesomeIcon icon={faPaperPlane} className="text-gray-900 ml-2 cursor-pointer" onClick={sendNewMessage} />
+          </div>
+          s
         </div>
-      </div>
+      </main>
     </>
   );
 };
