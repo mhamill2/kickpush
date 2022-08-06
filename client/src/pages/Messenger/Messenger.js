@@ -1,4 +1,4 @@
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import Spinner from '../../components/Spinner/Spinner';
 
 import { getMessages } from '../../state/message/messageActions';
 
-const Messenger = ({ user, messages }) => {
+const Messenger = ({ messages }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -21,9 +21,9 @@ const Messenger = ({ user, messages }) => {
 
   useEffect(() => {
     dispatch({ type: 'NAV_MESSAGING' });
-    // eslint-disable-next-line
 
     messages.length === 0 ? getConversations() : setLoading(false);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -51,7 +51,6 @@ const Messenger = ({ user, messages }) => {
 
 // map state to props
 const mapStateToProps = (state) => ({
-  user: state.user.user,
   messages: state.message.messages
 });
 

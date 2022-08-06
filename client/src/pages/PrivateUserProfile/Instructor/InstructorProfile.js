@@ -1,3 +1,5 @@
+/* eslint eqeqeq: 0 */
+
 import { connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

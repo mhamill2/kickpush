@@ -24,7 +24,7 @@ const MessengerConversation = ({ match, user }) => {
   }, []);
 
   const fetchConversation = async (userId) => {
-    const conversationMessages = await getConversation(userId);
+    let conversationMessages = await getConversation(userId);
 
     if (!conversationMessages) {
       conversationMessages = [];

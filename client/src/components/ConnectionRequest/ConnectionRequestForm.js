@@ -13,7 +13,6 @@ import { sendConnectionRequest } from '../../state/lessons/lessonActions';
 
 const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
   const [loading, setLoading] = useState(false);
-  const [requestSent, setRequestSent] = useState(false);
   const { familyMembers } = user.studentProfile;
   showModal ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
 
@@ -50,8 +49,7 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
       })
     };
 
-    const res = await sendConnectionRequest(connectionRequest);
-    setRequestSent(true);
+    await sendConnectionRequest(connectionRequest);
     setLoading(false);
   };
 

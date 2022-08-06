@@ -1,3 +1,5 @@
+/* eslint eqeqeq: 0 */
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faSnapchatGhost, faTiktok, faInstagramSquare, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faHouseChimneyUser, faLaptop } from '@fortawesome/free-solid-svg-icons';

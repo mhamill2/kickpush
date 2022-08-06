@@ -73,8 +73,4 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.user.user
-});
-
 export default ConnectionRequest;

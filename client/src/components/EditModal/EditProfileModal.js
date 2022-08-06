@@ -36,7 +36,7 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
 
   const saveUserProfileUpdates = (e) => {
     e.preventDefault();
-    if (user.accountType == 'instructor') {
+    if (user.accountType === 'instructor') {
       updateInstructorProfile(user);
     } else {
       updateStudentProfile(user);
@@ -51,7 +51,7 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   };
 
   const revertChangesAndCloseModal = (e) => {
-    if (user.accountType == 'instructor') {
+    if (user.accountType === 'instructor') {
       user.instructorProfile = originalProfile;
     } else {
       user.studentProfile = JSON.parse(JSON.stringify(originalProfile));
