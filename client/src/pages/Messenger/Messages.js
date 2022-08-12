@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import ScrollRef from '../../components/ScrollRef';
 import Spinner from '../../components/Spinner/Spinner';
@@ -8,8 +8,9 @@ import { sendMessage } from '../../state/message/messageActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-const Messages = ({ user, messages, setMessages, loading, receiverId }) => {
+const Messages = ({ user, messages, loading, receiverId }) => {
   const [text, setText] = useState('');
+  const dispatch = useDispatch();
 
   const onMessageChange = (e) => setText(e.target.value);
 
@@ -25,7 +26,7 @@ const Messages = ({ user, messages, setMessages, loading, receiverId }) => {
       const message = { text: text.trim(), receiverId };
       const messageObj = await sendMessage(message);
 
-      setMessages([...messages, messageObj]);
+      dispatch({ type: 'ADD_NEW_MESSAGE', payload: messageObj });
       setText('');
     }
   };
@@ -59,7 +60,8 @@ const Messages = ({ user, messages, setMessages, loading, receiverId }) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user.user
+  user: state.user.user,
+  messages: state.message.messages
 });
 
 export default connect(mapStateToProps)(Messages);

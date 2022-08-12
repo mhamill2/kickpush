@@ -14,8 +14,12 @@ const server = http.createServer(app);
 const io = socketio(server);
 require('./utils/socket')(io);
 
-// print the socket io url
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 
 app.use(express.json());
 app.use(connectionRouter, messageRouter, userRouter);
+
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

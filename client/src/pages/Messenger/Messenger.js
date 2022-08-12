@@ -7,22 +7,22 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import MessagesListItem from './MessagesListItem';
 import Spinner from '../../components/Spinner/Spinner';
 
-import { getMessages } from '../../state/message/messageActions';
+import { getConversations } from '../../state/message/messageActions';
 
-const Messenger = ({ messages }) => {
+const Messenger = ({ conversations }) => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
 
-  const getConversations = async () => {
-    await getMessages();
+  const getAllConversations = async () => {
+    await getConversations();
     setLoading(false);
   };
 
   useEffect(() => {
     dispatch({ type: 'NAV_MESSAGING' });
 
-    messages.length === 0 ? getConversations() : setLoading(false);
+    conversations.length === 0 ? getAllConversations() : setLoading(false);
     // eslint-disable-next-line
   }, []);
 
@@ -39,8 +39,8 @@ const Messenger = ({ messages }) => {
           </div>
         ) : (
           <>
-            {messages.map((message) => (
-              <MessagesListItem key={message.message._id} message={message.message} />
+            {conversations.map((conversation) => (
+              <MessagesListItem key={conversation.message._id} message={conversation.message} />
             ))}
           </>
         )}
@@ -51,7 +51,7 @@ const Messenger = ({ messages }) => {
 
 // map state to props
 const mapStateToProps = (state) => ({
-  messages: state.message.messages
+  conversations: state.message.conversations
 });
 
 export default connect(mapStateToProps)(Messenger);

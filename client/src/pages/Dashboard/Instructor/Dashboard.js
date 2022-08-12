@@ -81,7 +81,7 @@ const Dashboard = ({ user }) => {
               <>
                 {Object.entries(connectionRequests).map((connectionRequest) => (
                   <div className="flex items-center cursor-pointer gap-2" key={connectionRequest[0]} data-request-id={connectionRequest[0]} onClick={openConnectionRequestModal}>
-                    <ProfilePicture size={10} /> {connectionRequest[1].student.firstName} {connectionRequest[1].student.firstName}
+                    <ProfilePicture size={10} /> {connectionRequest[1].student.firstName} {connectionRequest[1].student.lastName}
                   </div>
                 ))}
               </>

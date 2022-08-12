@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import Lessons from './Lessons';
 import Messages from './Messages';
@@ -8,12 +7,12 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import { getConversation } from '../../state/message/messageActions';
 
-const MessengerConversation = ({ match, user }) => {
+const MessengerConversation = ({ match, user, messages }) => {
   const dispatch = useDispatch();
   const connectionName = user.connections.find((connection) => connection._id === match.params.userId).firstName;
+
   const [page, setPage] = useState('messages');
   const [loading, setLoading] = useState(true);
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     dispatch({ type: 'HIDE_BOTTOM_NAV' });
@@ -30,7 +29,7 @@ const MessengerConversation = ({ match, user }) => {
       conversationMessages = [];
     }
 
-    setMessages(conversationMessages);
+    dispatch({ type: 'GET_MESSAGES_SUCCESS', payload: conversationMessages });
     setLoading(false);
   };
 
@@ -60,14 +59,15 @@ const MessengerConversation = ({ match, user }) => {
           <span className="ml-auto">Lessons {'>'}</span>
         </h1>
       </header>
-      {page === 'messages' && <Messages messages={messages} setMessages={setMessages} loading={loading} receiverId={match.params.userId} />}
+      {page === 'messages' && <Messages messages={messages} loading={loading} receiverId={match.params.userId} />}
       {page === 'lessons' && <Lessons />}
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user.user
+  user: state.user.user,
+  messages: state.message.messages
 });
 
 export default connect(mapStateToProps)(MessengerConversation);

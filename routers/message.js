@@ -12,6 +12,7 @@ const router = new express.Router();
 router.post('/sendMessage/:receiverId', auth, async (req, res) => {
   const { text = '', attachments = [] } = req.body;
   const user = req.user;
+  const io = req.io;
 
   if (text.length === 0 && attachments.length === 0) {
     return res.status(422).json({ error: 'Cannot send empty messages' });
@@ -52,6 +53,12 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
     await message.populate('sender', 'firstName lastName avatar').execPopulate();
     await message.populate('receiver', 'firstName lastName avatar').execPopulate();
 
+    if (receiver.socketIds.length > 0) {
+      receiver.socketIds.forEach((socket) => {
+        io.to(socket.socketId).emit('newMessage', message);
+      });
+    }
+
     res.status(201).json(message);
   } catch (err) {
     console.log('Faild to send message: ', err);
@@ -59,7 +66,7 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
   }
 });
 
-router.get('/getMessages', auth, async (req, res) => {
+router.get('/getConversations', auth, async (req, res) => {
   try {
     const messages = await Message.aggregate([
       {

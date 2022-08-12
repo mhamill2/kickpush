@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 
 import BottomNav from './components/BottomNav/BottomNav';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -24,16 +24,21 @@ if (localStorage.token) {
   loadUser(localStorage.token);
 }
 
-const App = ({ user, isAuthenticated }) => {
-  // use effect hook whenever the user state changes to connect to socket.io
+const App = ({ user, isAuthenticated, socket, messages }) => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    console.log('here');
-    if (isAuthenticated) {
-      const socket = io('ws://localhost:5000', {
-        transports: ['websocket', 'polling', 'flashsocket']
-      });
+    if (isAuthenticated && !socket) {
+      const socket = io('http://localhost:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
+
       socket.on('connect', () => {
-        console.log('connected to socket.io');
+        socket.emit('setSocketId', user._id);
+      });
+
+      socket.on('newMessage', (message) => {
+        if (messages.filter((msg) => msg._id === message._id).length === 0) {
+          dispatch({ type: 'ADD_NEW_MESSAGE', payload: message });
+        }
       });
     }
   }, [isAuthenticated]);
@@ -62,7 +67,9 @@ const App = ({ user, isAuthenticated }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.user.authenticated,
-  user: state.user.user
+  user: state.user.user,
+  socket: state.user.socket,
+  messages: state.message.messages
 });
 
 export default connect(mapStateToProps)(App);

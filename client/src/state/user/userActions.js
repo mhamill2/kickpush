@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL, SET_SOCKET, DELETE_SOCKET } from './types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 
@@ -98,4 +98,12 @@ const updateUserLocation = async (user, address) => {
   }
 };
 
-export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser };
+const setSocket = (socket) => {
+  store.dispatch({ type: SET_SOCKET, payload: socket });
+};
+
+const deleteSocket = () => {
+  store.dispatch({ type: DELETE_SOCKET });
+};
+
+export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser, setSocket, deleteSocket };

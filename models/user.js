@@ -65,6 +65,14 @@ const userSchema = new Schema(
         }
       }
     ],
+    socketIds: [
+      {
+        socketId: {
+          type: String,
+          required: true
+        }
+      }
+    ],
     avatar: {
       type: Buffer
     },

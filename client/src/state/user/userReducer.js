@@ -1,9 +1,10 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, USER_LOADED, PROFILE_UPDATE_SUCCESS, UPDATE_USER_CONNECTIONS } from './types';
+import { REGISTER_SUCCESS, LOGIN_SUCCESS, USER_LOADED, PROFILE_UPDATE_SUCCESS, UPDATE_USER_CONNECTIONS, SET_SOCKET, DELETE_SOCKET } from './types';
 
 const initialState = {
   user: null,
   authenticated: false,
-  instructors: []
+  instructors: [],
+  socket: null
 };
 
 const userReducer = (state = initialState, action) => {
@@ -34,6 +35,16 @@ const userReducer = (state = initialState, action) => {
         ...state,
         user: action.payload,
         authenticated: true
+      };
+    case SET_SOCKET:
+      return {
+        ...state,
+        socket: action.payload
+      };
+    case DELETE_SOCKET:
+      return {
+        ...state,
+        socket: null
       };
     default:
       return state;
