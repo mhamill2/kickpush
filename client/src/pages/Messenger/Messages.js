@@ -41,7 +41,7 @@ const Messages = ({ user, messages, loading, receiverId }) => {
         ) : (
           <>
             {messages.map((message) => (
-              <div className={`p-4 w-3/4 bg-gray-50 rounded-2xl ${user._id === message.sender._id && 'self-end'}`} key={message._id}>
+              <div className={`p-4 w-3/4 bg-gray-50 rounded-2xl break-all ${user._id === message.sender._id && 'self-end'}`} key={message._id}>
                 <p>{message.body.text}</p>
               </div>
             ))}

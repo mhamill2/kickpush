@@ -1,8 +1,10 @@
 const express = require('express');
+const geocoder = require('../utils/geocoder');
+const ip = require('ip');
+
+const auth = require('../middleware/auth/auth');
 const UserModel = require('../models/user');
 const { User } = UserModel;
-const auth = require('../middleware/auth/auth');
-const geocoder = require('../utils/geocoder');
 
 const router = new express.Router();
 
@@ -186,6 +188,17 @@ router.get('/getInstructors', async (req, res) => {
     res.json(instructors);
   } catch (err) {
     console.log(err);
+    res.status(500).send();
+  }
+});
+
+router.post('/deleteSocketId', auth, async (req, res) => {
+  try {
+    req.user.socketId = req.user.socketIds.filter((socketId) => socketId !== req.body.socketId);
+    await req.user.save();
+    res.status(200).send();
+  } catch (err) {
+    console.log('Failed to delete socket id: ' + err);
     res.status(500).send();
   }
 });

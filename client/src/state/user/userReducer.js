@@ -44,7 +44,10 @@ const userReducer = (state = initialState, action) => {
     case DELETE_SOCKET:
       return {
         ...state,
-        socket: null
+        user: {
+          ...state.user,
+          socketIds: state.user.socketIds.filter((socketId) => socketId !== action.payload)
+        }
       };
     default:
       return state;

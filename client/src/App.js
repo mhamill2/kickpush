@@ -16,7 +16,7 @@ import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
 
-import { loadUser } from './state/user/userActions';
+import { loadUser, deleteSocket } from './state/user/userActions';
 
 import io from 'socket.io-client';
 
@@ -29,7 +29,11 @@ const App = ({ user, isAuthenticated, socket, messages }) => {
 
   useEffect(() => {
     if (isAuthenticated && !socket) {
-      const socket = io('http://localhost:5000', { transports: ['websocket', 'polling', 'flashsocket'] });
+      const socket = io('http://localhost:5000', {
+        transports: ['websocket', 'polling', 'flashsocket'],
+        reconnection: true,
+        reconnectionDelay: 1000
+      });
 
       socket.on('connect', () => {
         socket.emit('setSocketId', user._id);
@@ -39,6 +43,10 @@ const App = ({ user, isAuthenticated, socket, messages }) => {
         if (messages.filter((msg) => msg._id === message._id).length === 0) {
           dispatch({ type: 'ADD_NEW_MESSAGE', payload: message });
         }
+      });
+
+      socket.on('disconnect', () => {
+        deleteSocket(socket);
       });
     }
   }, [isAuthenticated]);
