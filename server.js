@@ -10,19 +10,23 @@ const socketUtils = require('./utils/socket');
 require('./db/db');
 const PORT = process.env.PORT || 5000;
 
-socketUtils.deleteOldSocketIds();
-
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
-socketUtils.setSocketIo(io);
-
-app.use((req, res, next) => {
-  req.io = io;
-  next();
+socketUtils.deleteOldSocketIds(() => {
+  initServer();
 });
 
-app.use(express.json());
-app.use(connectionRouter, messageRouter, userRouter);
+const initServer = () => {
+  const app = express();
+  const server = http.createServer(app);
+  const io = socketio(server);
+  socketUtils.setSocketIo(io);
 
-server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  app.use((req, res, next) => {
+    req.io = io;
+    next();
+  });
+
+  app.use(express.json());
+  app.use(connectionRouter, messageRouter, userRouter);
+
+  server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+};

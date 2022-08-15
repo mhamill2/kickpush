@@ -20,7 +20,7 @@ const createNewSocket = (userId, messages, dispatch) => {
   });
 
   socket.on('disconnect', () => {
-    deleteSocket(socket);
+    deleteSocket(socket.id);
   });
 };
 

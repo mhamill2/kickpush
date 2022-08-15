@@ -44,7 +44,7 @@ async function removeSocketIdInDB(socketId) {
   }
 }
 
-const deleteOldSocketIds = async () => {
+const deleteOldSocketIds = async (callback) => {
   try {
     const users = await User.find();
     const ipAddress = ip.address();
@@ -58,6 +58,8 @@ const deleteOldSocketIds = async () => {
     console.log('Error: Failed to delete old socket ids');
     console.log(err);
   }
+
+  callback();
 };
 
 module.exports = {

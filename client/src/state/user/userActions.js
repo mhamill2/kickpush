@@ -102,15 +102,13 @@ const setSocket = (socket) => {
   store.dispatch({ type: SET_SOCKET, payload: socket });
 };
 
-const deleteSocket = async (socket) => {
+const deleteSocket = async (socketId) => {
   setAuthToken(localStorage.token);
 
   try {
-    const res = await axios.post('/deleteSocket', { socket }, defaultPostConfig);
+    const res = await axios.post('/deleteSocketId', { socketId }, defaultPostConfig);
     store.dispatch({ type: DELETE_SOCKET });
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
 };
 
 export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser, setSocket, deleteSocket };
