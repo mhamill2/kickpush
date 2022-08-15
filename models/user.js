@@ -130,12 +130,6 @@ const userSchema = new Schema(
         intermediate: Boolean,
         advanced: Boolean
       },
-      connections: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: 'User'
-        }
-      ],
       socialMediaLinks: {
         facebook: {
           type: String,
@@ -207,8 +201,7 @@ const userSchema = new Schema(
                   throw new Error('Age must be between 1 and 100');
                 }
               }
-            },
-            _id: false
+            }
           }
         ],
         required: true

@@ -16,38 +16,19 @@ import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
 
-import { loadUser, deleteSocket } from './state/user/userActions';
-
-import io from 'socket.io-client';
+import { loadUser } from './state/user/userActions';
+import { createNewSocket } from './utils/socket';
 
 if (localStorage.token) {
   loadUser(localStorage.token);
 }
 
-const App = ({ user, isAuthenticated, socket, messages }) => {
+const App = ({ user, isAuthenticated, messages }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isAuthenticated && !socket) {
-      const socket = io('http://localhost:5000', {
-        transports: ['websocket', 'polling', 'flashsocket'],
-        reconnection: true,
-        reconnectionDelay: 1000
-      });
-
-      socket.on('connect', () => {
-        socket.emit('setSocketId', user._id);
-      });
-
-      socket.on('newMessage', (message) => {
-        if (messages.filter((msg) => msg._id === message._id).length === 0) {
-          dispatch({ type: 'ADD_NEW_MESSAGE', payload: message });
-        }
-      });
-
-      socket.on('disconnect', () => {
-        deleteSocket(socket);
-      });
+    if (isAuthenticated) {
+      createNewSocket(user._id, messages, dispatch);
     }
   }, [isAuthenticated]);
 
@@ -76,7 +57,6 @@ const App = ({ user, isAuthenticated, socket, messages }) => {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.user.authenticated,
   user: state.user.user,
-  socket: state.user.socket,
   messages: state.message.messages
 });
 

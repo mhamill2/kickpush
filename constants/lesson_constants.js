@@ -17,5 +17,12 @@ module.exports = Object.freeze({
     skatepark: 'skatepark',
     studentsHome: 'students home',
     virtual: 'online'
+  },
+
+  LESSON_STATUS: {
+    ACCEPTED: 'accepted',
+    COMPLETED: 'completed',
+    DECLINED: 'declined',
+    PENDING: 'pending'
   }
 });

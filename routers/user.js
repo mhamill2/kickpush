@@ -192,6 +192,10 @@ router.get('/getInstructors', async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /deleteSocketId
+ * @desc    Delete a socket id from the user's socket ids
+ */
 router.post('/deleteSocketId', auth, async (req, res) => {
   try {
     req.user.socketId = req.user.socketIds.filter((socketId) => socketId !== req.body.socketId);

@@ -66,6 +66,10 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /getConversations
+ * @desc    Get all conversations for the current user
+ */
 router.get('/getConversations', auth, async (req, res) => {
   try {
     const messages = await Message.aggregate([
@@ -98,6 +102,10 @@ router.get('/getConversations', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   GET /getConversation/:userId
+ * @desc    Gets all messages between the current user and another user
+ */
 router.get('/getConversation/:userId', auth, async (req, res) => {
   try {
     let messages = await Message.find({
