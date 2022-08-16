@@ -1,3 +1,5 @@
+const getAge = require('get-Age');
+
 const { LESSON_LOCATION_DISPLAY_NAMES } = require('../constants/lesson_constants');
 
 const createHeaderMessage = (connectionRequest, firstName) => {
@@ -6,7 +8,7 @@ const createHeaderMessage = (connectionRequest, firstName) => {
   const lessonTypeDisplayNames = lessonTypes.join(', ');
   const lessonLocationDisplayNames = lessonLocations.map((lessonLocation) => LESSON_LOCATION_DISPLAY_NAMES[lessonLocation]).join(', ');
   const lessonDaysDisplayNames = lessonDays.map((lessonDay) => lessonDay.charAt(0).toUpperCase() + lessonDay.slice(1)).join(', ');
-  const familyMembersDisplayNames = familyMembers.map((familyMember) => `${familyMember.name} (age ${familyMember.age})`).join(', ');
+  const familyMembersDisplayNames = familyMembers.map((familyMember) => `${familyMember.name} (age ${getAge(familyMember.birthDate)})`).join(', ');
 
   const lessonTypeMsg = replaceLastCommaWithConjunction(lessonTypeDisplayNames, 'or');
   const lessonLocationMsg = replaceLastCommaWithConjunction(lessonLocationDisplayNames, 'or');

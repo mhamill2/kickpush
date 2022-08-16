@@ -29,6 +29,11 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
     select: 'firstName lastName avatar'
   });
 
+  await ConnectionRequest.populate(connectionRequests, {
+    path: 'familyMembers',
+    select: 'name birthDate'
+  });
+
   res.send(Object.fromEntries(connectionRequestsObj));
 });
 
@@ -38,9 +43,8 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
  */
 router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
-  const connectionRequest = new ConnectionRequest(req.body);
+  let connectionRequest = req.body;
   connectionRequest.student = user._id;
-
   try {
     const existingConnectionRequest = await ConnectionRequest.findOne({
       student: connectionRequest.student,
@@ -53,6 +57,9 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
     }
 
     connectionRequest.headerMessage = messageUtils.createHeaderMessage(connectionRequest, user.firstName);
+    connectionRequest.familyMembers = connectionRequest.familyMembers.map((familyMember) => familyMember._id);
+
+    connectionRequest = new ConnectionRequest(connectionRequest);
     await connectionRequest.save();
 
     res.status(201).send(connectionRequest);
@@ -71,7 +78,7 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
   const response = req.body.responseMessage;
 
   try {
-    const connectionRequest = await ConnectionRequest.findOneAndUpdate({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.ACCEPTED, response }, { new: true }, (err, doc) => {
+    const connectionRequest = await ConnectionRequest.findOneAndUpdate({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.ACCEPTED, responseMessage: response }, { new: true }, (err, doc) => {
       if (err) {
         console.log('Failed to update connection request: ', err);
         res.status(500).send(err);

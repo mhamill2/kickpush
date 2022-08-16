@@ -34,19 +34,14 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
       familyMembers: [...document.querySelectorAll('#family-members .bg-primary')].map((familyMember) => {
         let value = familyMember.getAttribute('data-value').split('___');
         return {
-          name: value[0],
-          age: value[1]
+          _id: value[0],
+          name: value[1],
+          birthDate: value[2]
         };
       }),
-      lessonTypes: [...document.querySelectorAll('#lesson-types .bg-primary')].map((lessonType) => {
-        return lessonType.getAttribute('data-value');
-      }),
-      lessonLocations: [...document.querySelectorAll('#lesson-locations .bg-primary')].map((lessonLocations) => {
-        return lessonLocations.getAttribute('data-value');
-      }),
-      lessonDays: [...document.querySelectorAll('#lesson-days .bg-primary')].map((lessonDays) => {
-        return lessonDays.getAttribute('data-value');
-      })
+      lessonTypes: [...document.querySelectorAll('#lesson-types .bg-primary')].map((lessonType) => lessonType.getAttribute('data-value')),
+      lessonLocations: [...document.querySelectorAll('#lesson-locations .bg-primary')].map((lessonLocations) => lessonLocations.getAttribute('data-value')),
+      lessonDays: [...document.querySelectorAll('#lesson-days .bg-primary')].map((lessonDays) => lessonDays.getAttribute('data-value'))
     };
 
     await sendConnectionRequest(connectionRequest);
@@ -72,7 +67,7 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
             <h2 className="my-4">Which family member(s)?</h2>
             <div className="flex justify-start flex-wrap gap-4">
               {familyMembers.map((familyMember, index) => (
-                <SelectableItem key={index} value={`${familyMember.name}___${familyMember.age}`} content={familyMember.name} selected={false} />
+                <SelectableItem key={index} value={`${familyMember._id}___${familyMember.name}___${familyMember.birthDate}`} content={familyMember.name} selected={false} />
               ))}
               <SelectableItem value="user" content="Myself" selected={false} />
             </div>

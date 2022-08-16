@@ -34,22 +34,12 @@ const connectionRequestSchema = new Schema({
     type: String,
     trim: true
   },
-  familyMembers: {
-    type: [
-      {
-        name: {
-          type: String,
-          required: true
-        },
-        age: {
-          type: Number,
-          required: true
-        },
-        _id: false
-      }
-    ],
-    required: true
-  },
+  familyMembers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'FamilyMember'
+    }
+  ],
   lessonTypes: {
     type: [
       {

@@ -5,6 +5,7 @@ const ip = require('ip');
 const auth = require('../middleware/auth/auth');
 const UserModel = require('../models/user');
 const { User } = UserModel;
+const FamilyMember = require('../models/familyMember');
 
 const router = new express.Router();
 
@@ -42,6 +43,10 @@ router.post('/login', async (req, res) => {
 
     await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
 
+    if (user.accountType == UserModel.STUDENT_ACCOUNT_TYPE) {
+      await req.user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
+    }
+
     res.send({ user, token });
   } catch (err) {
     console.log('Failed to login in user: ', err);
@@ -55,6 +60,7 @@ router.post('/login', async (req, res) => {
  */
 router.get('/loadUser', auth, async (req, res) => {
   await req.user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+  await req.user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
   res.json(req.user);
 });
 
@@ -98,16 +104,41 @@ router.post('/updateInstructorProfile', auth, async (req, res) => {
  */
 router.post('/updateStudentProfile', auth, async (req, res) => {
   const studentProfile = req.body.studentProfile;
-
-  if (!studentProfile.familyMembers) {
-    studentProfile.familyMembers = [];
-  }
-
-  req.user.studentProfile = req.body.studentProfile;
+  const { familyMembers } = studentProfile;
+  const currentFamilyMembers = req.user.studentProfile.familyMembers;
+  const user = req.user;
 
   try {
-    await req.user.updateOne({ studentProfile: req.body.studentProfile }, { runValidators: true });
-    res.json(req.user);
+    await familyMembers.forEach(async (familyMember) => {
+      if (!familyMember._id) {
+        familyMember.student = user._id;
+        const newFamilyMember = new FamilyMember(familyMember);
+        await newFamilyMember.save();
+      } else {
+        await FamilyMember.findByIdAndUpdate(familyMember._id, { name: familyMember.name, birthDate: familyMember.birthDate });
+      }
+    });
+
+    // Delete all family members that are in currentFamilyMembers but not in familyMembers
+    const familyMembersForDelete = currentFamilyMembers
+      .filter((familyMember) => {
+        return !familyMembers.find((familyMember2) => familyMember2._id.toString() === familyMember._id.toString());
+      })
+      .map((familyMember) => {
+        return familyMember._id;
+      });
+
+    await FamilyMember.deleteMany({ _id: { $in: familyMembersForDelete } });
+
+    // Get all familymembers that belong to the user
+    const newFamilyMembers = await FamilyMember.find({ student: user._id });
+    studentProfile.familyMembers = newFamilyMembers;
+    user.studentProfile = studentProfile;
+
+    await user.updateOne({ studentProfile: studentProfile }, { runValidators: true });
+    await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
+
+    res.status(200).json(user);
   } catch (err) {
     console.log('Failed to update user profile: ' + err);
     res.status(500).send();

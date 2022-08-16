@@ -12,22 +12,21 @@ const EditFamilyMembers = ({ onChange, user }) => {
   const [familyMembers, updateFamilyMembers] = useState(user.studentProfile.familyMembers);
 
   const addFamilyMember = () => {
-    console.log(familyMembers);
-    const newFamilyMember = { name: '', age: 0 };
+    const newFamilyMember = { name: '', birthDate: '' };
     user.studentProfile.familyMembers.push(newFamilyMember);
-    updateFamilyMembers((familyMembers) => [...user.studentProfile.familyMembers]);
+    updateFamilyMembers(() => [...user.studentProfile.familyMembers]);
   };
 
   const deleteFamilyMember = (e) => {
     const index = e.target.closest('[data-index]').getAttribute('data-index');
     user.studentProfile.familyMembers.splice(index, 1);
-    updateFamilyMembers((familyMembers) => [...user.studentProfile.familyMembers]);
+    updateFamilyMembers(() => [...user.studentProfile.familyMembers]);
   };
 
   return (
     <section>
       {familyMembers.map((familyMember, index) => (
-        <FamilyMember key={uuidv4()} index={index} name={familyMember.name} age={familyMember.age || ''} onChange={onChange} onDelete={deleteFamilyMember}></FamilyMember>
+        <FamilyMember key={uuidv4()} index={index} name={familyMember.name} birthDate={familyMember.birthDate || ''} onChange={onChange} onDelete={deleteFamilyMember}></FamilyMember>
       ))}
       <div className="flex justify-center mt-7 text-lg">
         <button className="flex items-center" onClick={addFamilyMember}>

@@ -5,6 +5,17 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const StudentProfile = ({ user, closeEditModal, openEditModal }) => {
   const familyMembers = user.studentProfile.familyMembers;
+  const today = new Date();
+
+  const getAge = (birthDate) => {
+    const birthDateObject = new Date(birthDate);
+    const age = today.getFullYear() - birthDateObject.getFullYear();
+    const month = today.getMonth() - birthDateObject.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDateObject.getDate())) {
+      return age - 1;
+    }
+    return age;
+  };
 
   return (
     <section id="family-members" className="border-b-4 p-5">
@@ -19,7 +30,7 @@ const StudentProfile = ({ user, closeEditModal, openEditModal }) => {
               <div className="max-w-1/3 text-center border-gray-100 bg-gray-100 rounded-lg py-2 px-12">
                 {familyMember.name}
                 <br />
-                Age: {familyMember.age}
+                Age: {getAge(familyMember.birthDate)}
               </div>
             </div>
           ))}
