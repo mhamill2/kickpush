@@ -45,6 +45,7 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   let connectionRequest = req.body;
   connectionRequest.student = user._id;
+
   try {
     const existingConnectionRequest = await ConnectionRequest.findOne({
       student: connectionRequest.student,
@@ -95,6 +96,7 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
     const student = await User.findById(connectionRequest.student);
     student.connections.push(user._id);
     user.connections.push(connectionRequest.student._id);
+
     await student.save();
     await user.save();
 

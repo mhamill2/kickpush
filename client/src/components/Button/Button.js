@@ -1,6 +1,4 @@
-const Button = (props) => {
-  const { content, isPrimary, isSecondary, size, extraClasses, onClick } = props;
-
+const Button = ({ content, isPrimary, isSecondary, size, extraClasses, onClick }) => {
   let className = 'rounded-3xl cursor-pointer';
 
   if (isPrimary) {
@@ -17,7 +15,9 @@ const Button = (props) => {
     className += ' h-10 w-1/2';
   }
 
-  className += ` ${extraClasses}`;
+  if (extraClasses) {
+    className += ` ${extraClasses}`;
+  }
 
   return (
     <button className={className} onClick={onClick ? onClick : null}>

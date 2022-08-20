@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { FaFacebookF } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
+import Button from '../../../components/Button/Button';
 import FormModal from '../../../components/FormModal/FormModal';
 import HrText from '../../../components/HrText/HrText';
-import Button from '../../../components/Button/Button';
 import { login } from '../../../state/user/userActions';
 
 const Login = (props) => {

@@ -41,10 +41,14 @@ router.post('/login', async (req, res) => {
     const user = await User.findByCredentials(req.body.email, req.body.password);
     const token = await user.generateAuthToken();
 
-    await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+    if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
+      await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile']).execPopulate();
+    } else {
+      await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+    }
 
     if (user.accountType == UserModel.STUDENT_ACCOUNT_TYPE) {
-      await req.user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
+      await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
     }
 
     res.send({ user, token });
@@ -59,9 +63,16 @@ router.post('/login', async (req, res) => {
  * @desc    Load the current user
  */
 router.get('/loadUser', auth, async (req, res) => {
-  await req.user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
-  await req.user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
-  res.json(req.user);
+  const user = req.user;
+
+  if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
+    await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile.familyMembers']).execPopulate();
+  } else {
+    await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+    await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
+  }
+
+  res.json(user);
 });
 
 /**
@@ -89,7 +100,7 @@ router.post('/updateInstructorProfile', auth, async (req, res) => {
 
   try {
     await user.updateOne({ instructorProfile: req.body.instructorProfile }, { runValidators: true });
-    await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
+    await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile.familyMembers']).execPopulate();
 
     res.json(user);
   } catch (err) {

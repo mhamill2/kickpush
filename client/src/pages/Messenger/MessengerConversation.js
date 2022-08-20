@@ -9,7 +9,8 @@ import { getConversation } from '../../state/message/messageActions';
 
 const MessengerConversation = ({ match, user, messages }) => {
   const dispatch = useDispatch();
-  const connectionName = user.connections.find((connection) => connection._id === match.params.userId).firstName;
+  const connection = user.connections.find((connection) => connection._id === match.params.userId);
+  const connectionName = connection.firstName;
 
   const [page, setPage] = useState('messages');
   const [loading, setLoading] = useState(true);
@@ -60,7 +61,7 @@ const MessengerConversation = ({ match, user, messages }) => {
         </h1>
       </header>
       {page === 'messages' && <Messages messages={messages} loading={loading} receiverId={match.params.userId} />}
-      {page === 'lessons' && <Lessons />}
+      {page === 'lessons' && <Lessons connection={connection} />}
     </>
   );
 };

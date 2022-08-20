@@ -5,8 +5,8 @@ import ScrollRef from '../../components/ScrollRef';
 import Spinner from '../../components/Spinner/Spinner';
 import { sendMessage } from '../../state/message/messageActions';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Messages = ({ user, messages, loading, receiverId }) => {
   const [text, setText] = useState('');
