@@ -43,11 +43,9 @@ router.post('/login', async (req, res) => {
 
     if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
       await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile']).execPopulate();
+      await user.populate('connections.studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
     } else {
       await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
-    }
-
-    if (user.accountType == UserModel.STUDENT_ACCOUNT_TYPE) {
       await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
     }
 
@@ -67,6 +65,7 @@ router.get('/loadUser', auth, async (req, res) => {
 
   if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
     await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile.familyMembers']).execPopulate();
+    await user.populate('connections.studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
   } else {
     await user.populate('connections', ['firstName', 'lastName', 'avatar']).execPopulate();
     await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();

@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { connect } from 'react-redux';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import setHours from 'date-fns/setHours';
+import setMinutes from 'date-fns/setMinutes';
 
 import Button from '../../components/Button/Button';
 import SelectableItem from '../../components/SelectableItem/SelectableItem';
@@ -17,8 +21,43 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
     familyMembers = user.studentProfile.familyMembers;
   }
 
+  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 9));
+  const [duration, setDuration] = useState(60);
+  const [showHoursLabel, setShowHoursLabel] = useState(true);
+  const [showMinutesLabel, setShowMinutesLabel] = useState(false);
   const [location, setLocation] = useState('');
   const [hourlyRate, setHourlyRate] = useState(20);
+
+  useEffect(() => {
+    if (duration >= 60) {
+      setShowHoursLabel(true);
+    } else {
+      setShowHoursLabel(false);
+    }
+
+    if (duration % 60 !== 0) {
+      setShowMinutesLabel(true);
+    } else {
+      setShowMinutesLabel(false);
+    }
+  }, [duration]);
+
+  const filterPassedTime = (time) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(time);
+
+    return currentDate.getTime() < selectedDate.getTime();
+  };
+
+  const incrementDuration = () => {
+    setDuration(duration + 15);
+  };
+
+  const decrementDuration = () => {
+    if (duration > 15) {
+      setDuration(duration - 15);
+    }
+  };
 
   const onLocationChange = (e) => setLocation(e.target.value);
   const onHourlyRateChange = (e) => setHourlyRate(e.target.value);
@@ -42,9 +81,25 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
       </header>
 
       <div className="flex flex-col gap-4 p-4">
-        <section className="flex flex-col items-center p-2">
+        <section className="flex flex-col p-2 gap-2">
           <h2>Date and Time</h2>
-          <FontAwesomeIcon icon={faPlusCircle} className="cursor-pointer h-9 w-9 mt-3" />
+          <DatePicker className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg" selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect filterTime={filterPassedTime} dateFormat="MMMM d, yyyy h:mm aa" timeIntervals={15} />
+        </section>
+        <section className="flex flex-col p-2 gap-2">
+          <h2>Duration</h2>
+          <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between">
+            <div>
+              <span id="duration">{duration / 60 >= 1 ? Math.floor(duration / 60) : ''}</span>
+              <span className={!showHoursLabel && 'hidden'}>hr</span> <span id="minutesDuration">{duration % 60 !== 0 ? duration % 60 : ''}</span>
+              <span className={!showMinutesLabel && 'hidden'} id="duration-label-minutes">
+                min
+              </span>
+            </div>
+            <div className="flex gap-2 items-center">
+              <FontAwesomeIcon icon={faMinusCircle} className="h-4 w-4 text-gray-600" onClick={decrementDuration} />
+              <FontAwesomeIcon icon={faPlusCircle} className="h-4 w-4 cursor-pointer text-gray-600" onClick={incrementDuration} />
+            </div>
+          </div>
         </section>
         <section className="flex flex-col gap-2">
           <h2>Students</h2>
