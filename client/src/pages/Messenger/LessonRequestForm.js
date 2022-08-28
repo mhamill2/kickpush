@@ -22,7 +22,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
   const [showHoursLabel, setShowHoursLabel] = useState(true);
   const [showMinutesLabel, setShowMinutesLabel] = useState(false);
   const [location, setLocation] = useState('');
-  const [hourlyRate, setHourlyRate] = useState(20);
+  const [hourlyRate, setHourlyRate] = useState(20); // TODO change this to the instructors hourly rate and add a cost field to the request
 
   useEffect(() => {
     if (duration >= 60) {

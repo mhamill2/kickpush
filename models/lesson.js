@@ -31,7 +31,7 @@ const lessonSchema = new Schema(
       default: false,
       required: true
     },
-    rate: {
+    hourlyRate: {
       type: Number,
       required: true,
       min: 0
@@ -42,7 +42,7 @@ const lessonSchema = new Schema(
         required: true
       }
     ],
-    requestor: {
+    requester: {
       type: String,
       enum: ['student', 'instructor'],
       required: true

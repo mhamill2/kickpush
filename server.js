@@ -2,10 +2,11 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 
-const userRouter = require('./routers/user');
-const connectionRouter = require('./routers/connections');
-const messageRouter = require('./routers/message');
 const socketUtils = require('./utils/socket');
+const connectionRouter = require('./routers/connections');
+const lessonRouter = require('./routers/lesson');
+const messageRouter = require('./routers/message');
+const userRouter = require('./routers/user');
 
 require('./db/db');
 const PORT = process.env.PORT || 5000;
@@ -26,7 +27,7 @@ const initServer = () => {
   });
 
   app.use(express.json());
-  app.use(connectionRouter, messageRouter, userRouter);
+  app.use(connectionRouter, lessonRouter, messageRouter, userRouter);
 
   server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 };
