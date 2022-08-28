@@ -55,4 +55,14 @@ const sendConnectionRequestResponse = async (connectionRequest, responseMessage,
   }
 };
 
-export { sendConnectionRequest, getPendingConnectionRequests, sendConnectionRequestResponse };
+const sendLessonRequest = async (lessonRequest) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/sendLessonRequest', lessonRequest);
+  } catch (err) {
+    return err.response;
+  }
+};
+
+export { sendConnectionRequest, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest };

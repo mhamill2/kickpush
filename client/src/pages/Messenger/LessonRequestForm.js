@@ -12,16 +12,12 @@ import setMinutes from 'date-fns/setMinutes';
 import Button from '../../components/Button/Button';
 import SelectableItem from '../../components/SelectableItem/SelectableItem';
 
+import { sendLessonRequest } from '../../state/lessons/lessonActions';
+
 const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
-  let familyMembers = [];
+  const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
 
-  if (user.accountType === 'instructor') {
-    familyMembers = connection.studentProfile.familyMembers;
-  } else {
-    familyMembers = user.studentProfile.familyMembers;
-  }
-
-  const [startDate, setStartDate] = useState(setHours(setMinutes(new Date(), 0), 9));
+  const [startDate, setStartDate] = useState(null);
   const [duration, setDuration] = useState(60);
   const [showHoursLabel, setShowHoursLabel] = useState(true);
   const [showMinutesLabel, setShowMinutesLabel] = useState(false);
@@ -62,15 +58,54 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
   const onLocationChange = (e) => setLocation(e.target.value);
   const onHourlyRateChange = (e) => setHourlyRate(e.target.value);
 
-  const incrementHourlyRate = () => setHourlyRate(hourlyRate + 1.0);
+  const incrementHourlyRate = () => setHourlyRate(Number(hourlyRate) + 1.0);
   const decrementHourlyRate = () => {
-    if (hourlyRate > 0) {
-      setHourlyRate(hourlyRate - 1.0);
-    }
+    if (hourlyRate <= 0) return;
+    setHourlyRate(Number(hourlyRate) - 1.0);
   };
 
   const submitLessonRequest = (e) => {
     e.preventDefault();
+    const lessonRequest = {
+      dateTime: startDate,
+      duration,
+      hourlyRate,
+      instructor: user.accountType === 'instructor' ? user._id : connection._id,
+      location,
+      student: user.accountType === 'instructor' ? connection._id : user._id,
+      students: [...document.querySelectorAll('#family-members .bg-primary')].map((familyMember) => {
+        let value = familyMember.getAttribute('data-value').split('___');
+        return value[0];
+      })
+    };
+
+    const isValid = validateInput(lessonRequest);
+
+    if (isValid) {
+      sendLessonRequest(lessonRequest);
+    }
+  };
+
+  const validateInput = (lessonRequest) => {
+    let isValid = Object.values(lessonRequest).every((value) => (value || value === 0 ? true : false));
+
+    if (lessonRequest.dateTime < Date.now()) {
+      isValid = false;
+    }
+
+    if (lessonRequest.duration < 15) {
+      isValid = false;
+    }
+
+    if (lessonRequest.students.length < 1) {
+      isValid = false;
+    }
+
+    if (lessonRequest.hourlyRate < 0) {
+      isValid = false;
+    }
+
+    return isValid;
   };
 
   return (
@@ -83,15 +118,15 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
       <div className="flex flex-col gap-4 p-4">
         <section className="flex flex-col p-2 gap-2">
           <h2>Date and Time</h2>
-          <DatePicker className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg" selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect filterTime={filterPassedTime} dateFormat="MMMM d, yyyy h:mm aa" timeIntervals={15} />
+          <DatePicker className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg" selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect filterTime={filterPassedTime} dateFormat="MMMM d, yyyy h:mm aa" timeIntervals={15} placeholderText="Please select a date and time" />
         </section>
         <section className="flex flex-col p-2 gap-2">
           <h2>Duration</h2>
           <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between">
             <div>
               <span id="duration">{duration / 60 >= 1 ? Math.floor(duration / 60) : ''}</span>
-              <span className={!showHoursLabel && 'hidden'}>hr</span> <span id="minutesDuration">{duration % 60 !== 0 ? duration % 60 : ''}</span>
-              <span className={!showMinutesLabel && 'hidden'} id="duration-label-minutes">
+              <span className={!showHoursLabel ? 'hidden' : ''}>hr</span> <span id="minutesDuration">{duration % 60 !== 0 ? duration % 60 : ''}</span>
+              <span className={!showMinutesLabel ? 'hidden' : ''} id="duration-label-minutes">
                 min
               </span>
             </div>
@@ -101,7 +136,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
             </div>
           </div>
         </section>
-        <section className="flex flex-col gap-2">
+        <section id="family-members" className="flex flex-col gap-2">
           <h2>Students</h2>
           <div className="flex justify-start flex-wrap gap-4">
             {familyMembers.map((familyMember, index) => (
@@ -115,7 +150,9 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
           <input type="text" name="location" id="location" placeholder="Where will the lesson take place?" value={location} className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4" onChange={onLocationChange} />
         </section>
         <section className="flex flex-col gap-2">
-          <h2>Hourly Rate</h2>
+          <h2>
+            Hourly Rate <span className="text-xs">(per student)</span>
+          </h2>
           <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between">
             <div>
               $ <input type="number" name="rate" id="rate" value={hourlyRate} className="focus:outline-none w-3/4" onChange={onHourlyRateChange} />
