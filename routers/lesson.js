@@ -6,6 +6,32 @@ const { User } = require('../models/user');
 const router = new express.Router();
 
 /**
+ * @route   GET /getlessons/:userId
+ * @desc    Gets the lesson history of the current user and the passed in user
+ */
+router.get('/getLessons/:userId', auth, async (req, res) => {
+  const instructor = req.user.accountType === 'instructor' ? req.user._id : req.params.userId;
+  const student = req.user.accountType === 'student' ? req.user._id : req.params.userId;
+
+  try {
+    let lessons = await Lesson.find({
+      $and: [{ instructor }, { student }]
+    });
+
+    lessons = await Lesson.populate(lessons, {
+      path: 'student instructor',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    res.status(200).json(lessons);
+  } catch (err) {
+    console.log('Failed to get lessons: ', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+/**
  * @route   POST /sendLessonRequest
  * @desc    Sends a private lesson request to a connection
  */

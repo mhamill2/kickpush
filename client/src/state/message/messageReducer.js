@@ -1,4 +1,4 @@
-import { ADD_NEW_MESSAGE, GET_CONVERSATIONS_SUCCESS, GET_MESSAGES_SUCCESS, SEND_MESSAGE_SUCCESS } from './types';
+import { ADD_NEW_MESSAGE, GET_CONVERSATIONS_SUCCESS, GET_MESSAGES_FAILURE, GET_MESSAGES_SUCCESS, SEND_MESSAGE_SUCCESS } from './types';
 
 const initialState = {
   conversations: [],
@@ -16,6 +16,11 @@ const messageReducer = (state = initialState, action) => {
       return {
         ...state,
         messages: action.payload
+      };
+    case GET_MESSAGES_FAILURE:
+      return {
+        ...state,
+        messages: []
       };
     case ADD_NEW_MESSAGE:
       return {

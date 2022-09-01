@@ -23,13 +23,11 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
 
   const openResponseModal = (e) => {
     const accepted = e.target.getAttribute('data-accept');
-    console.log(accepted === 'true');
     setAcceptRequest(accepted);
     setshowResponseModal(true);
   };
 
   const closeResponseModal = () => {
-    console.log('close');
     setshowResponseModal(false);
     setAcceptRequest(false);
   };

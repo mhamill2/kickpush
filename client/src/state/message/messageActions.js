@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import store from '../store';
-import { GET_CONVERSATIONS_SUCCESS, SEND_MESSAGE_SUCCESS } from './types';
+import { GET_CONVERSATIONS_SUCCESS, SEND_MESSAGE_SUCCESS, GET_MESSAGES_FAILURE, GET_MESSAGES_SUCCESS } from './types';
 import setAuthToken from '../../utils/setAuthToken';
 
 const defaultPostConfig = {
@@ -26,9 +26,10 @@ const getConversation = async (userId) => {
 
   try {
     const res = await axios.get(`/getConversation/${userId}`);
-    return res.data;
+    store.dispatch({ type: GET_MESSAGES_SUCCESS, payload: res.data });
   } catch (err) {
     console.log(err);
+    store.dispatch({ type: GET_MESSAGES_FAILURE });
   }
 };
 

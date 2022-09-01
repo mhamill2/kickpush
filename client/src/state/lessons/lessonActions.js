@@ -1,4 +1,4 @@
-import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED } from './types';
+import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE } from './types';
 import { UPDATE_USER_CONNECTIONS } from '../user/types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
@@ -65,4 +65,16 @@ const sendLessonRequest = async (lessonRequest) => {
   }
 };
 
-export { sendConnectionRequest, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest };
+const getLessons = async (userId) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.get(`/getLessons/${userId}`);
+    store.dispatch({ type: GET_LESSONS_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err.response);
+    store.dispatch({ type: GET_LESSONS_FAILURE });
+  }
+};
+
+export { sendConnectionRequest, getLessons, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest };

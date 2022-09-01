@@ -6,32 +6,34 @@ import Messages from './Messages';
 import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 
 import { getConversation } from '../../state/message/messageActions';
+import { getLessons } from '../../state/lessons/lessonActions';
 
-const MessengerConversation = ({ match, user, messages }) => {
+const MessengerConversation = ({ match, user, messages, lessons }) => {
   const dispatch = useDispatch();
   const connection = user.connections.find((connection) => connection._id === match.params.userId);
   const connectionName = connection.firstName;
 
   const [page, setPage] = useState('messages');
-  const [loading, setLoading] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(true);
+  const [loadingLessons, setLoadingLessons] = useState(true);
 
   useEffect(() => {
     dispatch({ type: 'HIDE_BOTTOM_NAV' });
 
     const userId = match.params.userId;
     fetchConversation(userId);
+    fetchLessons(userId);
     // eslint-disable-next-line
   }, []);
 
   const fetchConversation = async (userId) => {
-    let conversationMessages = await getConversation(userId);
+    await getConversation(userId);
+    setLoadingMessages(false);
+  };
 
-    if (!conversationMessages) {
-      conversationMessages = [];
-    }
-
-    dispatch({ type: 'GET_MESSAGES_SUCCESS', payload: conversationMessages });
-    setLoading(false);
+  const fetchLessons = async (userId) => {
+    await getLessons(userId);
+    setLoadingLessons(false);
   };
 
   const openLessons = () => setPage('lessons');
@@ -60,15 +62,16 @@ const MessengerConversation = ({ match, user, messages }) => {
           <span className="ml-auto">Lessons {'>'}</span>
         </h1>
       </header>
-      {page === 'messages' && <Messages messages={messages} loading={loading} receiverId={match.params.userId} />}
-      {page === 'lessons' && <Lessons connection={connection} />}
+      {page === 'messages' && <Messages loading={loadingMessages} receiverId={match.params.userId} />}
+      {page === 'lessons' && <Lessons connection={connection} loading={loadingLessons} />}
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
   user: state.user.user,
-  messages: state.message.messages
+  messages: state.message.messages,
+  lessons: state.lesson.lessons
 });
 
 export default connect(mapStateToProps)(MessengerConversation);

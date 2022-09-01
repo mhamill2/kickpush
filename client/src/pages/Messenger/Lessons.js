@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Button from '../../components/Button/Button';
 import LessonRequestForm from './LessonRequestForm';
 
-const Lessons = ({ loading, connection, user }) => {
+const Lessons = ({ loading, connection, user, lessons }) => {
   const [showLessonRequestForm, setShowLessonRequestForm] = useState(false);
 
   const openLessonRequestForm = () => {
@@ -30,7 +30,8 @@ const Lessons = ({ loading, connection, user }) => {
 
 // mapStateToProps
 const mapStateToProps = (state) => ({
-  user: state.user.user
+  user: state.user.user,
+  lessons: state.lesson.lessons
 });
 
 export default connect(mapStateToProps)(Lessons);

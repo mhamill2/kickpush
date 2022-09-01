@@ -6,8 +6,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
-import setHours from 'date-fns/setHours';
-import setMinutes from 'date-fns/setMinutes';
 
 import Button from '../../components/Button/Button';
 import SelectableItem from '../../components/SelectableItem/SelectableItem';
