@@ -24,6 +24,12 @@ router.get('/getLessons/:userId', auth, async (req, res) => {
       model: 'User'
     });
 
+    lessons = await Lesson.populate(lessons, {
+      path: 'students',
+      select: 'name birthDate',
+      model: 'FamilyMember'
+    });
+
     res.status(200).json(lessons);
   } catch (err) {
     console.log('Failed to get lessons: ', err);
@@ -50,6 +56,7 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
 
     lessonRequest.requester = user.accountType;
     lessonRequest.type = 'private';
+    lessonRequest.price = lessonRequest.duration * (lessonRequest.hourlyRate / 60) * lessonRequest.students.length;
     lessonRequest = new Lesson(lessonRequest);
     await lessonRequest.save();
 

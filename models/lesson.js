@@ -20,6 +20,10 @@ const lessonSchema = new Schema(
       type: Date,
       required: true
     },
+    duration: {
+      type: Number,
+      required: true
+    },
     status: {
       type: String,
       enum: [PENDING, ACCEPTED, DECLINED, COMPLETED],
@@ -58,6 +62,10 @@ const lessonSchema = new Schema(
     },
     locationAddress: {
       type: String
+    },
+    price: {
+      type: Number,
+      required: true
     }
   },
   {

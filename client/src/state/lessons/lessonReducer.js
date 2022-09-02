@@ -1,4 +1,4 @@
-import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE } from './types';
+import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE, LESSON_REQUEST_SUCCESS } from './types';
 
 const initialState = {
   connectionRequests: [],
@@ -32,6 +32,12 @@ const lessonReducer = (state = initialState, action) => {
       return {
         ...state,
         lessons: []
+      };
+    case LESSON_REQUEST_SUCCESS:
+      return {
+        ...state,
+        lessonRequests: [...state.lessonRequests, action.payload],
+        lessons: [...state.lessons, action.payload]
       };
     default:
       return state;

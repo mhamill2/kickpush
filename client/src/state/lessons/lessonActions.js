@@ -1,4 +1,4 @@
-import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE } from './types';
+import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE, LESSON_REQUEST_SUCCESS } from './types';
 import { UPDATE_USER_CONNECTIONS } from '../user/types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
@@ -60,6 +60,7 @@ const sendLessonRequest = async (lessonRequest) => {
 
   try {
     const res = await axios.post('/sendLessonRequest', lessonRequest);
+    store.dispatch({ type: LESSON_REQUEST_SUCCESS, payload: res.data });
   } catch (err) {
     return err.response;
   }
