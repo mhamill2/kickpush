@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-const Lesson = ({ user, lesson }) => {
+const ScheduledLesson = ({ user, lesson }) => {
   const getWeekdayShortName = (date) => {
     return date.toLocaleString('en-US', { weekday: 'short' });
   };
@@ -43,7 +43,7 @@ const Lesson = ({ user, lesson }) => {
           <div>${lesson.price}</div>
         </div>
       </div>
-      <div></div>
+      <div>{user.accountType === 'instructor'}</div>
       <div></div>
     </div>
   );
@@ -53,4 +53,4 @@ const mapStateToProps = (state) => ({
   user: state.user.user
 });
 
-export default connect(mapStateToProps)(Lesson);
+export default connect(mapStateToProps)(ScheduledLesson);

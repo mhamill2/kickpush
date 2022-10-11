@@ -22,6 +22,9 @@ module.exports = {
       },
       lineHeight: {
         1: '0.1rem'
+      },
+      translate: {
+        fuller: '200%'
       }
     }
   },
