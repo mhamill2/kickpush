@@ -12,15 +12,32 @@ import SelectableItem from '../../components/SelectableItem/SelectableItem';
 
 import { sendLessonRequest } from '../../state/lessons/lessonActions';
 
-const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
+const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) => {
   const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
 
+  const [editLesson, setEditLesson] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [duration, setDuration] = useState(60);
   const [showHoursLabel, setShowHoursLabel] = useState(true);
   const [showMinutesLabel, setShowMinutesLabel] = useState(false);
   const [location, setLocation] = useState('');
   const [hourlyRate, setHourlyRate] = useState(20); // TODO change this to the instructors hourly rate and add a cost field to the request
+  const [selectedStudents, setSelectedStudents] = useState([]);
+
+  if ((editLesson === null && lesson !== null) || (editLesson !== null && lesson !== null && editLesson._id !== lesson._id)) {
+    setEditLesson(lesson);
+    setStartDate(new Date(lesson.dateTime));
+    setDuration(lesson.duration);
+    setLocation(lesson.location);
+    setHourlyRate(lesson.hourlyRate);
+    setSelectedStudents(lesson.students.map((student) => student._id));
+  } else if (editLesson !== null && lesson === null) {
+    setEditLesson(null);
+    setStartDate(null);
+    setDuration(60);
+    setLocation('');
+    setHourlyRate(20);
+  }
 
   useEffect(() => {
     if (duration >= 60) {
@@ -29,7 +46,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
       setShowHoursLabel(false);
     }
 
-    if (duration % 60 !== 0) {
+    if (duration % 60 > 0) {
       setShowMinutesLabel(true);
     } else {
       setShowMinutesLabel(false);
@@ -77,10 +94,13 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
       })
     };
 
-    const isValid = validateInput(lessonRequest);
+    if (editLesson !== null) {
+      lessonRequest._id = editLesson._id;
+    }
 
-    if (isValid) {
+    if (validateInput(lessonRequest)) {
       sendLessonRequest(lessonRequest);
+      closeForm();
     }
   };
 
@@ -107,16 +127,34 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
   };
 
   return (
-    <Transition show={showForm} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col">
+    <Transition
+      show={showForm}
+      enter="transition ease-in-out duration-300 transform"
+      enterFrom="translate-y-full"
+      enterTo="translate-x-0"
+      leave="transition-ease-in-out duration-300 transform"
+      leaveFrom="translate-y-0"
+      leaveTo="translate-y-full"
+      className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col"
+    >
       <header className="border-b p-4 border-gray-300 flex justify-between items-center">
-        <h1 className="text-xl font-semibold">Propose a New Lesson</h1>
+        <h1 className="text-xl font-semibold">{editLesson === null ? 'Propose a New Lesson' : 'Edit Lesson'}</h1>
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600" onClick={closeForm} />
       </header>
 
       <div className="flex flex-col gap-4 p-4">
         <section className="flex flex-col p-2 gap-2">
           <h2>Date and Time</h2>
-          <DatePicker className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg" selected={startDate} onChange={(date) => setStartDate(date)} showTimeSelect filterTime={filterPassedTime} dateFormat="MMMM d, yyyy h:mm aa" timeIntervals={15} placeholderText="Please select a date and time" />
+          <DatePicker
+            className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            filterTime={filterPassedTime}
+            dateFormat="MMMM d, yyyy h:mm aa"
+            timeIntervals={15}
+            placeholderText="Please select a date and time"
+          />
         </section>
         <section className="flex flex-col p-2 gap-2">
           <h2>Duration</h2>
@@ -138,14 +176,27 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user }) => {
           <h2>Students</h2>
           <div className="flex justify-start flex-wrap gap-4">
             {familyMembers.map((familyMember, index) => (
-              <SelectableItem key={index} value={`${familyMember._id}___${familyMember.name}___${familyMember.birthDate}`} content={familyMember.name} selected={false} />
+              <SelectableItem
+                key={index}
+                value={`${familyMember._id}___${familyMember.name}___${familyMember.birthDate}`}
+                content={familyMember.name}
+                selected={selectedStudents.includes(familyMember._id)}
+              />
             ))}
             <SelectableItem value="user" content="Myself" selected={false} />
           </div>
         </section>
         <section className="flex flex-col gap-2">
           <h2>Location</h2>
-          <input type="text" name="location" id="location" placeholder="Where will the lesson take place?" value={location} className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4" onChange={onLocationChange} />
+          <input
+            type="text"
+            name="location"
+            id="location"
+            placeholder="Where will the lesson take place?"
+            value={location}
+            className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4"
+            onChange={onLocationChange}
+          />
         </section>
         <section className="flex flex-col gap-2">
           <h2>

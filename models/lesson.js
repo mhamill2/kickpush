@@ -1,8 +1,7 @@
 const { Schema, model } = require('mongoose');
-const { LESSON_STATUS, LESSON_LOCATION_DISPLAY_NAMES } = require('../constants/lesson_constants');
+const { LESSON_STATUS } = require('../constants/lesson_constants');
 
-const { instructorsHome, other, skatepark, studentsHome, virtual } = LESSON_LOCATION_DISPLAY_NAMES;
-const { ACCEPTED, COMPLETED, DECLINED, PENDING } = LESSON_STATUS;
+const { ACCEPTED, COMPLETED, DECLINED, PENDING, CANCELLED } = LESSON_STATUS;
 
 const lessonSchema = new Schema(
   {
@@ -26,7 +25,7 @@ const lessonSchema = new Schema(
     },
     status: {
       type: String,
-      enum: [PENDING, ACCEPTED, DECLINED, COMPLETED],
+      enum: [PENDING, ACCEPTED, DECLINED, COMPLETED, CANCELLED],
       default: LESSON_STATUS.PENDING,
       required: true
     },

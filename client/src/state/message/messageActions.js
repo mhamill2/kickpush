@@ -45,7 +45,6 @@ const sendMessage = async (message) => {
 };
 
 const addNewMessage = async (message) => {
-  console.log('addNewMessage: ', message);
   store.dispatch({ type: SEND_MESSAGE_SUCCESS, payload: message });
 };
 

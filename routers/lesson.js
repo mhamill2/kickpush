@@ -3,6 +3,8 @@ const auth = require('../middleware/auth/auth');
 const Lesson = require('../models/lesson');
 const { User } = require('../models/user');
 
+const { LESSON_STATUS } = require('../constants/lesson_constants');
+
 const router = new express.Router();
 
 /**
@@ -57,12 +59,44 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
     lessonRequest.requester = user.accountType;
     lessonRequest.type = 'private';
     lessonRequest.price = lessonRequest.duration * (lessonRequest.hourlyRate / 60) * lessonRequest.students.length;
-    lessonRequest = new Lesson(lessonRequest);
-    await lessonRequest.save();
+
+    if (lessonRequest._id) {
+      const lesson = await Lesson.findByIdAndUpdate(lessonRequest._id, lessonRequest);
+    } else {
+      lessonRequest = new Lesson(lessonRequest);
+      await lessonRequest.save();
+    }
 
     res.status(201).send(lessonRequest);
   } catch (err) {
     console.log('Failed to create the lesson request: ', err);
+    res.status(500).send(err);
+  }
+});
+
+/**
+ * route   POST /cancelLesson
+ * @desc    Cancels a lesson
+ */
+router.post('/cancelLesson', auth, async (req, res) => {
+  const lessonId = req.body.lessonId;
+  const user = req.user;
+
+  try {
+    const lesson = await Lesson.findById(lessonId);
+    console.log(lesson);
+    if (!lesson.instructor.equals(user._id) && !lesson.student.equals(user._id)) {
+      console.log(`${user._id} attempted to cancel a lesson that they are not a part of`);
+      res.status(401).send('Failed to cancel the lesson');
+      return;
+    }
+
+    lesson.status = LESSON_STATUS.CANCELLED;
+    await lesson.save();
+
+    res.status(200).send(lesson);
+  } catch (err) {
+    console.log('Failed to cancel the lesson: ', err);
     res.status(500).send(err);
   }
 });

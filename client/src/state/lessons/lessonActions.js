@@ -1,4 +1,13 @@
-import { CONNECTION_REQUEST_SUCCESS, CONNECTION_REQUEST_ACCEPTED, CONNECTION_REQUEST_DECLINED, GET_LESSONS_SUCCESS, GET_LESSONS_FAILURE, LESSON_REQUEST_SUCCESS } from './types';
+import {
+  CANCEL_LESSONS_SUCCESS,
+  CANCEL_LESSONS_FAILURE,
+  CONNECTION_REQUEST_SUCCESS,
+  CONNECTION_REQUEST_ACCEPTED,
+  CONNECTION_REQUEST_DECLINED,
+  GET_LESSONS_SUCCESS,
+  GET_LESSONS_FAILURE,
+  LESSON_REQUEST_SUCCESS
+} from './types';
 import { UPDATE_USER_CONNECTIONS } from '../user/types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
@@ -78,4 +87,16 @@ const getLessons = async (userId) => {
   }
 };
 
-export { sendConnectionRequest, getLessons, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest };
+const cancelLesson = async (lessonId) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/cancelLesson', { lessonId });
+    store.dispatch({ type: CANCEL_LESSONS_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err.response);
+    store.dispatch({ type: CANCEL_LESSONS_FAILURE });
+  }
+};
+
+export { sendConnectionRequest, getLessons, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest, cancelLesson };

@@ -1,4 +1,4 @@
-const Button = ({ content, isPrimary, isSecondary, size, extraClasses, onClick }) => {
+const Button = ({ content, isPrimary, isSecondary, size, extraClasses, onClick, dataAttributes }) => {
   let className = 'rounded-3xl cursor-pointer';
 
   if (isPrimary) {
@@ -20,7 +20,7 @@ const Button = ({ content, isPrimary, isSecondary, size, extraClasses, onClick }
   }
 
   return (
-    <button className={className} onClick={onClick ? onClick : null}>
+    <button className={className} onClick={onClick ? onClick : null} {...dataAttributes}>
       {content}
     </button>
   );

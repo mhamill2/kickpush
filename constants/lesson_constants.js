@@ -21,6 +21,7 @@ module.exports = Object.freeze({
 
   LESSON_STATUS: {
     ACCEPTED: 'accepted',
+    CANCELLED: 'cancelled',
     COMPLETED: 'completed',
     DECLINED: 'declined',
     PENDING: 'pending'
