@@ -10,7 +10,7 @@ import { faTimes, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-sv
 import Button from '../../components/Button/Button';
 import SelectableItem from '../../components/SelectableItem/SelectableItem';
 
-import { sendLessonRequest } from '../../state/lessons/lessonActions';
+import { sendLessonRequest, editLessonRequest } from '../../state/lessons/lessonActions';
 
 const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) => {
   const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
@@ -94,12 +94,13 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
       })
     };
 
-    if (editLesson !== null) {
-      lessonRequest._id = editLesson._id;
-    }
-
     if (validateInput(lessonRequest)) {
-      sendLessonRequest(lessonRequest);
+      if (editLesson !== null) {
+        lessonRequest._id = editLesson._id;
+        editLessonRequest(lessonRequest);
+      } else {
+        sendLessonRequest(lessonRequest);
+      }
       closeForm();
     }
   };
@@ -214,7 +215,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
         </section>
       </div>
       <footer className="flex justify-around p-8 fixed bottom-0 w-full bg-white">
-        <Button content="Propose Lesson" isPrimary={true} size={'large'} onClick={submitLessonRequest} />
+        <Button content={editLesson === null ? 'Propose Lesson' : 'Send Updated Lesson'} isPrimary={true} size={'large'} onClick={submitLessonRequest} />
       </footer>
     </Transition>
   );

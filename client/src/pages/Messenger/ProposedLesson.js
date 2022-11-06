@@ -29,22 +29,30 @@ const ProposedLesson = ({ user, lesson, openLessonRequestForm, cancelLesson }) =
         <div>
           <FontAwesomeIcon icon={faClock} className="text-primary"></FontAwesomeIcon>
           <span className="ml-1 mr-2">
-            {parseInt(lesson.duration / 60)}h {lesson.duration % 60 > 0 && (lesson.duration % 60) + 'm'}
+            {lesson.duration / 60 >= 1 && parseInt(lesson.duration / 60) + 'h '}
+            {lesson.duration % 60 > 0 && (lesson.duration % 60) + 'm'}
           </span>
           <FontAwesomeIcon icon={faTag} className="text-primary"></FontAwesomeIcon>
-          <span className="ml-1">${lesson.price}</span>
+          <span className="ml-1">${lesson.price % 1 != 0 ? lesson.price.toFixed(2) : lesson.price}</span>
         </div>
         <div className="flex gap-2">
           {lesson.requester === user.accountType ? (
-            <>
-              <Button content="Cancel Lesson" onClick={cancelLesson} dataAttributes={{ 'data-lesson-id': lesson._id }}></Button>
-              <Button content="Edit Lesson" isPrimary={true} onClick={(event) => openLessonRequestForm(lesson)}></Button>
-            </>
+            <div className="flex flex-col gap-2 w-full">
+              <Button content="Modify Lesson" size={'large'} isPrimary={true} onClick={(event) => openLessonRequestForm(lesson)}></Button>
+              <Button content="Cancel Lesson" size={'large'} onClick={cancelLesson} dataAttributes={{ 'data-lesson-id': lesson._id }}></Button>
+            </div>
           ) : (
-            <>
-              <Button content="Decline Lesson"></Button>
-              <Button content="Accept Lesson" isPrimary={true}></Button>
-            </>
+            <div className="flex flex-col gap-2 w-full">
+              <Button content="Accept Lesson" size={'large'} isPrimary={true}></Button>
+              <Button
+                extraClasses="opacity-70"
+                content="Modify Lesson"
+                size={'large'}
+                isPrimary={true}
+                onClick={(event) => openLessonRequestForm(lesson)}
+              ></Button>
+              <Button content="Decline Lesson" size={'large'} onClick={cancelLesson} dataAttributes={{ 'data-lesson-id': lesson._id }}></Button>
+            </div>
           )}
         </div>
       </div>

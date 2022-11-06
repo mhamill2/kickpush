@@ -19,6 +19,18 @@ const createNewSocket = (userId, messages, dispatch) => {
     }
   });
 
+  socket.on('newLessonRequest', (lessonRequest) => {
+    dispatch({ type: 'LESSON_REQUEST_SUCCESS', payload: lessonRequest });
+  });
+
+  socket.on('updatedLessonRequest', (lessonRequest) => {
+    dispatch({ type: 'EDIT_LESSON_SUCCESS', payload: lessonRequest });
+  });
+
+  socket.on('cancelLesson', (lesson) => {
+    dispatch({ type: 'CANCEL_LESSON_SUCCESS', payload: lesson });
+  });
+
   socket.on('disconnect', () => {
     deleteSocket(socket.id);
   });

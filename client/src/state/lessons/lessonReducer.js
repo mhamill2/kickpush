@@ -1,9 +1,10 @@
 import {
-  CANCEL_LESSONS_SUCCESS,
-  CANCEL_LESSONS_FAILURE,
+  CANCEL_LESSON_SUCCESS,
+  CANCEL_LESSON_FAILURE,
   CONNECTION_REQUEST_SUCCESS,
   CONNECTION_REQUEST_ACCEPTED,
   CONNECTION_REQUEST_DECLINED,
+  EDIT_LESSON_SUCCESS,
   GET_LESSONS_SUCCESS,
   GET_LESSONS_FAILURE,
   LESSON_REQUEST_SUCCESS
@@ -17,11 +18,11 @@ const initialState = {
 
 const lessonReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CANCEL_LESSONS_FAILURE:
+    case CANCEL_LESSON_FAILURE:
       return {
         ...state
       };
-    case CANCEL_LESSONS_SUCCESS:
+    case CANCEL_LESSON_SUCCESS:
       return {
         ...state,
         lessons: state.lessons.map((lesson) => (lesson._id === action.payload._id ? action.payload : lesson))
@@ -40,6 +41,11 @@ const lessonReducer = (state = initialState, action) => {
       return {
         ...state,
         connectionRequests: state.connectionRequests.filter((connectionRequest) => connectionRequest._id !== action.payload)
+      };
+    case EDIT_LESSON_SUCCESS:
+      return {
+        ...state,
+        lessons: state.lessons.map((lesson) => (lesson._id === action.payload._id ? action.payload : lesson))
       };
     case GET_LESSONS_SUCCESS:
       return {

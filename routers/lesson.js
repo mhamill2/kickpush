@@ -17,7 +17,7 @@ router.get('/getLessons/:userId', auth, async (req, res) => {
 
   try {
     let lessons = await Lesson.find({
-      $and: [{ instructor }, { student }]
+      $and: [{ instructor }, { student }, { status: { $ne: LESSON_STATUS.CANCELLED } }]
     });
 
     lessons = await Lesson.populate(lessons, {
@@ -44,8 +44,10 @@ router.get('/getLessons/:userId', auth, async (req, res) => {
  * @desc    Sends a private lesson request to a connection
  */
 router.post('/sendLessonRequest', auth, async (req, res) => {
-  let lessonRequest = req.body;
+  const io = req.io;
   const user = req.user;
+  let socketEvent = 'newLessonRequest';
+  let lessonRequest = req.body;
 
   try {
     const receiver = user.accountType === 'instructor' ? await User.findById(lessonRequest.student) : await User.findById(lessonRequest.instructor);
@@ -61,10 +63,29 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
     lessonRequest.price = lessonRequest.duration * (lessonRequest.hourlyRate / 60) * lessonRequest.students.length;
 
     if (lessonRequest._id) {
-      const lesson = await Lesson.findByIdAndUpdate(lessonRequest._id, lessonRequest);
+      lessonRequest = await Lesson.findByIdAndUpdate(lessonRequest._id, lessonRequest, { new: true });
+      socketEvent = 'updatedLessonRequest';
     } else {
       lessonRequest = new Lesson(lessonRequest);
       await lessonRequest.save();
+    }
+
+    lessonRequest = await Lesson.populate(lessonRequest, {
+      path: 'student instructor',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    lessonRequest = await Lesson.populate(lessonRequest, {
+      path: 'students',
+      select: 'name birthDate',
+      model: 'FamilyMember'
+    });
+
+    if (receiver.socketIds.length > 0) {
+      receiver.socketIds.forEach((socket) => {
+        io.to(socket.socketId).emit(socketEvent, lessonRequest);
+      });
     }
 
     res.status(201).send(lessonRequest);
@@ -76,7 +97,7 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
 
 /**
  * route   POST /cancelLesson
- * @desc    Cancels a lesson
+ * @desc   Cancels a lesson
  */
 router.post('/cancelLesson', auth, async (req, res) => {
   const lessonId = req.body.lessonId;
@@ -84,7 +105,7 @@ router.post('/cancelLesson', auth, async (req, res) => {
 
   try {
     const lesson = await Lesson.findById(lessonId);
-    console.log(lesson);
+
     if (!lesson.instructor.equals(user._id) && !lesson.student.equals(user._id)) {
       console.log(`${user._id} attempted to cancel a lesson that they are not a part of`);
       res.status(401).send('Failed to cancel the lesson');

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import Button from '../../components/Button/Button';
@@ -14,6 +14,11 @@ const Lessons = ({ loading, connection, lessons }) => {
   const [scheduledLessons, setScheduledLessons] = useState(lessons.filter((lesson) => lesson.status === 'scheduled'));
   const [showPendingLessons, setShowPendingLessons] = useState(pendingLessons.length > 0);
   const [editLesson, setEditLesson] = useState(null);
+
+  useEffect(() => {
+    setPendingLessons(lessons.filter((lesson) => lesson.status === 'pending'));
+    setScheduledLessons(lessons.filter((lesson) => lesson.status === 'scheduled'));
+  }, [lessons]);
 
   const openLessonRequestForm = (lesson) => {
     setEditLesson(lesson);
