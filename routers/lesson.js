@@ -100,11 +100,13 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
  * @desc   Cancels a lesson
  */
 router.post('/cancelLesson', auth, async (req, res) => {
+  const io = req.io;
   const lessonId = req.body.lessonId;
   const user = req.user;
 
   try {
     const lesson = await Lesson.findById(lessonId);
+    const receiver = user.accountType === 'instructor' ? await User.findById(lesson.student) : await User.findById(lesson.instructor);
 
     if (!lesson.instructor.equals(user._id) && !lesson.student.equals(user._id)) {
       console.log(`${user._id} attempted to cancel a lesson that they are not a part of`);
@@ -115,9 +117,56 @@ router.post('/cancelLesson', auth, async (req, res) => {
     lesson.status = LESSON_STATUS.CANCELLED;
     await lesson.save();
 
+    if (receiver.socketIds.length > 0) {
+      receiver.socketIds.forEach((socket) => {
+        io.to(socket.socketId).emit('cancelLesson', lesson);
+      });
+    }
+
     res.status(200).send(lesson);
   } catch (err) {
     console.log('Failed to cancel the lesson: ', err);
+    res.status(500).send(err);
+  }
+});
+
+/**
+ * @route   POST /acceptLesson
+ * @desc    Accepts a lesson request
+ */
+router.post('/acceptLesson', auth, async (req, res) => {
+  const io = req.io;
+  const lessonId = req.body.lessonId;
+  const user = req.user;
+
+  try {
+    const lesson = await Lesson.findById(lessonId);
+    const receiver = user.accountType === 'instructor' ? await User.findById(lesson.student) : await User.findById(lesson.instructor);
+
+    if (!lesson.instructor.equals(user._id) && !lesson.student.equals(user._id)) {
+      console.log(`${user._id} attempted to accept a lesson that they are not a part of`);
+      res.status(401).send('Failed to accept the lesson');
+      return;
+    }
+
+    if (lesson.status !== LESSON_STATUS.PENDING) {
+      console.log(`${user._id} attempted to accept a lesson that is not pending`);
+      res.status(401).send('Failed to accept the lesson');
+      return;
+    }
+
+    lesson.status = LESSON_STATUS.ACCEPTED;
+    await lesson.save();
+
+    if (receiver.socketIds.length > 0) {
+      receiver.socketIds.forEach((socket) => {
+        io.to(socket.socketId).emit('acceptLesson', lesson);
+      });
+    }
+
+    res.status(200).send(lesson);
+  } catch (err) {
+    console.log('Failed to accept the lesson: ', err);
     res.status(500).send(err);
   }
 });

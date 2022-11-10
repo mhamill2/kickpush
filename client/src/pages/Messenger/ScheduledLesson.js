@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
+import { faCalendar, faClock, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 
-import Button from '../../components/Button/Button';
 import * as date from '../../utils/date';
 
 const ScheduledLesson = ({ user, lesson, openLessonRequestForm, cancelLesson }) => {
