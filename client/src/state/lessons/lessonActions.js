@@ -1,4 +1,6 @@
 import {
+  ACCEPT_LESSON_SUCCESS,
+  ACCEPT_LESSON_FAILURE,
   CANCEL_LESSON_SUCCESS,
   CANCEL_LESSON_FAILURE,
   CONNECTION_REQUEST_SUCCESS,
@@ -9,6 +11,7 @@ import {
   GET_LESSONS_FAILURE,
   LESSON_REQUEST_SUCCESS
 } from './types';
+
 import { UPDATE_USER_CONNECTIONS } from '../user/types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
@@ -99,6 +102,19 @@ const getLessons = async (userId) => {
   }
 };
 
+const acceptLesson = async (lessonId) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/acceptLesson', { lessonId });
+    console.log(res);
+    store.dispatch({ type: ACCEPT_LESSON_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err.response);
+    store.dispatch({ type: ACCEPT_LESSON_FAILURE });
+  }
+};
+
 const cancelLesson = async (lessonId) => {
   setAuthToken(localStorage.token);
 
@@ -111,4 +127,13 @@ const cancelLesson = async (lessonId) => {
   }
 };
 
-export { sendConnectionRequest, editLessonRequest, getLessons, getPendingConnectionRequests, sendConnectionRequestResponse, sendLessonRequest, cancelLesson };
+export {
+  sendConnectionRequest,
+  editLessonRequest,
+  getLessons,
+  getPendingConnectionRequests,
+  sendConnectionRequestResponse,
+  sendLessonRequest,
+  acceptLesson,
+  cancelLesson
+};

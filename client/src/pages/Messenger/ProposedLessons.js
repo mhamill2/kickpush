@@ -5,7 +5,7 @@ import ProposedLesson from './ProposedLesson';
 
 import Spinner from '../../components/Spinner/Spinner';
 
-const ProposedLessons = ({ lessons, loading, show, openLessonRequestForm, closeLessonRequestForm, cancelLesson }) => {
+const ProposedLessons = ({ lessons, loading, show, openLessonRequestForm, closeLessonRequestForm, acceptLesson, cancelLesson }) => {
   return (
     <Transition
       show={show}
@@ -30,6 +30,7 @@ const ProposedLessons = ({ lessons, loading, show, openLessonRequestForm, closeL
               lesson={lesson}
               openLessonRequestForm={openLessonRequestForm}
               closeLessonRequestForm={closeLessonRequestForm}
+              acceptLesson={acceptLesson}
               cancelLesson={cancelLesson}
             />
           ))}

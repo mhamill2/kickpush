@@ -27,6 +27,10 @@ const createNewSocket = (userId, messages, dispatch) => {
     dispatch({ type: 'EDIT_LESSON_SUCCESS', payload: lessonRequest });
   });
 
+  socket.on('acceptedLessonRequest', (lessonRequest) => {
+    dispatch({ type: 'ACCEPT_LESSON_SUCCESS', payload: lessonRequest });
+  });
+
   socket.on('cancelLesson', (lesson) => {
     dispatch({ type: 'CANCEL_LESSON_SUCCESS', payload: lesson });
   });

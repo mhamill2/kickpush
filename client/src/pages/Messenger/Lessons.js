@@ -6,18 +6,18 @@ import LessonRequestForm from './LessonRequestForm';
 import ProposedLessons from './ProposedLessons';
 import ScheduledLessons from './ScheduledLessons';
 
-import { cancelLesson as cancelLessonAction } from '../../state/lessons/lessonActions';
+import { acceptLesson as acceptLessonAction, cancelLesson as cancelLessonAction } from '../../state/lessons/lessonActions';
 
 const Lessons = ({ loading, connection, lessons }) => {
   const [showLessonRequestForm, setShowLessonRequestForm] = useState(false);
   const [pendingLessons, setPendingLessons] = useState(lessons.filter((lesson) => lesson.status === 'pending'));
-  const [scheduledLessons, setScheduledLessons] = useState(lessons.filter((lesson) => lesson.status === 'scheduled'));
+  const [scheduledLessons, setScheduledLessons] = useState(lessons.filter((lesson) => lesson.status === 'accepted'));
   const [showPendingLessons, setShowPendingLessons] = useState(pendingLessons.length > 0);
   const [editLesson, setEditLesson] = useState(null);
 
   useEffect(() => {
     setPendingLessons(lessons.filter((lesson) => lesson.status === 'pending'));
-    setScheduledLessons(lessons.filter((lesson) => lesson.status === 'scheduled'));
+    setScheduledLessons(lessons.filter((lesson) => lesson.status === 'accepted'));
   }, [lessons]);
 
   const openLessonRequestForm = (lesson) => {
@@ -37,8 +37,11 @@ const Lessons = ({ loading, connection, lessons }) => {
     setShowPendingLessons(false);
   };
 
+  const acceptLesson = (e) => {
+    acceptLessonAction(e.target.getAttribute('data-lesson-id'));
+  };
+
   const cancelLesson = (e) => {
-    console.log(e.target);
     cancelLessonAction(e.target.getAttribute('data-lesson-id'));
   };
 
@@ -70,6 +73,7 @@ const Lessons = ({ loading, connection, lessons }) => {
           loading={loading}
           openLessonRequestForm={openLessonRequestForm}
           closeLessonRequestForm={closeLessonRequestForm}
+          acceptLesson={acceptLesson}
           cancelLesson={cancelLesson}
         />
         <ScheduledLessons

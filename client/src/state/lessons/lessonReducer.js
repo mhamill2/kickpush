@@ -1,4 +1,5 @@
 import {
+  ACCEPT_LESSON_SUCCESS,
   CANCEL_LESSON_SUCCESS,
   CANCEL_LESSON_FAILURE,
   CONNECTION_REQUEST_SUCCESS,
@@ -18,6 +19,11 @@ const initialState = {
 
 const lessonReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ACCEPT_LESSON_SUCCESS:
+      return {
+        ...state,
+        lessons: state.lessons.map((lesson) => (lesson._id === action.payload._id ? action.payload : lesson))
+      };
     case CANCEL_LESSON_FAILURE:
       return {
         ...state

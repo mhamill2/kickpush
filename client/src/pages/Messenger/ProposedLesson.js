@@ -7,7 +7,7 @@ import { faTag } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/Button/Button';
 import * as date from '../../utils/date';
 
-const ProposedLesson = ({ user, lesson, openLessonRequestForm, cancelLesson }) => {
+const ProposedLesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesson }) => {
   return (
     <div key={lesson._id} className="flex flex-col gap-3 p-3 border-b border-gray-100 bg-gray-100 rounded-lg w-full text-sm">
       <h2 className="font-semibold">
@@ -43,7 +43,7 @@ const ProposedLesson = ({ user, lesson, openLessonRequestForm, cancelLesson }) =
             </div>
           ) : (
             <div className="flex flex-col gap-2 w-full">
-              <Button content="Accept Lesson" size={'large'} isPrimary={true}></Button>
+              <Button content="Accept Lesson" size={'large'} isPrimary={true} onClick={acceptLesson} dataAttributes={{ 'data-lesson-id': lesson._id }}></Button>
               <Button
                 extraClasses="opacity-70"
                 content="Modify Lesson"
