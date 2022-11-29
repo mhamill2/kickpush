@@ -33,7 +33,7 @@ const ProposedLesson = ({ user, lesson, openLessonRequestForm, acceptLesson, can
             {lesson.duration % 60 > 0 && (lesson.duration % 60) + 'm'}
           </span>
           <FontAwesomeIcon icon={faTag} className="text-primary"></FontAwesomeIcon>
-          <span className="ml-1">${lesson.price % 1 != 0 ? lesson.price.toFixed(2) : lesson.price}</span>
+          <span className="ml-1">${lesson.price % 1 !== 0 ? lesson.price.toFixed(2) : lesson.price}</span>
         </div>
         <div className="flex gap-2">
           {lesson.requester === user.accountType ? (

@@ -16,6 +16,7 @@ const Lessons = ({ loading, connection, lessons }) => {
   const [editLesson, setEditLesson] = useState(null);
 
   useEffect(() => {
+    lessons.sort((a, b) => b.dateTime - a.dateTime);
     setPendingLessons(lessons.filter((lesson) => lesson.status === 'pending'));
     setScheduledLessons(lessons.filter((lesson) => lesson.status === 'accepted'));
   }, [lessons]);
@@ -42,7 +43,12 @@ const Lessons = ({ loading, connection, lessons }) => {
   };
 
   const cancelLesson = (e) => {
-    cancelLessonAction(e.target.getAttribute('data-lesson-id'));
+    if (e.target) {
+      cancelLessonAction(e.target.getAttribute('data-lesson-id'));
+    } else {
+      // A lesson object was passed in from the ScheduledLessonEditModal
+      cancelLessonAction(e._id);
+    }
   };
 
   lessons = lessons.map((lesson) => {
@@ -82,6 +88,7 @@ const Lessons = ({ loading, connection, lessons }) => {
           loading={loading}
           openLessonRequestForm={openLessonRequestForm}
           closeLessonRequestForm={closeLessonRequestForm}
+          cancelLesson={cancelLesson}
         />
         <div className="bottom-0 left-0 w-full flex justify-center pt-4 pb-6 px-12 fixed bg-white shadow-inner">
           <Button content="Propose a New Lesson" extraClasses={''} isPrimary={true} size={'large'} onClick={(event) => openLessonRequestForm(null)} />

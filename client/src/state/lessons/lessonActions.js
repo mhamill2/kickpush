@@ -107,7 +107,6 @@ const acceptLesson = async (lessonId) => {
 
   try {
     const res = await axios.post('/acceptLesson', { lessonId });
-    console.log(res);
     store.dispatch({ type: ACCEPT_LESSON_SUCCESS, payload: res.data });
   } catch (err) {
     console.log(err.response);

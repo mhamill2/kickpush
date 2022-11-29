@@ -61,6 +61,7 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
     lessonRequest.requester = user.accountType;
     lessonRequest.type = 'private';
     lessonRequest.price = lessonRequest.duration * (lessonRequest.hourlyRate / 60) * lessonRequest.students.length;
+    lessonRequest.status = LESSON_STATUS.PENDING;
 
     if (lessonRequest._id) {
       lessonRequest = await Lesson.findByIdAndUpdate(lessonRequest._id, lessonRequest, { new: true });
@@ -140,7 +141,7 @@ router.post('/acceptLesson', auth, async (req, res) => {
   const user = req.user;
 
   try {
-    const lesson = await Lesson.findById(lessonId);
+    let lesson = await Lesson.findById(lessonId);
     const receiver = user.accountType === 'instructor' ? await User.findById(lesson.student) : await User.findById(lesson.instructor);
 
     if (!lesson.instructor.equals(user._id) && !lesson.student.equals(user._id)) {
@@ -157,6 +158,19 @@ router.post('/acceptLesson', auth, async (req, res) => {
 
     lesson.status = LESSON_STATUS.ACCEPTED;
     await lesson.save();
+
+    // TODO figure out if there is a better way to populate the lesson information
+    lesson = await Lesson.populate(lesson, {
+      path: 'student instructor',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    lesson = await Lesson.populate(lesson, {
+      path: 'students',
+      select: 'name birthDate',
+      model: 'FamilyMember'
+    });
 
     if (receiver.socketIds.length > 0) {
       receiver.socketIds.forEach((socket) => {

@@ -19,3 +19,7 @@ export const getDayOfMonthPadded = (date) => {
 export const getMonthDayYear = (date) => {
   return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
+
+export const isFuture = (date) => {
+  return date.getTime() > new Date().getTime();
+};

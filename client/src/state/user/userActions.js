@@ -1,6 +1,18 @@
 import axios from 'axios';
 
-import { REGISTER_SUCCESS, REGISTER_FAIL, AUTH_ERROR, USER_LOADED, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT, PROFILE_UPDATE_SUCCESS, PROFILE_UPDATE_FAIL, SET_SOCKET, DELETE_SOCKET } from './types';
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  AUTH_ERROR,
+  USER_LOADED,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  PROFILE_UPDATE_SUCCESS,
+  PROFILE_UPDATE_FAIL,
+  SET_SOCKET,
+  DELETE_SOCKET
+} from './types';
 import store from '../store';
 import setAuthToken from '../../utils/setAuthToken';
 
@@ -106,9 +118,11 @@ const deleteSocket = async (socketId) => {
   setAuthToken(localStorage.token);
 
   try {
-    const res = await axios.post('/deleteSocketId', { socketId }, defaultPostConfig);
+    await axios.post('/deleteSocketId', { socketId }, defaultPostConfig);
     store.dispatch({ type: DELETE_SOCKET });
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser, setSocket, deleteSocket };

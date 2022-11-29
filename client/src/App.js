@@ -30,6 +30,7 @@ const App = ({ user, isAuthenticated, messages }) => {
     if (isAuthenticated) {
       createNewSocket(user._id, messages, dispatch);
     }
+    // eslint-disable-next-line
   }, [isAuthenticated]);
 
   return (
