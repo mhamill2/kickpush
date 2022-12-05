@@ -143,8 +143,8 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600" onClick={closeForm} />
       </header>
 
-      <div className="flex flex-col gap-4 p-4">
-        <section className="flex flex-col p-2 gap-2">
+      <div className="flex flex-col gap-8 p-5">
+        <section className="flex flex-col gap-2">
           <h2>Date and Time</h2>
           <DatePicker
             className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg"
@@ -157,9 +157,9 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
             placeholderText="Please select a date and time"
           />
         </section>
-        <section className="flex flex-col p-2 gap-2">
+        <section className="flex flex-col gap-2">
           <h2>Duration</h2>
-          <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between">
+          <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg flex justify-between">
             <div>
               <span id="duration">{duration / 60 >= 1 ? Math.floor(duration / 60) : ''}</span>
               <span className={!showHoursLabel ? 'hidden' : ''}>hr</span> <span id="minutesDuration">{duration % 60 !== 0 ? duration % 60 : ''}</span>
@@ -195,7 +195,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
             id="location"
             placeholder="Where will the lesson take place?"
             value={location}
-            className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4"
+            className="focus:outline-none w-full border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg"
             onChange={onLocationChange}
           />
         </section>

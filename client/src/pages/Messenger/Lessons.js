@@ -58,7 +58,26 @@ const Lessons = ({ loading, connection, lessons }) => {
 
   return (
     <>
-      <div className="flex justify-center gap-2 px-3 mb-4">
+      <div className="flex justify-center gap-2 px-3 mb-4 fixed right-0 left-0 bg-white pb-4">
+        <div
+          onClick={setShowPendingLessonsTrue}
+          className={`px-4 py-3 rounded-md w-1/2 text-center ${showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
+        >
+          Propositions
+        </div>
+        <div
+          onClick={setShowPendingLessonsFalse}
+          className={`px-4 py-3 rounded-md w-1/2 text-center ${!showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
+        >
+          Lessons
+        </div>
+      </div>
+      {/* 
+        TODO: Put this into a separate component that takes in a hidden property (or just add a 
+        comment here indicating that this is invisible to ensure the fixed component above actually
+        takes up space) 
+      */}
+      <div className="flex justify-center gap-2 px-3 mb-4 bg-white pb-4 invisible">
         <div
           onClick={setShowPendingLessonsTrue}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}

@@ -2,19 +2,47 @@ import { useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 import _ from 'lodash';
+import * as date from '../../utils/date';
+
 import ScheduledLesson from './ScheduledLesson';
 import ScheduledLessonEditModal from './ScheduledLessonEditModal';
-
+import HrText from '../../components/HrText/HrText';
 import Spinner from '../../components/Spinner/Spinner';
 
 const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cancelLesson }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalLesson, setModalLesson] = useState(null);
+
+  const closeEditModal = () => setShowModal(false);
   const openEditModal = (lesson) => {
     setModalLesson(lesson);
     setShowModal(true);
   };
-  const closeEditModal = () => setShowModal(false);
+
+  const createScheduledLessonsHtml = (lessons) => {
+    const html = [];
+    for (let i = 0; i < lessons.length; i++) {
+      const currentMonth = lessons[i].dateTime.getMonth();
+      const currentYear = lessons[i].dateTime.getFullYear();
+      html.push(monthYearHeader(date.getMonthLongName(lessons[i].dateTime), currentYear));
+
+      while (i < lessons.length && lessons[i].dateTime.getMonth() === currentMonth && lessons[i].dateTime.getFullYear() === currentYear) {
+        html.push(<ScheduledLesson key={lessons[i]._id} lesson={lessons[i]} openLessonRequestForm={openLessonRequestForm} openEditModal={openEditModal} />);
+        i++;
+      }
+    }
+
+    return html;
+  };
+
+  const monthYearHeader = (month, year) => {
+    return (
+      <div className="flex justify-between items-center">
+        <div className="text-xl font-extrabold">{month}</div>
+        <div className="text-xl font-thin">{year}</div>
+      </div>
+    );
+  };
 
   const upcomingLessons = lessons.filter((lesson) => lesson.dateTime > new Date());
   const pastLessons = lessons.filter((lesson) => lesson.dateTime <= new Date());
@@ -36,14 +64,9 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
         <div className="text-xl w-full">No Lessons Scheduled</div>
       ) : (
         <>
-          <h2 className="self-start font-semibold">Upcoming Lessons</h2>
-          {upcomingLessons.map((lesson) => (
-            <ScheduledLesson key={lesson._id} lesson={lesson} openLessonRequestForm={openLessonRequestForm} openEditModal={openEditModal} />
-          ))}
-          <h2 className="self-start font-semibold">Past Lessons</h2>
-          {pastLessons.map((lesson) => (
-            <ScheduledLesson key={lesson._id} lesson={lesson} openLessonRequestForm={openLessonRequestForm} openEditModal={openEditModal} />
-          ))}
+          {createScheduledLessonsHtml(upcomingLessons)}
+          <HrText text="Past Lessons" customClasses="w-full text-sm" />
+          {createScheduledLessonsHtml(pastLessons)}
         </>
       )}
       <ScheduledLessonEditModal

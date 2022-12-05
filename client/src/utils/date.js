@@ -23,3 +23,7 @@ export const getMonthDayYear = (date) => {
 export const isFuture = (date) => {
   return date.getTime() > new Date().getTime();
 };
+
+export const getMonthLongName = (date) => {
+  return date.toLocaleString('en-US', { month: 'long' });
+};
