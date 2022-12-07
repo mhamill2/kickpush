@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUsers, faCommentAlt, faUserCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faCalendarAlt, faCommentAlt, faUserCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 
 const BottomNav = ({ user, nav }) => {
   const { activePage, showBottomNav } = nav;
@@ -23,8 +23,8 @@ const BottomNav = ({ user, nav }) => {
       <Link to="/dashboard" className={`${itemContainerStyle} ${activePage === 'home' ? itemContainerActiveStyle : ''}`}>
         <FontAwesomeIcon icon={faHome} className={activePage === 'home' ? 'text-primary' : ''}></FontAwesomeIcon>
       </Link>
-      <Link to="/students" className={`${itemContainerStyle} ${activePage === 'people' ? itemContainerActiveStyle : ''}`}>
-        <FontAwesomeIcon icon={faUsers} className={activePage === 'people' ? 'text-primary' : ''}></FontAwesomeIcon>
+      <Link to="/students" className={`${itemContainerStyle} ${activePage === 'lessons' ? itemContainerActiveStyle : ''}`}>
+        <FontAwesomeIcon icon={faCalendarAlt} className={activePage === 'lessons' ? 'text-primary' : ''}></FontAwesomeIcon>
       </Link>
       <Link to="/messages" className={`${itemContainerStyle} ${activePage === 'messages' ? itemContainerActiveStyle : ''}`}>
         <FontAwesomeIcon icon={faCommentAlt} className={activePage === 'messages' ? 'text-primary' : ''}></FontAwesomeIcon>

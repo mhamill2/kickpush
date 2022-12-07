@@ -9,6 +9,12 @@ const ScheduledLesson = ({ lesson, openEditModal }) => {
     <div key={lesson._id} className="flex flex-col gap-3 p-3 border-b border-gray-100 bg-gray-100 rounded-lg w-full text-sm">
       <div className="flex flex-row justify-between">
         <h2 className="font-semibold">
+          {lesson.selfLesson && (
+            <span>
+              {lesson.student.firstName}
+              {lesson.students.length > 0 && ', '}
+            </span>
+          )}
           {lesson.students.map((student, index) => (
             <span key={student._id}>
               {student.name}

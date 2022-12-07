@@ -8,7 +8,7 @@ import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
 import { getConversation } from '../../state/message/messageActions';
 import { getLessons } from '../../state/lessons/lessonActions';
 
-const MessengerConversation = ({ match, user, messages, lessons }) => {
+const MessengerConversation = ({ match, user }) => {
   const dispatch = useDispatch();
   const connection = user.connections.find((connection) => connection._id === match.params.userId);
   const connectionName = connection.firstName;

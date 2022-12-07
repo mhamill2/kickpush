@@ -11,6 +11,12 @@ const ProposedLesson = ({ user, lesson, openLessonRequestForm, acceptLesson, can
   return (
     <div key={lesson._id} className="flex flex-col gap-3 p-3 border-b border-gray-100 bg-gray-100 rounded-lg w-full text-sm">
       <h2 className="font-semibold">
+        {lesson.selfLesson && (
+          <span>
+            {lesson.student.firstName}
+            {lesson.students.length > 0 && ', '}
+          </span>
+        )}
         {lesson.students.map((student, index) => (
           <span key={student._id}>
             {student.name}
@@ -38,7 +44,7 @@ const ProposedLesson = ({ user, lesson, openLessonRequestForm, acceptLesson, can
         <div className="flex gap-2">
           {lesson.requester === user.accountType ? (
             <div className="flex flex-col gap-2 w-full">
-              <Button content="Modify Lesson" size={'large'} isPrimary={true} onClick={(event) => openLessonRequestForm(lesson)}></Button>
+              <Button content="Modify Lesson" size={'large'} isPrimary={true} onClick={() => openLessonRequestForm(lesson)}></Button>
               <Button content="Cancel Lesson" size={'large'} onClick={cancelLesson} dataAttributes={{ 'data-lesson-id': lesson._id }}></Button>
             </div>
           ) : (

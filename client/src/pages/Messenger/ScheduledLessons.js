@@ -37,7 +37,7 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
 
   const monthYearHeader = (month, year) => {
     return (
-      <div className="flex justify-between items-center">
+      <div key={month + year} className="flex justify-between items-center">
         <div className="text-xl font-extrabold">{month}</div>
         <div className="text-xl font-thin">{year}</div>
       </div>
@@ -65,7 +65,7 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
       ) : (
         <>
           {createScheduledLessonsHtml(upcomingLessons)}
-          <HrText text="Past Lessons" customClasses="w-full text-sm" />
+          {!_.isEmpty(pastLessons) && <HrText text="Past Lessons" customClasses="w-full text-sm" />}
           {createScheduledLessonsHtml(pastLessons)}
         </>
       )}

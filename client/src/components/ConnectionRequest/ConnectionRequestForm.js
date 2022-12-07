@@ -49,7 +49,16 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
   };
 
   return (
-    <Transition show={showModal} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col">
+    <Transition
+      show={showModal}
+      enter="transition ease-in-out duration-300 transform"
+      enterFrom="translate-y-full"
+      enterTo="translate-x-0"
+      leave="transition-ease-in-out duration-300 transform"
+      leaveFrom="translate-y-0"
+      leaveTo="translate-y-full"
+      className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col"
+    >
       <header className="border-b p-4 border-gray-300 flex justify-between items-center">
         <h1 className="text-xl font-semibold">Reach out to {instructor.firstName}</h1>
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600" onClick={closeModal}></FontAwesomeIcon>
@@ -67,9 +76,14 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
             <h2 className="my-4">Which family member(s)?</h2>
             <div className="flex justify-start flex-wrap gap-4">
               {familyMembers.map((familyMember, index) => (
-                <SelectableItem key={index} value={`${familyMember._id}___${familyMember.name}___${familyMember.birthDate}`} content={familyMember.name} selected={false} />
+                <SelectableItem
+                  key={index}
+                  value={`${familyMember._id}___${familyMember.name}___${familyMember.birthDate}`}
+                  content={familyMember.name}
+                  selected={false}
+                />
               ))}
-              <SelectableItem value="user" content="Myself" selected={false} />
+              <SelectableItem value={`${user._id}___${user.firstName}___${user.birthDate}`} content="Myself" selected={false} />
             </div>
           </section>
           <section id="lesson-types">
@@ -104,7 +118,9 @@ const ConnectionRequestForm = ({ showModal, closeModal, instructor, user }) => {
         </form>
       </main>
 
-      <footer className="border-t border-gray-300 flex justify-around p-8 fixed bottom-0 w-full bg-white">{loading ? <Spinner /> : <Button isPrimary={true} content="Submit" size="large" onClick={confirmRequest} />}</footer>
+      <footer className="border-t border-gray-300 flex justify-around p-8 fixed bottom-0 w-full bg-white">
+        {loading ? <Spinner /> : <Button isPrimary={true} content="Submit" size="large" onClick={confirmRequest} />}
+      </footer>
     </Transition>
   );
 };

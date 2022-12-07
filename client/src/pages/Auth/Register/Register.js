@@ -54,6 +54,10 @@ const Register = (props) => {
     register(user);
   };
 
+  const setInputType = (e) => {
+    e.target.type = 'date';
+  };
+
   const formContent = (
     <Fragment>
       <div className="flex justify-between">
@@ -62,17 +66,49 @@ const Register = (props) => {
       </div>
       <input type="email" name="email" placeholder="Email" value={email} className={inputTextStyle} onChange={onChange} />
       <input type="password" name="password" placeholder="Create Password" value={password} className={inputTextStyle} onChange={onChange} />
-      <input type="password" name="passwordConfirmation" placeholder="Confirm Password" value={passwordConfirmation} className={inputTextStyle} onChange={onChange} />
+      <input
+        type="password"
+        name="passwordConfirmation"
+        placeholder="Confirm Password"
+        value={passwordConfirmation}
+        className={inputTextStyle}
+        onChange={onChange}
+      />
+      <input name="birthDate" placeholder="Birthday" className={inputTextStyle + ' text-gray-400'} onChange={onChange} onFocus={setInputType} />
       <div className="text-center mb-4">
         <span className="font-semibold">I want to:</span>
         <div className="flex justify-center items-center border-secondary rounded-lg mt-3">
-          <label className={`px-4 py-2 w-1/2 cursor-pointer rounded-tl-lg rounded-bl-lg ${accountType === 'student' ? ' bg-primary text-white' : ''}`} htmlFor="student-account">
+          <label
+            className={`px-4 py-2 w-1/2 cursor-pointer rounded-tl-lg rounded-bl-lg ${accountType === 'student' ? ' bg-primary text-white' : ''}`}
+            htmlFor="student-account"
+          >
             Find an Instructor
-            <input id="student-account" className="opacity-0 h-0" type="radio" name="accountType" checked={accountType === 'student'} onChange={onChange} value="student" />
+            <input
+              id="student-account"
+              className="opacity-0 h-0"
+              type="radio"
+              name="accountType"
+              checked={accountType === 'student'}
+              onChange={onChange}
+              value="student"
+            />
           </label>
-          <label className={`px-4 py-2 w-1/2 cursor-pointer rounded-tr-lg rounded-br-lg border-l-secondary${accountType === 'instructor' ? ' bg-primary text-white' : ''}`} htmlFor="instructor-account">
+          <label
+            className={`px-4 py-2 w-1/2 cursor-pointer rounded-tr-lg rounded-br-lg border-l-secondary${
+              accountType === 'instructor' ? ' bg-primary text-white' : ''
+            }`}
+            htmlFor="instructor-account"
+          >
             Become an Instructor
-            <input id="instructor-account" className="opacity-0 h-0" type="radio" name="accountType" checked={accountType === 'instructor'} onChange={onChange} value="instructor" />
+            <input
+              id="instructor-account"
+              className="opacity-0 h-0"
+              type="radio"
+              name="accountType"
+              checked={accountType === 'instructor'}
+              onChange={onChange}
+              value="instructor"
+            />
           </label>
         </div>
       </div>

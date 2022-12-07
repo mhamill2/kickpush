@@ -13,45 +13,21 @@ import SelectableItem from '../../components/SelectableItem/SelectableItem';
 import { sendLessonRequest, editLessonRequest } from '../../state/lessons/lessonActions';
 
 const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) => {
-  const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
-
-  const [editLesson, setEditLesson] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [duration, setDuration] = useState(60);
-  const [showHoursLabel, setShowHoursLabel] = useState(true);
-  const [showMinutesLabel, setShowMinutesLabel] = useState(false);
-  const [location, setLocation] = useState('');
-  const [hourlyRate, setHourlyRate] = useState(20); // TODO change this to the instructors hourly rate and add a cost field to the request
-  const [selectedStudents, setSelectedStudents] = useState([]);
-
-  if ((editLesson === null && lesson !== null) || (editLesson !== null && lesson !== null && editLesson._id !== lesson._id)) {
-    setEditLesson(lesson);
-    setStartDate(new Date(lesson.dateTime));
-    setDuration(lesson.duration);
-    setLocation(lesson.location);
-    setHourlyRate(lesson.hourlyRate);
-    setSelectedStudents(lesson.students.map((student) => student._id));
-  } else if (editLesson !== null && lesson === null) {
-    setEditLesson(null);
-    setStartDate(null);
-    setDuration(60);
-    setLocation('');
-    setHourlyRate(20);
-  }
-
-  useEffect(() => {
-    if (duration >= 60) {
-      setShowHoursLabel(true);
-    } else {
-      setShowHoursLabel(false);
+  const setInitialHourlyRate = () => {
+    if (lesson && lesson.hourlyRate) {
+      return lesson.hourlyRate;
     }
 
-    if (duration % 60 > 0) {
-      setShowMinutesLabel(true);
-    } else {
-      setShowMinutesLabel(false);
+    if (user.accountType === 'instructor' && user.instructorProfile?.rates?.private) {
+      return user.instructorProfile.rates.private;
     }
-  }, [duration]);
+
+    if (user.accountType === 'student' && connection.instructorProfile?.rates?.private) {
+      return connection.instructorProfile.rates.private;
+    }
+
+    return 20;
+  };
 
   const filterPassedTime = (time) => {
     const currentDate = new Date();
@@ -127,6 +103,47 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
     return isValid;
   };
 
+  const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
+  const student = user.accountType === 'instructor' ? connection : user;
+
+  const [editLesson, setEditLesson] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [duration, setDuration] = useState(60);
+  const [showHoursLabel, setShowHoursLabel] = useState(true);
+  const [showMinutesLabel, setShowMinutesLabel] = useState(false);
+  const [location, setLocation] = useState('');
+  const [hourlyRate, setHourlyRate] = useState(setInitialHourlyRate()); // TODO change this to the instructors hourly rate and add a cost field to the request
+  const [selectedStudents, setSelectedStudents] = useState([]);
+
+  if ((editLesson === null && lesson !== null) || (editLesson !== null && lesson !== null && editLesson._id !== lesson._id)) {
+    setEditLesson(lesson);
+    setStartDate(new Date(lesson.dateTime));
+    setDuration(lesson.duration);
+    setLocation(lesson.location);
+    setHourlyRate(lesson.hourlyRate);
+    setSelectedStudents(lesson.students.map((student) => student._id));
+  } else if (editLesson !== null && lesson === null) {
+    setEditLesson(null);
+    setStartDate(null);
+    setDuration(60);
+    setLocation('');
+    setHourlyRate(20);
+  }
+
+  useEffect(() => {
+    if (duration >= 60) {
+      setShowHoursLabel(true);
+    } else {
+      setShowHoursLabel(false);
+    }
+
+    if (duration % 60 > 0) {
+      setShowMinutesLabel(true);
+    } else {
+      setShowMinutesLabel(false);
+    }
+  }, [duration]);
+
   return (
     <Transition
       show={showForm}
@@ -184,7 +201,11 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
                 selected={selectedStudents.includes(familyMember._id)}
               />
             ))}
-            <SelectableItem value="user" content="Myself" selected={false} />
+            <SelectableItem
+              value={`${student._id}___${student.firstName}___${student.birthDate}`}
+              content={student.firstName}
+              selected={lesson && lesson.selfLesson}
+            />
           </div>
         </section>
         <section className="flex flex-col gap-2">
@@ -203,13 +224,34 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
           <h2>
             Hourly Rate <span className="text-xs">(per student)</span>
           </h2>
-          <div className="border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between">
+          <div
+            className={`border border-gray-400 border-opacity-60 py-2 px-4 rounded-lg mb-4 flex justify-between ${
+              user.accountType === 'student' ? 'bg-gray-100 text-gray-500' : ''
+            }`}
+          >
             <div>
-              $ <input type="number" name="rate" id="rate" value={hourlyRate} className="focus:outline-none w-3/4" onChange={onHourlyRateChange} />
+              ${' '}
+              <input
+                type="number"
+                name="rate"
+                id="rate"
+                value={hourlyRate}
+                className={`focus:outline-none w-3/4 ${user.accountType === 'student' ? 'bg-gray-100' : ''}`}
+                onChange={onHourlyRateChange}
+                disabled={user.accountType === 'student'}
+              />
             </div>
             <div className="flex gap-2 items-center">
-              <FontAwesomeIcon icon={faMinusCircle} className="h-4 w-4 text-gray-600" onClick={decrementHourlyRate} />
-              <FontAwesomeIcon icon={faPlusCircle} className="h-4 w-4 cursor-pointer text-gray-600" onClick={incrementHourlyRate} />
+              <FontAwesomeIcon
+                icon={faMinusCircle}
+                className={`h-4 w-4 cursor-pointer text-gray-600 ${user.accountType === 'student' ? 'invisible' : ''}`}
+                onClick={decrementHourlyRate}
+              />
+              <FontAwesomeIcon
+                icon={faPlusCircle}
+                className={`h-4 w-4 cursor-pointer text-gray-600 ${user.accountType === 'student' ? 'invisible' : ''}`}
+                onClick={incrementHourlyRate}
+              />
             </div>
           </div>
         </section>
