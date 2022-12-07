@@ -53,13 +53,15 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
     });
 
     if (existingConnectionRequest) {
-      console.log(`User ${user._id} attempted to send a connection request to instructor ${connectionRequest.instructor} but a connection request already exists`);
+      console.log(
+        `User ${user._id} attempted to send a connection request to instructor ${connectionRequest.instructor} but a connection request already exists`
+      );
       return res.status(400).send({ error: 'There is already a pending lesson request to this instructor' });
     }
 
     connectionRequest.headerMessage = messageUtils.createHeaderMessage(connectionRequest, user.firstName);
     connectionRequest.familyMembers = connectionRequest.familyMembers.map((familyMember) => familyMember._id);
-
+    console.log(connectionRequest);
     connectionRequest = new ConnectionRequest(connectionRequest);
     await connectionRequest.save();
 
@@ -79,17 +81,24 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
   const response = req.body.responseMessage;
 
   try {
-    const connectionRequest = await ConnectionRequest.findOneAndUpdate({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.ACCEPTED, responseMessage: response }, { new: true }, (err, doc) => {
-      if (err) {
-        console.log('Failed to update connection request: ', err);
-        res.status(500).send(err);
+    const connectionRequest = await ConnectionRequest.findOneAndUpdate(
+      { _id: req.body.connectionRequestId, instructor: user._id },
+      { status: CONNECTION_REQUEST_STATUS.ACCEPTED, responseMessage: response },
+      { new: true },
+      (err, doc) => {
+        if (err) {
+          console.log('Failed to update connection request: ', err);
+          res.status(500).send(err);
+        }
+        return doc;
       }
-      return doc;
-    });
+    );
 
     // TODO: test this failure case
     if (!connectionRequest) {
-      console.log(`User ${user._id} attempted to accept a connection request but the connection request was not found. Connection request id: ${req.body.connectionRequestId}`);
+      console.log(
+        `User ${user._id} attempted to accept a connection request but the connection request was not found. Connection request id: ${req.body.connectionRequestId}`
+      );
       return res.status(400).send({ error: 'Connection request not found.' });
     }
 
@@ -140,7 +149,10 @@ router.post('/declineConnectionRequest', auth, async (req, res) => {
   const user = req.user;
   const responseMessage = req.body.responseMessage;
   try {
-    const updated = await ConnectionRequest.updateOne({ _id: req.body.connectionRequestId, instructor: user._id }, { status: CONNECTION_REQUEST_STATUS.REJECTED, responseMessage });
+    const updated = await ConnectionRequest.updateOne(
+      { _id: req.body.connectionRequestId, instructor: user._id },
+      { status: CONNECTION_REQUEST_STATUS.REJECTED, responseMessage }
+    );
 
     if (updated.n < 1) {
       return res.status(400).send({ error: 'Connection request not found.' });

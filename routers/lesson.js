@@ -62,6 +62,7 @@ router.post('/sendLessonRequest', auth, async (req, res) => {
     lessonRequest.type = 'private';
     lessonRequest.price = lessonRequest.duration * (lessonRequest.hourlyRate / 60) * lessonRequest.students.length;
     lessonRequest.status = LESSON_STATUS.PENDING;
+    lessonRequest.selfLesson = lessonRequest.students.includes(lessonRequest.student);
 
     if (lessonRequest._id) {
       lessonRequest = await Lesson.findByIdAndUpdate(lessonRequest._id, lessonRequest, { new: true });

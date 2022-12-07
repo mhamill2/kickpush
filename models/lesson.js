@@ -45,6 +45,11 @@ const lessonSchema = new Schema(
         required: true
       }
     ],
+    selfLesson: {
+      type: Boolean,
+      default: false,
+      required: true
+    },
     requester: {
       type: String,
       enum: ['student', 'instructor'],

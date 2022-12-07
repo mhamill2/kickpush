@@ -30,6 +30,15 @@ const userSchema = new Schema(
         }
       }
     },
+    birthDate: {
+      type: Date,
+      required: true,
+      validate(value) {
+        if (new Date().getFullYear() - value.getFullYear() < 18) {
+          throw new Error('You must be at least 18 years old to sign up');
+        }
+      }
+    },
     password: {
       type: String,
       required: true,
