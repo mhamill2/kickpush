@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 
@@ -14,17 +14,25 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
+import Spinner from './components/Spinner/Spinner';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
 
 import { loadUser } from './state/user/userActions';
 import { createNewSocket } from './utils/socket';
 
-if (localStorage.token) {
-  loadUser(localStorage.token);
-}
-
 const App = ({ user, isAuthenticated, messages }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.token;
+
+    if (token) {
+      loadUser(token).then(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -32,6 +40,14 @@ const App = ({ user, isAuthenticated, messages }) => {
     }
     // eslint-disable-next-line
   }, [isAuthenticated]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <Router>
