@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 import * as date from '../../utils/date';
 
 import ScheduledLesson from './ScheduledLesson';
@@ -30,14 +31,15 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
         html.push(<ScheduledLesson key={lessons[i]._id} lesson={lessons[i]} openLessonRequestForm={openLessonRequestForm} openEditModal={openEditModal} />);
         i++;
       }
+      i--;
     }
 
     return html;
   };
 
-  const monthYearHeader = (month, year) => {
+  const monthYearHeader = (month, year, num) => {
     return (
-      <div key={month + year} className="flex justify-between items-center">
+      <div key={uuidv4()} className="flex justify-between items-center">
         <div className="text-xl font-extrabold">{month}</div>
         <div className="text-xl font-thin">{year}</div>
       </div>
