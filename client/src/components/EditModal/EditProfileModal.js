@@ -61,7 +61,16 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
   };
 
   return (
-    <Transition show={showModal} enter="transition ease-in-out duration-300 transform" enterFrom="translate-y-full" enterTo="translate-x-0" leave="transition-ease-in-out duration-300 transform" leaveFrom="translate-y-0" leaveTo="translate-y-full" className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col">
+    <Transition
+      show={showModal}
+      enter="transition ease-in-out duration-300 transform"
+      enterFrom="translate-y-full"
+      enterTo="translate-x-0"
+      leave="transition-ease-in-out duration-300 transform"
+      leaveFrom="translate-y-0"
+      leaveTo="translate-y-full"
+      className="h-screen w-full bg-white z-50 fixed top-0 flex flex-col"
+    >
       <header className="border-b p-4 border-gray-300 flex justify-between items-center">
         <h1 className="text-xl font-semibold">Edit {title || 'Profile'}</h1>
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600" onClick={revertChangesAndCloseModal}></FontAwesomeIcon>
@@ -69,18 +78,21 @@ const EditProfileModal = ({ showModal, closeModal, title, user }) => {
 
       <main className="mb-24 p-4 flex flex-1 flex-col overflow-auto">
         {title === 'Background' && <EditBio onChange={onBioChange} />}
-        {title === 'Rates' && <EditRates onChange={onRatesChange} />}
-        {title === 'Lesson Info' && <EditLessonInfo onChange={onLessonInfoChange} />}
-        {title === 'Social Media' && <EditSocialMediaLinks onChange={onSocialMediaLinkChange} />}
-        {title === 'Location' && <EditLocation onChange={onLocationChange} />}
         {title === 'Family Members' && <EditFamilyMembers onChange={onFamilyMemberChange} />}
+        {title === 'Lesson Info' && <EditLessonInfo onChange={onLessonInfoChange} />}
+        {title === 'Location' && <EditLocation onChange={onLocationChange} />}
+        {title === 'Rates' && <EditRates onChange={onRatesChange} />}
+        {title === 'Social Media' && <EditSocialMediaLinks onChange={onSocialMediaLinkChange} />}
       </main>
 
       <footer className="border-t border-gray-300 flex justify-around py-8 fixed bottom-0 w-full bg-white">
         <button className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={revertChangesAndCloseModal}>
           Cancel
         </button>
-        <button className="border border-black cursor-pointer rounded-3xl w-2/5" onClick={title === 'Location' ? saveUserLocationUpdates : saveUserProfileUpdates}>
+        <button
+          className="border border-black cursor-pointer rounded-3xl w-2/5"
+          onClick={title === 'Location' ? saveUserLocationUpdates : saveUserProfileUpdates}
+        >
           Submit
         </button>
       </footer>

@@ -11,7 +11,9 @@ const MessagesListItem = ({ message, user }) => {
     <Link to={`/messages/${connection._id}`}>
       <div data-user={connection._id} className="flex justify-between items-center p-4 border-b border-gray-100 bg-gray-100 rounded-3xl">
         <div className="flex items-center">
-          <ProfilePicture size={10} color={'white'} />
+          <div className="bg-white h-10 w-10 rounded-full overflow-hidden">
+            <ProfilePicture avatarUrl={connection.avatarUrl} color={'white'} />
+          </div>
           <div className="flex flex-col">
             <p className="ml-3 text-lg font-semibold">{connection.firstName}</p>
             <p className="ml-3 text-sm">{text}</p>

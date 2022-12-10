@@ -54,7 +54,9 @@ const MessengerConversation = ({ match, user }) => {
         </h1>
         <div className="w-fit self-center flex-1 flex justify-center">
           <div className="flex flex-col items-center justify-center gap-2">
-            <ProfilePicture size={14} />
+            <div className="h-14 w-14 rounded-full overflow-hidden bg-gray-100">
+              <ProfilePicture avatarUrl={connection.avatarUrl} size={14} />
+            </div>
             <span className="text-lg font-semibold">{connectionName}</span>
           </div>
         </div>

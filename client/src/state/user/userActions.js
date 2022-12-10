@@ -5,6 +5,8 @@ import {
   REGISTER_FAIL,
   AUTH_ERROR,
   USER_LOADED,
+  UPLOAD_AVATAR_SUCCESS,
+  UPLOAD_AVATAR_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
@@ -110,6 +112,18 @@ const updateUserLocation = async (user, address) => {
   }
 };
 
+const uploadAvatar = async (formData) => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.post('/uploadAvatar', formData, defaultPostConfig);
+    store.dispatch({ type: UPLOAD_AVATAR_SUCCESS, payload: res.data.avatarUrl });
+  } catch (err) {
+    console.log(err);
+    store.dispatch({ type: UPLOAD_AVATAR_FAIL, payload: err });
+  }
+};
+
 const setSocket = (socket) => {
   store.dispatch({ type: SET_SOCKET, payload: socket });
 };
@@ -125,4 +139,4 @@ const deleteSocket = async (socketId) => {
   }
 };
 
-export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser, setSocket, deleteSocket };
+export { register, login, logout, loadUser, updateInstructorProfile, updateStudentProfile, updateUserLocation, getUser, setSocket, deleteSocket, uploadAvatar };

@@ -1,11 +1,35 @@
 const express = require('express');
-const geocoder = require('../utils/geocoder');
-const ip = require('ip');
+const path = require('path');
+
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
 
 const auth = require('../middleware/auth/auth');
+const geocoder = require('../utils/geocoder');
+
 const UserModel = require('../models/user');
 const { User } = UserModel;
 const FamilyMember = require('../models/familyMember');
+
+const s3 = new S3Client({
+  region: 'us-east-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+});
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'kickpush-avatars',
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req, file, cb) {
+      cb(null, `${req.user._id}/avatar.jpg`);
+    }
+  })
+});
 
 const router = new express.Router();
 
@@ -42,10 +66,10 @@ router.post('/login', async (req, res) => {
     const token = await user.generateAuthToken();
 
     if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
-      await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile']).execPopulate();
+      await user.populate('connections', ['firstName', 'lastName', 'avatarUrl', 'studentProfile']).execPopulate();
       await user.populate('connections.studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
     } else {
-      await user.populate('connections', ['firstName', 'lastName', 'avatar', 'instructorProfile']).execPopulate();
+      await user.populate('connections', ['firstName', 'lastName', 'avatarUrl', 'instructorProfile']).execPopulate();
       await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
     }
 
@@ -64,10 +88,10 @@ router.get('/loadUser', auth, async (req, res) => {
   const user = req.user;
 
   if (user.accountType == UserModel.INSTRUCTOR_ACCOUNT_TYPE) {
-    await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile.familyMembers']).execPopulate();
+    await user.populate('connections', ['firstName', 'lastName', 'avatarUrl', 'studentProfile.familyMembers']).execPopulate();
     await user.populate('connections.studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
   } else {
-    await user.populate('connections', ['firstName', 'lastName', 'avatar', 'instructorProfile']).execPopulate();
+    await user.populate('connections', ['firstName', 'lastName', 'avatarUrl', 'instructorProfile']).execPopulate();
     await user.populate('studentProfile.familyMembers', ['name', 'birthDate']).execPopulate();
   }
 
@@ -84,7 +108,7 @@ router.post('/logout', auth, async (req, res) => {
     await req.user.save();
     res.send();
   } catch (err) {
-    console.log('Failed to logout user: ' + err);
+    console.log('Failed to logout user:', err);
     res.status(500).send();
   }
 });
@@ -99,7 +123,7 @@ router.post('/updateInstructorProfile', auth, async (req, res) => {
 
   try {
     await user.updateOne({ instructorProfile: req.body.instructorProfile }, { runValidators: true });
-    await user.populate('connections', ['firstName', 'lastName', 'avatar', 'studentProfile.familyMembers']).execPopulate();
+    await user.populate('connections', ['firstName', 'lastName', 'avatarUrl', 'studentProfile.familyMembers']).execPopulate();
 
     res.json(user);
   } catch (err) {
@@ -183,6 +207,26 @@ router.post('/updateLocation', auth, async (req, res) => {
   } catch (err) {
     console.log('Failed to update the users location: ', err);
     res.status(500).send();
+  }
+});
+
+/**
+ * @route   POST /updateAvatar
+ * @desc    Update the user's avatar
+ */
+router.post('/uploadAvatar', auth, upload.single('avatar'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file provided');
+  }
+
+  const avatarUrl = req.file.location;
+
+  try {
+    const user = await User.findByIdAndUpdate(req.user.id, { avatarUrl: req.file.location });
+    res.json({ avatarUrl });
+  } catch (err) {
+    console.log('Failed to update user avatar: ', err);
+    return res.status(500).json({ error: "Error updating user's avatar URL in the database" });
   }
 });
 

@@ -26,7 +26,7 @@ router.get('/getPendingConnectionRequests', auth, async (req, res) => {
 
   await ConnectionRequest.populate(connectionRequests, {
     path: 'student',
-    select: 'firstName lastName avatar'
+    select: 'firstName lastName avatarUrl'
   });
 
   await ConnectionRequest.populate(connectionRequests, {
@@ -131,9 +131,9 @@ router.post('/acceptConnectionRequest', auth, async (req, res) => {
     await introMessage.save();
     await responseMessage.save();
 
-    const { _id, firstName, lastName, avatar } = student;
+    const { _id, firstName, lastName, avatarUrl } = student;
 
-    res.status(200).send({ _id, firstName, lastName, avatar });
+    res.status(200).send({ _id, firstName, lastName, avatarUrl });
   } catch (err) {
     console.log('Failed to accept connection request: ', err);
     res.status(500).send(err);

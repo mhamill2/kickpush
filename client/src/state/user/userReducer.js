@@ -1,4 +1,13 @@
-import { REGISTER_SUCCESS, LOGIN_SUCCESS, USER_LOADED, PROFILE_UPDATE_SUCCESS, UPDATE_USER_CONNECTIONS, SET_SOCKET, DELETE_SOCKET } from './types';
+import {
+  REGISTER_SUCCESS,
+  LOGIN_SUCCESS,
+  USER_LOADED,
+  PROFILE_UPDATE_SUCCESS,
+  UPDATE_USER_CONNECTIONS,
+  SET_SOCKET,
+  DELETE_SOCKET,
+  UPLOAD_AVATAR_SUCCESS
+} from './types';
 
 const initialState = {
   user: null,
@@ -28,6 +37,14 @@ const userReducer = (state = initialState, action) => {
         user: {
           ...state.user,
           connections: [...state.user.connections, action.payload]
+        }
+      };
+    case UPLOAD_AVATAR_SUCCESS:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          avatarUrl: action.payload
         }
       };
     case USER_LOADED:

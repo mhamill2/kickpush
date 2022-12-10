@@ -86,8 +86,8 @@ const userSchema = new Schema(
         }
       }
     ],
-    avatar: {
-      type: Buffer
+    avatarUrl: {
+      type: String
     },
     connections: [
       {

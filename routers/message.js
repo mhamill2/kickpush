@@ -50,8 +50,8 @@ router.post('/sendMessage/:receiverId', auth, async (req, res) => {
     });
 
     // populate sender and receiver with firstName, lastName, and avatar
-    await message.populate('sender', 'firstName lastName avatar').execPopulate();
-    await message.populate('receiver', 'firstName lastName avatar').execPopulate();
+    await message.populate('sender', 'firstName lastName avatarUrl').execPopulate();
+    await message.populate('receiver', 'firstName lastName avatarUrl').execPopulate();
 
     if (receiver.socketIds.length > 0) {
       receiver.socketIds.forEach((socket) => {
@@ -91,7 +91,7 @@ router.get('/getConversations', auth, async (req, res) => {
     // populate the sender and receiver fields
     const populatedMessages = await Message.populate(messages, {
       path: 'message.sender message.receiver',
-      select: 'firstName lastName avatar',
+      select: 'firstName lastName avatarUrl',
       model: 'User'
     });
 
@@ -117,7 +117,7 @@ router.get('/getConversation/:userId', auth, async (req, res) => {
 
     messages = await Message.populate(messages, {
       path: 'sender receiver',
-      select: 'firstName lastName avatar',
+      select: 'firstName lastName avatarUrl',
       model: 'User'
     });
 
