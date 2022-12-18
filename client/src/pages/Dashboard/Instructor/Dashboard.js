@@ -72,7 +72,7 @@ const Dashboard = ({ user }) => {
 
         <section className="flex flex-col items-center justify-start w-full mb-5">
           <div className="border-b border-gray-100 bg-white p-5 w-full">
-            <h1 className="text-xl font-bold">Pending Lesson Requests</h1>
+            <h1 className="text-xl font-bold">Pending Connection Requests</h1>
           </div>
           <div
             className={`bg-white w-full p-6 flex flex-col gap-4 ${
@@ -82,7 +82,7 @@ const Dashboard = ({ user }) => {
             {loadingConnectionRequests ? (
               <Spinner />
             ) : _.isEmpty(connectionRequests) ? (
-              'No pending lesson requests'
+              'No pending connection requests'
             ) : (
               <>
                 {Object.entries(connectionRequests).map((connectionRequest) => (

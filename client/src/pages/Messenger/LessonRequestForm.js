@@ -22,7 +22,7 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
       return user.instructorProfile.rates.private;
     }
 
-    if (user.accountType === 'student' && connection.instructorProfile?.rates?.private) {
+    if (user.accountType === 'student' && connection?.instructorProfile?.rates?.private) {
       return connection.instructorProfile.rates.private;
     }
 
@@ -103,9 +103,6 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
     return isValid;
   };
 
-  const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
-  const student = user.accountType === 'instructor' ? connection : user;
-
   const [editLesson, setEditLesson] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [duration, setDuration] = useState(60);
@@ -114,6 +111,24 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
   const [location, setLocation] = useState('');
   const [hourlyRate, setHourlyRate] = useState(setInitialHourlyRate()); // TODO change this to the instructors hourly rate and add a cost field to the request
   const [selectedStudents, setSelectedStudents] = useState([]);
+
+  useEffect(() => {
+    if (duration >= 60) {
+      setShowHoursLabel(true);
+    } else {
+      setShowHoursLabel(false);
+    }
+
+    if (duration % 60 > 0) {
+      setShowMinutesLabel(true);
+    } else {
+      setShowMinutesLabel(false);
+    }
+  }, [duration]);
+
+  if (!connection) return null;
+  const familyMembers = user.accountType === 'instructor' ? connection.studentProfile.familyMembers : user.studentProfile.familyMembers;
+  const student = user.accountType === 'instructor' ? connection : user;
 
   if ((editLesson === null && lesson !== null) || (editLesson !== null && lesson !== null && editLesson._id !== lesson._id)) {
     setEditLesson(lesson);
@@ -129,20 +144,6 @@ const LessonRequestForm = ({ showForm, closeForm, connection, user, lesson }) =>
     setLocation('');
     setHourlyRate(20);
   }
-
-  useEffect(() => {
-    if (duration >= 60) {
-      setShowHoursLabel(true);
-    } else {
-      setShowHoursLabel(false);
-    }
-
-    if (duration % 60 > 0) {
-      setShowMinutesLabel(true);
-    } else {
-      setShowMinutesLabel(false);
-    }
-  }, [duration]);
 
   return (
     <Transition

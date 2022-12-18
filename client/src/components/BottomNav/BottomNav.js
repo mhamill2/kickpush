@@ -23,7 +23,7 @@ const BottomNav = ({ user, nav }) => {
       <Link to="/dashboard" className={`${itemContainerStyle} ${activePage === 'home' ? itemContainerActiveStyle : ''}`}>
         <FontAwesomeIcon icon={faHome} className={activePage === 'home' ? 'text-primary' : ''}></FontAwesomeIcon>
       </Link>
-      <Link to="/students" className={`${itemContainerStyle} ${activePage === 'lessons' ? itemContainerActiveStyle : ''}`}>
+      <Link to="/lessons" className={`${itemContainerStyle} ${activePage === 'lessons' ? itemContainerActiveStyle : ''}`}>
         <FontAwesomeIcon icon={faCalendarAlt} className={activePage === 'lessons' ? 'text-primary' : ''}></FontAwesomeIcon>
       </Link>
       <Link to="/messages" className={`${itemContainerStyle} ${activePage === 'messages' ? itemContainerActiveStyle : ''}`}>

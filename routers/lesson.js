@@ -7,6 +7,35 @@ const { LESSON_STATUS } = require('../constants/lesson_constants');
 
 const router = new express.Router();
 
+router.get('/getAllLessons', auth, async (req, res) => {
+  const user = req.user;
+
+  try {
+    let lessons = await Lesson.find({
+      $and: [{ $or: [{ instructor: user._id }, { student: user._id }] }, { status: { $ne: LESSON_STATUS.CANCELLED } }]
+    }).sort({
+      dateTime: -1
+    });
+
+    lessons = await Lesson.populate(lessons, {
+      path: 'student instructor',
+      select: 'firstName lastName avatarUrl',
+      model: 'User'
+    });
+
+    lessons = await Lesson.populate(lessons, {
+      path: 'students',
+      select: 'name birthDate',
+      model: 'FamilyMember'
+    });
+
+    res.status(200).json(lessons);
+  } catch (err) {
+    console.log('Failed to get lessons: ', err);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
 /**
  * @route   GET /getlessons/:userId
  * @desc    Gets the lesson history of the current user and the passed in user

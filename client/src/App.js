@@ -6,6 +6,7 @@ import BottomNav from './components/BottomNav/BottomNav';
 import Dashboard from './pages/Dashboard/Dashboard';
 import InstructorSearchResults from './pages/InstructorSearchResults/InstructorSearchResults';
 import Landing from './pages/Landing/Landing';
+import LessonCalendar from './pages/Lessons/LessonCalendar';
 import Login from './pages/Auth/Login/Login';
 import Messenger from './pages/Messenger/Messenger';
 import MessengerConversation from './pages/Messenger/MessengerConversation';
@@ -64,6 +65,7 @@ const App = ({ user, isAuthenticated, messages }) => {
           <PrivateRoute exact path="/instructors/:userId" component={PublicProfile} />
           <PrivateRoute exact path="/messages" component={Messenger} />
           <PrivateRoute exact path="/messages/:userId" component={MessengerConversation} />
+          <PrivateRoute exact path="/lessons" component={LessonCalendar} />
         </Switch>
         <BottomNav />
       </Fragment>

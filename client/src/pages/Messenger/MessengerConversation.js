@@ -13,7 +13,7 @@ const MessengerConversation = ({ match, user }) => {
   const connection = user.connections.find((connection) => connection._id === match.params.userId);
   const connectionName = connection.firstName;
 
-  const [page, setPage] = useState('messages');
+  const [page, setPage] = useState(localStorage.getItem('kp-messenger-page') || 'messages');
   const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingLessons, setLoadingLessons] = useState(true);
 
@@ -36,8 +36,14 @@ const MessengerConversation = ({ match, user }) => {
     setLoadingLessons(false);
   };
 
-  const openLessons = () => setPage('lessons');
-  const openMessages = () => setPage('messages');
+  const openLessons = () => {
+    localStorage.setItem('kp-messenger-page', 'lessons');
+    setPage('lessons');
+  };
+  const openMessages = () => {
+    localStorage.setItem('kp-messenger-page', 'messages');
+    setPage('messages');
+  };
 
   const goBack = () => {
     dispatch({ type: 'SHOW_BOTTOM_NAV' });

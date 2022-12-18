@@ -1,3 +1,9 @@
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+export const getMonthFromNumber = (monthNumber) => {
+  return monthNames[monthNumber];
+};
+
 export const getWeekdayShortName = (date) => {
   return date.toLocaleString('en-US', { weekday: 'short' });
 };
@@ -26,4 +32,8 @@ export const isFuture = (date) => {
 
 export const getMonthLongName = (date) => {
   return date.toLocaleString('en-US', { month: 'long' });
+};
+
+export const getMonthDayYearFormatted = (date) => {
+  return `${getMonthLongName(date)} ${getDayOfMonthPadded(date)}, ${date.getFullYear()}`;
 };

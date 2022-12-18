@@ -90,6 +90,18 @@ const editLessonRequest = async (lessonRequest) => {
   }
 };
 
+const getAllLessons = async () => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.get('/getAllLessons');
+    store.dispatch({ type: GET_LESSONS_SUCCESS, payload: res.data });
+  } catch (err) {
+    console.log(err.response);
+    store.dispatch({ type: GET_LESSONS_FAILURE });
+  }
+};
+
 const getLessons = async (userId) => {
   setAuthToken(localStorage.token);
 
@@ -129,6 +141,7 @@ const cancelLesson = async (lessonId) => {
 export {
   sendConnectionRequest,
   editLessonRequest,
+  getAllLessons,
   getLessons,
   getPendingConnectionRequests,
   sendConnectionRequestResponse,

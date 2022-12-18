@@ -5,7 +5,6 @@ const ProfilePicture = ({ avatarUrl }) => {
   const [isValid, setIsValid] = useState(true);
 
   useEffect(() => {
-    console.log('avatarUrl', avatarUrl);
     if (!avatarUrl) {
       return;
     }

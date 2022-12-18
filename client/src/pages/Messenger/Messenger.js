@@ -21,6 +21,7 @@ const Messenger = ({ conversations }) => {
 
   useEffect(() => {
     dispatch({ type: 'NAV_MESSAGING' });
+    localStorage.setItem('kp-messenger-page', 'messages');
 
     conversations.length === 0 ? getAllConversations() : setLoading(false);
     // eslint-disable-next-line
