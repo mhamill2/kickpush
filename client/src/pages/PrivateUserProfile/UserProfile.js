@@ -57,8 +57,6 @@ const UserProfile = ({ user }) => {
     uploadAvatar(formData);
   };
 
-  console.log(user.avatarUrl);
-
   return (
     <>
       <main className="pt-3">

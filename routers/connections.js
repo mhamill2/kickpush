@@ -61,7 +61,6 @@ router.post('/sendConnectionRequest', auth, async (req, res) => {
 
     connectionRequest.headerMessage = messageUtils.createHeaderMessage(connectionRequest, user.firstName);
     connectionRequest.familyMembers = connectionRequest.familyMembers.map((familyMember) => familyMember._id);
-    console.log(connectionRequest);
     connectionRequest = new ConnectionRequest(connectionRequest);
     await connectionRequest.save();
 
