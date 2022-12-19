@@ -31,7 +31,7 @@ const lessonReducer = (state = initialState, action) => {
     case CANCEL_LESSON_SUCCESS:
       return {
         ...state,
-        lessons: state.lessons.map((lesson) => (lesson._id === action.payload._id ? action.payload : lesson))
+        lessons: state.lessons.filter((lesson) => lesson._id !== action.payload._id)
       };
     case CONNECTION_REQUEST_SUCCESS:
       return {
