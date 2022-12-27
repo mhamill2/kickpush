@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import ProfilePicture from '../../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../../components/elements/ProfilePicture';
 
 const Dashboard = ({ user }) => {
   const { city, state } = user.location;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 
 import ScrollRef from '../../components/ScrollRef';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/elements/Spinner';
 import { sendMessage } from '../../state/message/messageActions';
 
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';

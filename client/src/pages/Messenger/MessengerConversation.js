@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 
 import Lessons from './Lessons';
 import Messages from './Messages';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 
 import { getConversation } from '../../state/message/messageActions';
 import { getLessons } from '../../state/lessons/lessonActions';

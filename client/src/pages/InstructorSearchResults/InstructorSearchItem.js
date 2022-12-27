@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 
 const InstructorSearchItem = ({ instructor, secondaryColor }) => {
   const { instructorProfile } = instructor;

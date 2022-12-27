@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import InstructorProfile from './Instructor/InstructorProfile';
-import ConnectionRequestFooter from '../../components/ConnectionRequestFooter/ConnectionRequestFooter';
+import ConnectionRequestFooter from '../Dashboard/ConnectionRequest/ConnectionRequestFooter';
 import StudentProfile from './Student/StudentProfile';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 import { getUser } from '../../state/user/userActions';
 
 const PublicProfile = ({ match }) => {

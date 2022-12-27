@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import Button from '../../components/Button/Button';
+import Button from '../../components/elements/Button';
 import LessonRequestForm from './LessonRequestForm';
 import ProposedLessons from './ProposedLessons';
 import ScheduledLessons from './ScheduledLessons';

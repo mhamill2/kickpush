@@ -3,7 +3,7 @@ import { Transition } from '@headlessui/react';
 import _ from 'lodash';
 import ProposedLesson from './ProposedLesson';
 
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/elements/Spinner';
 
 const ProposedLessons = ({ lessons, loading, show, openLessonRequestForm, closeLessonRequestForm, acceptLesson, cancelLesson }) => {
   return (

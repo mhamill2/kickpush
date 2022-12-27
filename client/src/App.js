@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 
-import BottomNav from './components/BottomNav/BottomNav';
+import BottomNav from './components/nav/BottomNav';
 import Dashboard from './pages/Dashboard/Dashboard';
 import InstructorSearchResults from './pages/InstructorSearchResults/InstructorSearchResults';
 import Landing from './pages/Landing/Landing';
@@ -10,13 +10,13 @@ import LessonCalendar from './pages/Lessons/LessonCalendar';
 import Login from './pages/Auth/Login/Login';
 import Messenger from './pages/Messenger/Messenger';
 import MessengerConversation from './pages/Messenger/MessengerConversation';
-import Navbar from './components/Navbar/Navbar';
+import Navbar from './components/nav/Navbar';
 import Payments from './pages/Payments/Payments';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute';
 import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 import Register from './pages/Auth/Register/Register';
 import ScrollToTop from './utils/scrollToTop';
-import Spinner from './components/Spinner/Spinner';
+import Spinner from './components/elements/Spinner';
 import UserProfile from './pages/PrivateUserProfile/UserProfile';
 
 import { loadUser } from './state/user/userActions';

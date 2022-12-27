@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 
 const MessagesListItem = ({ message, user }) => {
   const connection = message.receiver._id === user._id ? message.sender : message.receiver;

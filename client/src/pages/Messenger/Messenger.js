@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import MessagesListItem from './MessagesListItem';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/elements/Spinner';
 
 import { getConversations } from '../../state/message/messageActions';
 

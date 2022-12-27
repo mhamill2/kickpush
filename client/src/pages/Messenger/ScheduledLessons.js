@@ -7,8 +7,8 @@ import * as date from '../../utils/date';
 
 import ScheduledLesson from './ScheduledLesson';
 import ScheduledLessonEditModal from './ScheduledLessonEditModal';
-import HrText from '../../components/HrText/HrText';
-import Spinner from '../../components/Spinner/Spinner';
+import HrText from '../../components/elements/HrText';
+import Spinner from '../../components/elements/Spinner';
 
 const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cancelLesson }) => {
   const [showModal, setShowModal] = useState(false);

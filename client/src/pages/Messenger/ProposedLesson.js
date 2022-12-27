@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendar, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faTag } from '@fortawesome/free-solid-svg-icons';
 
-import Button from '../../components/Button/Button';
+import Button from '../../components/elements/Button';
 import * as date from '../../utils/date';
 
 const ProposedLesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesson }) => {

@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 import _ from 'lodash';
 
-import Spinner from '../../../components/Spinner/Spinner';
-import ProfilePicture from '../../../components/ProfilePicture/ProfilePicture';
-import ConnectionRequest from '../../../components/ConnectionRequest/ConnectionRequest';
+import Spinner from '../../../components/elements/Spinner';
+import ProfilePicture from '../../../components/elements/ProfilePicture';
+import ConnectionRequest from '../ConnectionRequest/ConnectionRequest';
 
 import { getPendingConnectionRequests } from '../../../state/lessons/lessonActions';
 

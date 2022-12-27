@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { CalendarIcon, EllipsisHorizontalIcon, MapPinIcon, TagIcon } from '@heroicons/react/20/solid';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 import * as date from '../../utils/date';
 
 const LessonItem = ({ lesson, cancelLesson }) => {

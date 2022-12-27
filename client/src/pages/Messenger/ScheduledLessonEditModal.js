@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Transition } from '@headlessui/react';
 
-import Button from '../../components/Button/Button';
+import Button from '../../components/elements/Button';
 
 const ScheduledLessonEditModal = ({ showModal, closeModal, cancelLesson, openLessonRequestForm, lesson }) => {
   const cancelLessonAndCloseModal = (lesson) => {

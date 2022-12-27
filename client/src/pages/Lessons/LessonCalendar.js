@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import CalendarDay from './CalendarDay';
 import LessonItem from './LessonItem';
 import LessonRequestForm from '../Messenger/LessonRequestForm';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from '../../components/elements/Spinner';
 
 import * as date from '../../utils/date';
 import { getAllLessons as getAllLessonsAction, cancelLesson as cancelLessonAction } from '../../state/lessons/lessonActions';

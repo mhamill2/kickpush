@@ -7,8 +7,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 
-import Button from '../../components/Button/Button';
-import SelectableItem from '../../components/SelectableItem/SelectableItem';
+import Button from '../../components/elements/Button';
+import SelectableItem from '../../components/elements/SelectableItem';
 
 import { sendLessonRequest, editLessonRequest } from '../../state/lessons/lessonActions';
 

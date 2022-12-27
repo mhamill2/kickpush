@@ -3,8 +3,8 @@ import { useDispatch, connect } from 'react-redux';
 
 import InstructorProfile from './Instructor/InstructorProfile';
 import StudentProfile from './Student/StudentProfile';
-import EditProfileModal from '../../components/EditModal/EditProfileModal';
-import ProfilePicture from '../../components/ProfilePicture/ProfilePicture';
+import EditProfileModal from './EditModal/EditProfileModal';
+import ProfilePicture from '../../components/elements/ProfilePicture';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';

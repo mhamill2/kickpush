@@ -4,9 +4,9 @@ import { FcGoogle } from 'react-icons/fc';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import Button from '../../../components/Button/Button';
-import FormModal from '../../../components/FormModal/FormModal';
-import HrText from '../../../components/HrText/HrText';
+import Button from '../../../components/elements/Button';
+import FormModal from '../../../components/containers/FormModal';
+import HrText from '../../../components/elements/HrText';
 import { login } from '../../../state/user/userActions';
 
 const Login = (props) => {
