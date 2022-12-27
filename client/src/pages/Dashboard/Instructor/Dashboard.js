@@ -47,7 +47,7 @@ const Dashboard = ({ user }) => {
           <div className="rounded-full overflow-hidden bg-gray-100 h-24 w-24">
             <ProfilePicture avatarUrl={user.avatarUrl} />
           </div>
-          <h1 className="text-2xl font-bold">Hello {user.firstName}!</h1>
+          <h1 className="mt-5 text-2xl font-bold">Hello {user.firstName}!</h1>
           <div className="text-center">
             {user.hasNextLesson
               ? `Your next lesson is scheduled with ${user.nextStudent} at ${user.nextLessonTime} on ${user.nextLessonDate}`

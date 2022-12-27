@@ -6,7 +6,7 @@ import { faHome, faCalendarAlt, faCommentAlt, faUserCircle, faCreditCard } from 
 const BottomNav = ({ user, nav }) => {
   const { activePage, showBottomNav } = nav;
   const itemContainerStyle = 'h-full flex justify-center items-center w-12';
-  const itemContainerActiveStyle = 'shadow-activeIcon';
+  const itemContainerActiveStyle = 'border-t-2 border-primary';
 
   if (!user || !showBottomNav) {
     return null;

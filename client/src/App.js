@@ -11,6 +11,7 @@ import Login from './pages/Auth/Login/Login';
 import Messenger from './pages/Messenger/Messenger';
 import MessengerConversation from './pages/Messenger/MessengerConversation';
 import Navbar from './components/Navbar/Navbar';
+import Payments from './pages/Payments/Payments';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import PublicProfile from './pages/PublicUserProfile/PublicProfile';
 import Register from './pages/Auth/Register/Register';
@@ -66,6 +67,7 @@ const App = ({ user, isAuthenticated, messages }) => {
           <PrivateRoute exact path="/messages" component={Messenger} />
           <PrivateRoute exact path="/messages/:userId" component={MessengerConversation} />
           <PrivateRoute exact path="/lessons" component={LessonCalendar} />
+          <PrivateRoute exact path="/payments" component={Payments} />
         </Switch>
         <BottomNav />
       </Fragment>
