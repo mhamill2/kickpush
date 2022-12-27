@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
-import * as date from '../../utils/date';
-import LessonItem from './LessonItem';
+
 import CalendarDay from './CalendarDay';
-import { getAllLessons as getAllLessonsAction, cancelLesson as cancelLessonAction } from '../../state/lessons/lessonActions';
+import LessonItem from './LessonItem';
+import LessonRequestForm from '../Messenger/LessonRequestForm';
 import Spinner from '../../components/Spinner/Spinner';
+
+import * as date from '../../utils/date';
+import { getAllLessons as getAllLessonsAction, cancelLesson as cancelLessonAction } from '../../state/lessons/lessonActions';
 
 const LessonCalendar = ({ lessons }) => {
   const dispatch = useDispatch();
@@ -44,26 +47,37 @@ const LessonCalendar = ({ lessons }) => {
     const firstDayOfMonth = new Date(year, month, 1).getDay();
     const lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
     const daysArray = [];
+    const today = new Date();
 
     for (let i = 1; i <= daysInMonth; i++) {
+      const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+      const date = new Date(year, month, i);
+
       daysArray.push({
-        date: new Date(year, month, i).toISOString().split('T')[0],
+        date: date.toISOString().split('T')[0],
+        dateTime: date,
         isCurrentMonth: true,
-        isToday: i === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear(),
-        isSelected: i === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()
+        isSelected: isToday,
+        isToday
       });
     }
 
     for (let i = 0; i < firstDayOfMonth; i++) {
+      const date = new Date(year, month, -i);
+
       daysArray.unshift({
-        date: new Date(year, month, -i).toISOString().split('T')[0],
+        date: date.toISOString().split('T')[0],
+        dateTime: date,
         isCurrentMonth: false
       });
     }
 
     for (let i = 0; i < 6 - lastDayOfMonth; i++) {
+      const date = new Date(year, month + 1, i + 1);
+
       daysArray.push({
-        date: new Date(year, month + 1, i + 1).toISOString().split('T')[0],
+        date: date.toISOString().split('T')[0],
+        dateTime: date,
         isCurrentMonth: false
       });
     }
@@ -82,9 +96,37 @@ const LessonCalendar = ({ lessons }) => {
     return lessonsInMonth;
   };
 
+  const getLessonsInDay = () => {
+    setLoading(true);
+
+    const lessonsInDay = lessons.filter((lesson) => {
+      const lessonDate = new Date(lesson.dateTime);
+      return (
+        lessonDate.getDate() === selectedDay.dateTime.getDate() &&
+        lessonDate.getMonth() === selectedDay.dateTime.getMonth() &&
+        lessonDate.getFullYear() === selectedDay.dateTime.getFullYear()
+      );
+    });
+
+    setLoading(false);
+    return lessonsInDay;
+  };
+
   const cancelLesson = async (e) => {
     e.preventDefault();
     await cancelLessonAction(e.target.getAttribute('data-lesson-id'));
+  };
+
+  const selectDay = (day) => {
+    setSelectedDay(day);
+  };
+
+  const openLessonRequestForm = () => {
+    setShowLessonRequestForm(true);
+  };
+
+  const closeLessonRequestForm = () => {
+    setShowLessonRequestForm(false);
   };
 
   const [month, setMonth] = useState(new Date().getMonth());
@@ -92,6 +134,9 @@ const LessonCalendar = ({ lessons }) => {
   const [loading, setLoading] = useState(true);
   const [days, setDays] = useState([]);
   const [lessonsDisplayed, setLessonsDisplayed] = useState([]);
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [showLessonRequestForm, setShowLessonRequestForm] = useState(false);
+  const [editLesson, setEditLesson] = useState(null);
 
   useEffect(() => {
     dispatch({ type: 'NAV_LESSONS' });
@@ -106,9 +151,14 @@ const LessonCalendar = ({ lessons }) => {
   }, [month, year]);
 
   useEffect(() => {
-    setLessonsDisplayed(getLessonsInMonth());
+    setLessonsDisplayed(selectedDay === null ? getLessonsInMonth() : getLessonsInDay());
     // eslint-disable-next-line
   }, [lessons]);
+
+  useEffect(() => {
+    setLessonsDisplayed(selectedDay === null ? getLessonsInMonth() : getLessonsInDay());
+    // eslint-disable-next-line
+  }, [selectedDay]);
 
   return (
     <div className="px-4 mb-10 mt-5">
@@ -146,7 +196,14 @@ const LessonCalendar = ({ lessons }) => {
           </div>
           <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
             {days.map((day, dayIdx) => (
-              <CalendarDay key={day.date} day={day} dayIdx={dayIdx} numOfDays={days.length} />
+              <CalendarDay
+                key={day.date}
+                day={day}
+                dayIdx={dayIdx}
+                numOfDays={days.length}
+                isSelected={selectedDay && selectedDay.dateTime === day.dateTime}
+                selectDay={selectDay}
+              />
             ))}
           </div>
         </div>
@@ -155,11 +212,16 @@ const LessonCalendar = ({ lessons }) => {
             <div className="flex justify-center items-center h-full w-full pt-14">
               <Spinner />
             </div>
+          ) : lessonsDisplayed.length === 0 ? (
+            <div className="flex justify-center items-center h-full w-full pt-14">
+              <p className="text-gray-500">No lessons scheduled for this month</p>
+            </div>
           ) : (
             lessonsDisplayed.map((lesson) => <LessonItem key={lesson._id} lesson={lesson} cancelLesson={cancelLesson} />)
           )}
         </ol>
       </div>
+      <LessonRequestForm lesson={editLesson} showForm={showLessonRequestForm} closeForm={closeLessonRequestForm} />
     </div>
   );
 };
