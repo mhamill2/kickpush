@@ -45,7 +45,7 @@ const Lessons = ({ loading, connection, lessons }) => {
 
   return (
     <>
-      <div className="flex justify-center gap-2 px-3 mb-4 fixed right-0 left-0 bg-white pb-4 z-30">
+      <div className="flex justify-center gap-2 px-3 mb-4 fixed left-0 w-screen bg-white pb-4 z-30">
         <div
           onClick={() => setShowPendingLessons(true)}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
@@ -74,7 +74,7 @@ const Lessons = ({ loading, connection, lessons }) => {
           Lessons
         </div>
       </div>
-      <main className="flex px-6 w-full mb-32">
+      <main className="flex px-6 w-full mb-32 overflow-x-hidden">
         <ProposedLessons
           lessons={pendingLessons}
           show={showPendingLessons}
@@ -93,7 +93,7 @@ const Lessons = ({ loading, connection, lessons }) => {
           cancelLesson={cancelLesson}
         />
       </main>
-      <div className="bottom-0 left-0 w-full flex justify-center pt-4 pb-6 px-12 fixed bg-white shadow-inner">
+      <div className="bottom-0 w-screen pt-4 pb-6 px-12 fixed bg-white shadow-inner">
         <Button content="Propose a New Lesson" extraClasses={''} isPrimary={true} size={'large'} onClick={(event) => openLessonRequestForm(null)} />
       </div>
       <LessonRequestForm lesson={editLesson} showForm={showLessonRequestForm} closeForm={closeLessonRequestForm} connection={connection} />
