@@ -1,13 +1,23 @@
+import { useState } from 'react';
 import { connect } from 'react-redux';
 
 import { CalendarIcon, MapPinIcon, TagIcon, ClockIcon } from '@heroicons/react/20/solid';
 
+import AlertAction from '../../components/elements/AlertAction';
 import Menu from '../../components/elements/ContextMenu/Menu';
 import MenuItem from '../../components/elements/ContextMenu/MenuItem';
 
 import * as date from '../../utils/date';
 
 const Lesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesson }) => {
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelLessonId, setCancelLessonId] = useState(null);
+
+  const cancelLessonHandler = (e) => {
+    setCancelLessonId(e.target.getAttribute('data-id'));
+    setShowCancelModal(true);
+  };
+
   const getMenuItems = () => {
     const menuItems = [];
 
@@ -21,7 +31,7 @@ const Lesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesso
       menuItems.unshift({ text: 'Accept Lesson', onClick: acceptLesson, dataId: lesson._id });
       menuItems.push({ text: 'Decline Lesson', onClick: cancelLesson, dataId: lesson._id });
     } else if (lesson.status === 'pending' || date.isFuture(lesson.dateTime)) {
-      menuItems.push({ text: 'Cancel Lesson', onClick: cancelLesson, dataId: lesson._id });
+      menuItems.push({ text: 'Cancel Lesson', onClick: cancelLessonHandler, dataId: lesson._id });
     }
 
     return menuItems;
@@ -78,6 +88,16 @@ const Lesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesso
           </span>
         </div>
       </div>
+      <AlertAction
+        open={showCancelModal}
+        setOpen={setShowCancelModal}
+        title={'Cancel Lesson'}
+        message={'Are you sure you want to cancel this lesson?'}
+        action={cancelLesson}
+        actionText={'Yes'}
+        cancelText={'No'}
+        dataId={cancelLessonId}
+      />
     </div>
   );
 };

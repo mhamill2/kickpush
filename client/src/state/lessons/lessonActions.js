@@ -139,10 +139,23 @@ const cancelLesson = async (lessonId) => {
   }
 };
 
+const getNextLesson = async () => {
+  setAuthToken(localStorage.token);
+
+  try {
+    const res = await axios.get('/getNextLesson');
+    return res.data;
+  } catch (err) {
+    console.log(err.response);
+    return null;
+  }
+};
+
 export {
   sendConnectionRequest,
   editLessonRequest,
   getAllLessons,
+  getNextLesson,
   getLessons,
   getPendingConnectionRequests,
   sendConnectionRequestResponse,

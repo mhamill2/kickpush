@@ -25,7 +25,25 @@ const replaceLastCommaWithConjunction = (str, conjunction) => {
   return str;
 };
 
+const createStudentsString = (lesson) => {
+  const str = '';
+
+  if (lesson.selfLesson) {
+    str += lesson.student.firstName + lesson.students.length > 0 ? ', ' : '';
+  }
+
+  lesson.students.forEach((student, index) => {
+    str += student.name;
+    if (index !== lesson.students.length - 1) {
+      str += ', ';
+    }
+  });
+
+  return replaceLastCommaWithConjunction(str, 'and');
+};
+
 module.exports = {
   createHeaderMessage,
+  createStudentsString,
   replaceLastCommaWithConjunction
 };

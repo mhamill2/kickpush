@@ -215,4 +215,43 @@ router.post('/acceptLesson', auth, async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /getNextLesson
+ * @desc    Gets the next upcoming lesson for the user
+ *
+ */
+router.get('/getNextLesson', auth, async (req, res) => {
+  const user = req.user;
+
+  try {
+    let lesson = await Lesson.findOne({
+      $or: [{ student: user._id }, { instructor: user._id }],
+      status: LESSON_STATUS.ACCEPTED,
+      dateTime: { $gt: new Date() }
+    });
+
+    if (!lesson) {
+      res.status(200).send(null);
+      return;
+    }
+
+    lesson = await Lesson.populate(lesson, {
+      path: 'student instructor',
+      select: 'firstName lastName avatar',
+      model: 'User'
+    });
+
+    lesson = await Lesson.populate(lesson, {
+      path: 'students',
+      select: 'name birthDate',
+      model: 'FamilyMember'
+    });
+
+    res.status(200).send(lesson);
+  } catch (err) {
+    console.log('Failed to get the next lesson: ', err);
+    res.status(500).send(null);
+  }
+});
+
 module.exports = router;

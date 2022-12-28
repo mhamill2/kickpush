@@ -70,6 +70,9 @@ const lessonSchema = new Schema(
     price: {
       type: Number,
       required: true
+    },
+    studentsString: {
+      type: String
     }
   },
   {
