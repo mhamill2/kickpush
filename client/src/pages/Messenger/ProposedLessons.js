@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react';
 
 import _ from 'lodash';
-import ProposedLesson from './ProposedLesson';
+import Lesson from './Lesson';
 
 import Spinner from '../../components/elements/Spinner';
 
@@ -25,7 +25,7 @@ const ProposedLessons = ({ lessons, loading, show, openLessonRequestForm, closeL
         <>
           <h2 className="self-start font-semibold">Pending Lesson Requests</h2>
           {lessons.map((lesson) => (
-            <ProposedLesson
+            <Lesson
               key={lesson._id}
               lesson={lesson}
               openLessonRequestForm={openLessonRequestForm}

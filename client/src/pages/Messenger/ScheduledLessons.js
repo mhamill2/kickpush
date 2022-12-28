@@ -5,21 +5,11 @@ import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import * as date from '../../utils/date';
 
-import ScheduledLesson from './ScheduledLesson';
-import ScheduledLessonEditModal from './ScheduledLessonEditModal';
+import Lesson from './Lesson';
 import HrText from '../../components/elements/HrText';
 import Spinner from '../../components/elements/Spinner';
 
 const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cancelLesson }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [modalLesson, setModalLesson] = useState(null);
-
-  const closeEditModal = () => setShowModal(false);
-  const openEditModal = (lesson) => {
-    setModalLesson(lesson);
-    setShowModal(true);
-  };
-
   const createScheduledLessonsHtml = (lessons) => {
     const html = [];
     for (let i = 0; i < lessons.length; i++) {
@@ -28,7 +18,7 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
       html.push(monthYearHeader(date.getMonthLongName(lessons[i].dateTime), currentYear));
 
       while (i < lessons.length && lessons[i].dateTime.getMonth() === currentMonth && lessons[i].dateTime.getFullYear() === currentYear) {
-        html.push(<ScheduledLesson key={lessons[i]._id} lesson={lessons[i]} openLessonRequestForm={openLessonRequestForm} openEditModal={openEditModal} />);
+        html.push(<Lesson key={lessons[i]._id} lesson={lessons[i]} openLessonRequestForm={openLessonRequestForm} cancelLesson={cancelLesson} />);
         i++;
       }
       i--;
@@ -71,13 +61,6 @@ const ScheduledLessons = ({ lessons, loading, show, openLessonRequestForm, cance
           {createScheduledLessonsHtml(pastLessons)}
         </>
       )}
-      <ScheduledLessonEditModal
-        showModal={showModal}
-        closeModal={closeEditModal}
-        cancelLesson={cancelLesson}
-        openLessonRequestForm={openLessonRequestForm}
-        lesson={modalLesson}
-      />
     </Transition>
   );
 };

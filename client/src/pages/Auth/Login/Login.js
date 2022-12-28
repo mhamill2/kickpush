@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import Button from '../../../components/elements/Button';
-import FormModal from '../../../components/containers/FormModal';
+import FormModal from '../../../components/forms/FormModal';
 import HrText from '../../../components/elements/HrText';
 import { login } from '../../../state/user/userActions';
 

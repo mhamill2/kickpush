@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 
 import CalendarDay from './CalendarDay';
-import LessonItem from './LessonItem';
+import Lesson from './Lesson';
 import LessonRequestForm from '../Messenger/LessonRequestForm';
 import Spinner from '../../components/elements/Spinner';
 
@@ -114,7 +114,7 @@ const LessonCalendar = ({ lessons }) => {
 
   const cancelLesson = async (e) => {
     e.preventDefault();
-    await cancelLessonAction(e.target.getAttribute('data-lesson-id'));
+    await cancelLessonAction(e.target.getAttribute('data-id'));
   };
 
   const selectDay = (day) => {
@@ -217,7 +217,7 @@ const LessonCalendar = ({ lessons }) => {
               <p className="text-gray-500">No lessons scheduled for this month</p>
             </div>
           ) : (
-            lessonsDisplayed.map((lesson) => <LessonItem key={lesson._id} lesson={lesson} cancelLesson={cancelLesson} />)
+            lessonsDisplayed.map((lesson) => <Lesson key={lesson._id} lesson={lesson} cancelLesson={cancelLesson} />)
           )}
         </ol>
       </div>

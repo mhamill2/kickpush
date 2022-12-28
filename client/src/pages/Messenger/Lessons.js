@@ -30,25 +30,12 @@ const Lessons = ({ loading, connection, lessons }) => {
     setShowLessonRequestForm(false);
   };
 
-  const setShowPendingLessonsTrue = () => {
-    setShowPendingLessons(true);
-  };
-
-  const setShowPendingLessonsFalse = () => {
-    setShowPendingLessons(false);
-  };
-
   const acceptLesson = (e) => {
-    acceptLessonAction(e.target.getAttribute('data-lesson-id'));
+    acceptLessonAction(e.target.getAttribute('data-id'));
   };
 
   const cancelLesson = (e) => {
-    if (e.target) {
-      cancelLessonAction(e.target.getAttribute('data-lesson-id'));
-    } else {
-      // A lesson object was passed in from the ScheduledLessonEditModal
-      cancelLessonAction(e._id);
-    }
+    cancelLessonAction(e.target.getAttribute('data-id'));
   };
 
   lessons = lessons.map((lesson) => {
@@ -58,34 +45,30 @@ const Lessons = ({ loading, connection, lessons }) => {
 
   return (
     <>
-      <div className="flex justify-center gap-2 px-3 mb-4 fixed right-0 left-0 bg-white pb-4">
+      <div className="flex justify-center gap-2 px-3 mb-4 fixed right-0 left-0 bg-white pb-4 z-30">
         <div
-          onClick={setShowPendingLessonsTrue}
+          onClick={() => setShowPendingLessons(true)}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
         >
           Propositions
         </div>
         <div
-          onClick={setShowPendingLessonsFalse}
+          onClick={() => setShowPendingLessons(false)}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${!showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
         >
           Lessons
         </div>
       </div>
-      {/* 
-        TODO: Put this into a separate component that takes in a hidden property (or just add a 
-        comment here indicating that this is invisible to ensure the fixed component above actually
-        takes up space) 
-      */}
+      {/* This is a hidden component to ensure the above component takes up space */}
       <div className="flex justify-center gap-2 px-3 mb-4 bg-white pb-4 invisible">
         <div
-          onClick={setShowPendingLessonsTrue}
+          onClick={() => setShowPendingLessons(true)}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
         >
           Propositions
         </div>
         <div
-          onClick={setShowPendingLessonsFalse}
+          onClick={() => setShowPendingLessons(false)}
           className={`px-4 py-3 rounded-md w-1/2 text-center ${!showPendingLessons ? 'bg-primary text-white' : 'bg-gray-100'}`}
         >
           Lessons
@@ -109,16 +92,15 @@ const Lessons = ({ loading, connection, lessons }) => {
           closeLessonRequestForm={closeLessonRequestForm}
           cancelLesson={cancelLesson}
         />
-        <div className="bottom-0 left-0 w-full flex justify-center pt-4 pb-6 px-12 fixed bg-white shadow-inner">
-          <Button content="Propose a New Lesson" extraClasses={''} isPrimary={true} size={'large'} onClick={(event) => openLessonRequestForm(null)} />
-        </div>
       </main>
+      <div className="bottom-0 left-0 w-full flex justify-center pt-4 pb-6 px-12 fixed bg-white shadow-inner">
+        <Button content="Propose a New Lesson" extraClasses={''} isPrimary={true} size={'large'} onClick={(event) => openLessonRequestForm(null)} />
+      </div>
       <LessonRequestForm lesson={editLesson} showForm={showLessonRequestForm} closeForm={closeLessonRequestForm} connection={connection} />
     </>
   );
 };
 
-// mapStateToProps
 const mapStateToProps = (state) => ({
   lessons: state.lesson.lessons
 });

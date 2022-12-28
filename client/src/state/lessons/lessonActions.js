@@ -128,6 +128,7 @@ const acceptLesson = async (lessonId) => {
 
 const cancelLesson = async (lessonId) => {
   setAuthToken(localStorage.token);
+  console.log(lessonId);
 
   try {
     const res = await axios.post('/cancelLesson', { lessonId });

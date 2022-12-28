@@ -52,7 +52,7 @@ const MessengerConversation = ({ match, user }) => {
 
   return (
     <>
-      <header className="p-4 flex sticky top-16 bg-white">
+      <header className="p-4 flex sticky top-16 bg-white z-30">
         <h1 className="text-xl font-bold flex-1 flex justify-center">
           <span className="mr-auto" onClick={page === 'messages' ? goBack : openMessages}>
             {page === 'lessons' ? '< Messages' : '<'}
