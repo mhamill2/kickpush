@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Transition } from '@headlessui/react';
 
 import _ from 'lodash';

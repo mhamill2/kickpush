@@ -29,7 +29,7 @@ const Navbar = () => {
 
   const authMenu = (
     <Fragment>
-      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-30 bg-white ${menuOpen ? ' w-full' : ''}`}>
+      <div className={`list-none overflow-y-scroll fixed h-screen w-0 z-50 bg-white ${menuOpen ? ' w-full' : ''}`}>
         <ul className="flex flex-col items-stretch w-full px-4 list-none">
           <li className="border-b border-secondary py-4" onClick={onLogout}>
             Logout
@@ -49,7 +49,10 @@ const Navbar = () => {
         </li>
         <li className="p-2 lg:mx-1">
           <Link to="/register">
-            <button type="button" className="inline-flex items-center px-5 lg:px-8 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-primary hover:bg-primaryDark">
+            <button
+              type="button"
+              className="inline-flex items-center px-5 lg:px-8 py-2 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-primary hover:bg-primaryDark"
+            >
               Sign Up
             </button>
           </Link>

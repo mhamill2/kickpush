@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, connect } from 'react-redux';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-
 import MessagesListItem from './MessagesListItem';
 import Spinner from '../../components/elements/Spinner';
 
@@ -31,7 +28,6 @@ const Messenger = ({ conversations }) => {
     <div>
       <header className="w-full p-4 flex justify-between items-center mb-4">
         <h1 className="text-3xl font-semibold">Messages</h1>
-        <FontAwesomeIcon icon={faSearch} className="cursor-pointer bg-gray-50 p-3 mt-3 rounded-full" />
       </header>
       <main className="px-4 flex flex-col gap-6">
         {loading ? (

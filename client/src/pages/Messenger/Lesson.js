@@ -27,8 +27,10 @@ const Lesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesso
     return menuItems;
   };
 
+  const menuItems = getMenuItems();
+
   return (
-    <div key={lesson._id} className="flex flex-col gap-3 p-3 border-b border-gray-100 bg-gray-100 rounded-lg w-full text-sm">
+    <div key={lesson._id} className="flex flex-col gap-3 p-4 border-b border-gray-50 bg-gray-50 rounded-lg w-full text-sm">
       <div className="relative">
         <h2 className="font-semibold">
           {lesson.selfLesson && (
@@ -45,13 +47,15 @@ const Lesson = ({ user, lesson, openLessonRequestForm, acceptLesson, cancelLesso
           ))}{' '}
           w/ {lesson.instructor.firstName}
         </h2>
-        <Menu>
-          {getMenuItems().map((item) => (
-            <MenuItem key={item.text} onClick={item.onClick} dataId={item.dataId}>
-              {item.text}
-            </MenuItem>
-          ))}
-        </Menu>
+        {menuItems.length > 0 && (
+          <Menu>
+            {menuItems.map((item) => (
+              <MenuItem key={item.text} onClick={item.onClick} dataId={item.dataId}>
+                {item.text}
+              </MenuItem>
+            ))}
+          </Menu>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex">

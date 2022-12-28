@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import ProfilePicture from '../../components/elements/ProfilePicture';
 import ProfilePictureSection from './ProfilePictureSection';
 
 const Dashboard = ({ user }) => {

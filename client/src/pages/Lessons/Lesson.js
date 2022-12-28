@@ -48,7 +48,6 @@ const Lesson = ({ lesson, cancelLesson, user }) => {
         </dl>
       </div>
       <Menu position={'top-6 right-0'}>
-        <MenuItem>Edit Lesson</MenuItem>
         <MenuItem onClick={cancelLesson} dataId={lesson._id}>
           Cancel Lesson
         </MenuItem>

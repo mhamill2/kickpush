@@ -64,7 +64,7 @@ const UserProfile = ({ user }) => {
           <div className="relative">
             <FontAwesomeIcon
               icon={faPenToSquare}
-              className="cursor-pointer ml-3 absolute top-1 right-1 z-50 bg-white p-1 rounded-full border"
+              className="cursor-pointer ml-3 absolute top-1 right-1 z-40 bg-white p-1 rounded-full border"
               onClick={openFileSelectionDialog}
             ></FontAwesomeIcon>
             <input type="file" className="hidden" ref={input} onChange={onAvatarChange} />
