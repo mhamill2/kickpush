@@ -6,6 +6,7 @@ const socketUtils = require('./utils/socket');
 const connectionRouter = require('./routers/connections');
 const lessonRouter = require('./routers/lesson');
 const messageRouter = require('./routers/message');
+const paymentRouter = require('./routers/payment');
 const userRouter = require('./routers/user');
 
 require('./db/db');
@@ -27,7 +28,7 @@ const initServer = () => {
   });
 
   app.use(express.json());
-  app.use(connectionRouter, lessonRouter, messageRouter, userRouter);
+  app.use(connectionRouter, lessonRouter, messageRouter, paymentRouter, userRouter);
 
   server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 };

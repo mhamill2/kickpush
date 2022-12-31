@@ -26,10 +26,10 @@ const Messenger = ({ conversations }) => {
 
   return (
     <div>
-      <header className="w-full p-4 flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-semibold">Messages</h1>
+      <header className="w-full p-4 flex justify-center items-center mb-4">
+        <h1 className="text-2xl font-semibold">Messages</h1>
       </header>
-      <main className="px-4 flex flex-col gap-6">
+      <main className="px-4 flex flex-col gap-2">
         {loading ? (
           <div className="flex justify-center items-center">
             <Spinner />
