@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import Spinner from '../../components/elements/Spinner';
 
@@ -8,17 +9,15 @@ import CreateStripeAccount from './CreateStripeAccount';
 
 const Payments = ({ user }) => {
   const dispatch = useDispatch();
+  const params = new URLSearchParams(useLocation().search);
+  const stripeRefresh = params.get('stripeRefresh');
 
   const [loading, setLoading] = useState(false);
+  const [stripeFlowLoading, setStripeFlowLoading] = useState(false);
   const [stripeAccountChargesEnabled, setStripeAccountChargesEnabled] = useState(false);
-  const [stripeAccount, setStripeAccount] = useState(null);
 
   useEffect(() => {
     dispatch({ type: 'NAV_PAYMENTS' });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     fetchStripeAccount();
     // eslint-disable-next-line
   }, []);
@@ -26,14 +25,28 @@ const Payments = ({ user }) => {
   const fetchStripeAccount = async () => {
     setLoading(true);
     const account = await getStripeAccount();
-    setStripeAccount(account);
 
     if (account) {
-      console.log(account);
       setStripeAccountChargesEnabled(account.charges_enabled || false);
     }
+
     setLoading(false);
   };
+
+  const startStripeFlow = async () => {
+    setStripeFlowLoading(true);
+    const accountLink = await getStripeAccountLink();
+
+    if (accountLink?.url) {
+      window.location.href = accountLink.url;
+    } else {
+      setStripeFlowLoading(false);
+    }
+  };
+
+  if (stripeRefresh) {
+    startStripeFlow();
+  }
 
   return (
     <div className="px-4">
@@ -42,7 +55,7 @@ const Payments = ({ user }) => {
           <Spinner />
         </div>
       ) : !stripeAccountChargesEnabled ? (
-        <CreateStripeAccount />
+        <CreateStripeAccount startStripeFlow={startStripeFlow} stripeFlowLoading={stripeFlowLoading} />
       ) : (
         <div>
           <h1>Setup! Woohoo!</h1>

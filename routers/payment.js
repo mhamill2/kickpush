@@ -44,8 +44,8 @@ router.get('/getStripeAccountLink', auth, async (req, res) => {
   try {
     const accountLink = await stripe.accountLinks.create({
       account: user.stripeAccountId,
-      refresh_url: 'http://localhost:3000/payments',
-      return_url: 'http://localhost:3000/payments',
+      refresh_url: `${process.env.APP_URL}/payments?stripeRefresh=true`,
+      return_url: `${process.env.APP_URL}/payments`,
       type: 'account_onboarding'
     });
 
