@@ -17,6 +17,8 @@ router.get('/getStripeAccount', auth, async (req, res) => {
 
   try {
     const account = await stripe.accounts.retrieve(user.stripeAccountId);
+    const accountBalance = await stripe.balance.retrieve({ stripeAccount: user.stripeAccountId });
+    account.balance = await stripe.balance.retrieve({ stripeAccount: user.stripeAccountId });
     res.status(200).json({ account });
   } catch (err) {
     console.log('Failed to get stripe account: ', err);

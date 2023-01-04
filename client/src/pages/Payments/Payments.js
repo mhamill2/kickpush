@@ -15,6 +15,7 @@ const Payments = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [stripeFlowLoading, setStripeFlowLoading] = useState(false);
   const [stripeAccountChargesEnabled, setStripeAccountChargesEnabled] = useState(false);
+  const [stripeAccount, setStripeAccount] = useState(null);
 
   useEffect(() => {
     dispatch({ type: 'NAV_PAYMENTS' });
@@ -28,6 +29,7 @@ const Payments = ({ user }) => {
 
     if (account) {
       setStripeAccountChargesEnabled(account.charges_enabled || false);
+      setStripeAccount(account);
     }
 
     setLoading(false);
@@ -41,6 +43,16 @@ const Payments = ({ user }) => {
       window.location.href = accountLink.url;
     } else {
       setStripeFlowLoading(false);
+    }
+  };
+
+  const getAccountBalance = () => {
+    if (stripeAccount?.balance) {
+      const totalBalance = stripeAccount.balance.pending[0].amount + stripeAccount.balance.available[0].amount;
+      return (totalBalance / 100).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
     }
   };
 
@@ -58,7 +70,7 @@ const Payments = ({ user }) => {
         <CreateStripeAccount startStripeFlow={startStripeFlow} stripeFlowLoading={stripeFlowLoading} />
       ) : (
         <div>
-          <h1>Setup! Woohoo!</h1>
+          <h1>Total Account Balance: {getAccountBalance()}</h1>
         </div>
       )}
     </div>
