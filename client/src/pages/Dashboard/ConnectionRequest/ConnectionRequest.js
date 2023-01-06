@@ -39,6 +39,8 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
     sendConnectionRequestResponse(connectionRequest, responseMessage, acceptRequest);
   };
 
+  if (!connectionRequest) return null;
+
   return (
     <Transition
       show={showModal}
@@ -52,7 +54,9 @@ const ConnectionRequest = ({ showModal, closeModal, connectionRequest }) => {
     >
       <header className="border-gray-300 flex flex-col justify-between items-center gap-8 p-4">
         <FontAwesomeIcon icon={faTimes} className="cursor-pointer h-6 w-6 text-gray-600 self-end" onClick={closeModal}></FontAwesomeIcon>
-        <ProfilePicture size={28} />
+        <div className="rounded-full overflow-hidden bg-gray-100 h-24 w-24">
+          <ProfilePicture avatarUrl={connectionRequest.student.avatarUrl} />
+        </div>
         <h1 className="text-xl font-semibold">{connectionRequest.student && connectionRequest.student.firstName} would like to connect!</h1>
       </header>
 

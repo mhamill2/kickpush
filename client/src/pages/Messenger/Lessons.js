@@ -74,7 +74,7 @@ const Lessons = ({ loading, connection, lessons }) => {
           Lessons
         </div>
       </div>
-      <main className="flex px-6 w-full mb-32 overflow-x-hidden">
+      <main className="flex px-6 w-full mb-24 pb-8 overflow-x-hidden">
         <ProposedLessons
           lessons={pendingLessons}
           show={showPendingLessons}

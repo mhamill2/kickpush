@@ -17,7 +17,9 @@ const ConnectionRequestResponseModal = ({ showModal, closeModal, connectionReque
       className="max-h-1/2 w-full bg-white z-100 fixed bottom-0 flex flex-col border rounded-md items-center p-6"
     >
       <header className="border-gray-300 flex flex-col justify-between items-center gap-3">
-        <ProfilePicture size={12} />
+        <div className="rounded-full overflow-hidden bg-gray-100 h-24 w-24">
+          <ProfilePicture avatarUrl={connectionRequest.student.avatarUrl} />
+        </div>
         <h1 className="font-semibold">{title}</h1>
       </header>
 

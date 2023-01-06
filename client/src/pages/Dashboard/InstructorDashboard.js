@@ -20,7 +20,7 @@ const Dashboard = ({ user }) => {
   }, []);
 
   const [connectionRequests, setConnectionRequests] = useState({});
-  const [selectedConnectionRequest, setSelectedConnectionRequest] = useState({});
+  const [selectedConnectionRequest, setSelectedConnectionRequest] = useState(null);
   const [loadingConnectionRequests, setLoadingConnectionRequests] = useState(true);
   const [showConnectionRequestModal, setShowConnectionRequestModal] = useState(false);
 
@@ -46,7 +46,6 @@ const Dashboard = ({ user }) => {
       <section className="bg-white flex flex-col items-center justify-center p-5 w-full my-5 border-0 rounded-md">
         <ProfilePictureSection />
       </section>
-
       <section className="w-full flex overflow-x-auto space-x-8 mb-5 scrollbar-hide">
         <div className={statsItem}>
           <h1 className="text-3xl font-semibold">{user.profileViews ? user.profileViews : 0}</h1>
@@ -61,7 +60,6 @@ const Dashboard = ({ user }) => {
           <p>Number of Reviews</p>
         </div>
       </section>
-
       <section className="flex flex-col items-center justify-start w-full mb-5">
         <div className="border-b border-gray-100 bg-white p-5 w-full">
           <h1 className="text-xl font-bold">Pending Connection Requests</h1>
@@ -82,8 +80,10 @@ const Dashboard = ({ user }) => {
                   data-request-id={connectionRequest[0]}
                   onClick={openConnectionRequestModal}
                 >
-                  <ProfilePicture avatarUrl={connectionRequest[1].student.avatarUrl} /> {connectionRequest[1].student.firstName}{' '}
-                  {connectionRequest[1].student.lastName}
+                  <div className="bg-white h-12 w-12 rounded-full overflow-hidden">
+                    <ProfilePicture avatarUrl={connectionRequest[1].student.avatarUrl} />
+                  </div>
+                  {connectionRequest[1].student.firstName} {connectionRequest[1].student.lastName}
                 </div>
               ))}
             </>
