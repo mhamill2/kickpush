@@ -145,6 +145,7 @@ const LessonCalendar = ({ lessons }) => {
   }, []);
 
   useEffect(() => {
+    setSelectedDay(null);
     setDays(generateDays());
     setLessonsDisplayed(getLessonsInMonth());
     // eslint-disable-next-line
@@ -214,7 +215,7 @@ const LessonCalendar = ({ lessons }) => {
             </div>
           ) : lessonsDisplayed.length === 0 ? (
             <div className="flex justify-center items-center h-full w-full pt-14">
-              <p className="text-gray-500">No lessons scheduled for this month</p>
+              <p className="text-gray-500">{`No lessons scheduled for this ${selectedDay ? 'day' : 'month'}`}</p>
             </div>
           ) : (
             lessonsDisplayed.map((lesson) => <Lesson key={lesson._id} lesson={lesson} cancelLesson={cancelLesson} />)
