@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmhamill2%2Fkickpush.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmhamill2%2Fkickpush?ref=badge_shield)
+
 ##### To get started, you'll need to configure the .env file. To do so, simply create a .env file in the config folder, and set the following properties:
 
 ```
@@ -29,3 +31,7 @@ The app is currently in an unfinished state. The following features are availabl
 7. Instructors can add a method of payment
 
 Additionally, only the mobile view has been started. The desktop view needs to be flushed out
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmhamill2%2Fkickpush.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmhamill2%2Fkickpush?ref=badge_large)
